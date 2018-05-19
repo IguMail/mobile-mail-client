@@ -6,26 +6,14 @@ import {
   Image
 } from "react-native";
 import { Header, Text, Icon } from "react-native-elements";
-import { Font } from 'expo';
 
 const CHATTER = 'Chatter'
 
 class App extends React.Component {
 
-  state = {
-    loaded: false,
-  }
-
-  async componentDidMount() {
-    await Font.loadAsync({
-      'Lato': require('../assets/fonts/Lato-Regular.ttf'),
-    })
-    this.setState({ loaded: true })
-  }
-
   render() {
 
-    const { loaded } = this.state
+    const { loaded } = this.props
 
     if (!loaded) {
       return (<View><Text>Loading Mail...</Text></View>)

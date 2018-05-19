@@ -8,7 +8,6 @@ import {
   View
 } from "react-native";
 import { Header, Text } from "react-native-elements";
-//import { Font } from 'expo'; // Fix Expo
 import { NativeRouter, Route, Link, Redirect, withRouter } from 'react-router-native'
 import Auth from './Auth'
 import Splash from './Splash'
@@ -19,9 +18,14 @@ class App extends React.Component {
   }
 
   render() {
+
+    const { loaded } = this.props
+
+    const SplashRoute = props => (<Splash loaded={loaded} {...props} />)
+
     return (<NativeRouter>
       <View style={styles.main}>
-        <Route path="/" component={Splash} exact />
+        <Route path="/" component={SplashRoute} exact />
         <Route path="/auth" component={Auth}/>
         <RedirectToApp />
       </View>
