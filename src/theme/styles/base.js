@@ -1,5 +1,3 @@
-import { StyleSheet } from "react-native";
-
 const fontDefault = {
   fontFamily: "Lato",
   fontSize: 20,
@@ -16,15 +14,19 @@ const center = {
 }
 
 // base styles
-const styles = StyleSheet.create({
+const styles = {
   center,
   fontDefault,
   splash: {
-    flex: 1,
-    backgroundColor: "#fcfcfc",
     ...center,
+    backgroundColor: "#fcfcfc"
   },
   logo: {
+    width: 76,
+    height: 74,
+    marginBottom: 20
+  },
+  logoText: {
     width: 256, 
     height: 74,
     marginBottom: 20
@@ -35,16 +37,12 @@ const styles = StyleSheet.create({
     color: "#9aa7af"
   },
   section: {
-    flex: 1,
-    ...fontDefault, 
-    padding: 10
+    paddingBottom: 20,
   },
   row: {
-    flex: 1,
-    ...fontDefault,
     paddingTop: 10,
     paddingBottom: 10
   }
-});
+};
 
 export default styles;

@@ -1,17 +1,11 @@
-// @flow
-import * as React from "react";
-import {
-  StyleSheet,
-  View,
-  Image
-} from "react-native";
-import { Header, Text, Icon } from "react-native-elements";
-import { Section, Logo } from './theme'
+import React from "react";
+import { View, Text } from "react-native";
+import { LogoText } from './theme'
 import styles from './theme/styles'
 
 const CHATTER = 'Chatter'
 
-class App extends React.Component {
+class Splash extends React.Component {
 
   render() {
 
@@ -22,11 +16,11 @@ class App extends React.Component {
       <Text style={styles.slogan}>simple</Text>
     </View>)
 
-    return ((<Section style={styles.splash}>
-        <Logo />
-        {loaded && slogan()}
-      </Section>))
+    return (<View style={styles.splash}>
+      <LogoText />
+      {loaded && slogan()}
+    </View>)
   }
 }
 
-export default App;
+export default Splash;

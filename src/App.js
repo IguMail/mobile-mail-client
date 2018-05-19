@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Header, Text } from "react-native-elements";
 import { NativeRouter, Route, Link, Redirect, withRouter } from 'react-router-native'
-import Auth from './Auth'
+import Login from './screens/Login'
 import Splash from './Splash'
 import styles from './theme/styles'
 
@@ -24,16 +24,22 @@ class App extends React.Component {
     return (<NativeRouter>
       <View style={styles.center}>
         <Route path="/" component={SplashRoute} exact />
-        <Route path="/auth" component={Auth}/>
+        <Route path="/login" component={Login}/>
         <RedirectToApp />
       </View>
     </NativeRouter>)
   }
 }
 
+// TODO: remove this
+let redirected = false
 const RedirectToApp = withRouter(
   ({history}) => {
-    //setTimeout(() => history.push('/auth'), 2000)
+    if (!redirected) {
+      console.log('Redirecting to login...')
+      setTimeout(() => history.push('/login'), 200)
+      redirected = true
+    }
     return null
   }
 )

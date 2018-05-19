@@ -5,7 +5,7 @@ import styles from './styles'
 class Logo extends React.PureComponent {
   render() {
     return (<Image
-      source={require('../images/LogoText.png')}
+      source={require('../images/Logo.png')}
       style={styles.logo}
     />)
   }
