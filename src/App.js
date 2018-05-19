@@ -11,11 +11,9 @@ import { Header, Text } from "react-native-elements";
 import { NativeRouter, Route, Link, Redirect, withRouter } from 'react-router-native'
 import Auth from './Auth'
 import Splash from './Splash'
+import styles from './theme/styles'
 
 class App extends React.Component {
-
-  componentDidMount() {
-  }
 
   render() {
 
@@ -24,7 +22,7 @@ class App extends React.Component {
     const SplashRoute = props => (<Splash loaded={loaded} {...props} />)
 
     return (<NativeRouter>
-      <View style={styles.main}>
+      <View style={styles.center}>
         <Route path="/" component={SplashRoute} exact />
         <Route path="/auth" component={Auth}/>
         <RedirectToApp />
@@ -39,22 +37,5 @@ const RedirectToApp = withRouter(
     return null
   }
 )
-
-const styles = StyleSheet.create({
-  main: {
-    flex: 1,
-    backgroundColor: "#fcfcfc"
-  },
-  title: {
-    height: 155,
-    backgroundColor: "#222",
-    padding: 10,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  titleText: {
-    color: "#aaa"
-  }
-});
 
 export default App;
