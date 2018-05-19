@@ -12,6 +12,8 @@ module.exports = function override(config, env) {
 
   const vectorIcons = resolveApp("node_modules/react-native-vector-icons");
   const elements = resolveApp("node_modules/react-native-elements");
+  const router = resolveApp("node_modules/react-router-native");
+  const expo = resolveApp("node_modules/expo");
 
   // const fileLoader = getLoader(config.module.rules, rule =>
   //   loaderNameMatches(rule, "file-loader")
@@ -21,7 +23,7 @@ module.exports = function override(config, env) {
   // else fileLoader.include.push(vectorIcons);
 
   // transpile libraries
-  config = rewireBabelLoader.include(config, elements, vectorIcons);
+  config = rewireBabelLoader.include(config, elements, vectorIcons, router, expo);
 
   return config;
 };

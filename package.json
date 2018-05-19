@@ -7,19 +7,20 @@
     "web": "react-app-rewired start",
     "build:web": "react-app-rewired build",
     "eject:web": "react-app-rewired eject",
-    "start-native": "react-native-scripts start",
+    "start": "react-native-scripts start",
     "eject-native": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
     "test": "jest"
   },
   "dependencies": {
-    "expo": "^25.0.0",
+    "expo": "^27.0.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-native": "^0.52.2",
-    "react-native-elements": "Gregor1971/react-native-elements#master",
+    "react-native-elements": "^0.19.1",
     "react-native-web": "^0.3.2",
+    "react-router-native": "^4.2.0",
     "react-scripts": "1.1.0",
     "svgs": "^3.1.2"
   },
@@ -52,5 +53,11 @@
     "collectCoverage": true,
     "preset": "jest-expo",
     "setupTestFrameworkScriptFile": "<rootDir>/testFrameworkSetup.js"
+  },
+  "license": "ISC",
+  "rnpm": {
+    "assets": [
+      "./assets/fonts"
+    ]
   }
 }
