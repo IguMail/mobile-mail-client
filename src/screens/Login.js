@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const NUM_ERR_MSG = 'Phone number can contain + sign, numbers, dashes and spaces'
 const PIN_ERR_MSG = 'Pin can only contain numbers'
+const FIELD_REQ_MSG = 'This field is required'
 
 const btnFont = {
   fontFamily: "Lato",
@@ -46,71 +47,78 @@ class Login extends React.Component {
     }
   }
 
-  errors() {
-    return Object.entries(this.state.form.fields)
-      .map(([key, field]) => field.error)
-      .filter(error => error)
+  fields = {}
+
+  validateNumber = value => {
+    if (!value) {
+      return new Error(FIELD_REQ_MSG)
+    }
+    if (!value.match(/^[0-9-+ ]+$/g)) {
+      return new Error(NUM_ERR_MSG)
+    }
   }
 
-  values() {
-    return Object.entries(this.state.form.fields)
-      .map(([key, field]) => field.value)
-      .filter(value => value)
+  validatePin = value => {
+    if (!value) {
+      return new Error(FIELD_REQ_MSG)
+    }
+    if (!value || !value.match(/^[0-9]+$/g)) {
+      return new Error(PIN_ERR_MSG)
+    }
   }
 
-  signIn() {
-    const errors = this.errors()
+  validateForm = () => {
+    const errors = Object.entries(this.state.form.fields)
+      .map(([key, field]) => {
+        const err = this.validateNumber(field.value)
+        if (err && this.fields[key]) {
+          this.fields[key].setValidationError(err)
+          return err
+        }
+      })
+      .filter(err => err)
+    return errors
+  }
+
+  onSubmit() {
+    const errors = this.validateForm()
     if (errors.length) {
       return console.log('Errors exist', errors)
-    }
-    const values = this.values()
-    if (values.length < 2) {
-      return console.log('Fill in all fields', values)
     }
     console.log('sumitting form')
   }
 
+  onChangeText = (name, value) => {
+    let fields = this.state.form.fields
+    fields[name].value = value
+    this.setState({
+      form: {
+        fields: {
+          ...fields
+        }
+      }
+    })
+    console.log('Field values', this.state.form.fields)
+  }
+
   loginForm() {
 
-    const onChangeText = (name, value) => {
-      let fields = this.state.form.fields
-      fields[name].value = value
-      this.setState({
-        form: {
-          fields: {
-            ...fields
-          }
-        }
-      })
-      console.log('Field values', this.state.form.fields)
-    }
-
     const errorMsg = name => this.state.form.fields[name].error
-
-    const validateNumber = value => {
-      if (!value.match(/^[0-9-+ ]+$/g)) {
-        return new Error(NUM_ERR_MSG)
-      }
-    }
-
-    const validatePin = value => {
-      if (!value.match(/^[0-9]+$/g)) {
-        return new Error(PIN_ERR_MSG)
-      }
-    }
 
     return (<Section>
         <Row>
           <FormField 
+            ref={ref => this.fields['number'] = ref}
             label="PHONE NUMBER" 
-            onChangeText={value => onChangeText('number', value)} 
-            validate={value => validateNumber(value)} />
+            onChangeText={value => this.onChangeText('number', value)} 
+            validate={value => this.validateNumber(value)} />
         </Row>
         <Row>
           <FormField 
+          ref={ref => this.fields['pin'] = ref}
             label="PIN" 
-            onChangeText={value => onChangeText('pin', value)} 
-            validate={value => validatePin(value)} />
+            onChangeText={value => this.onChangeText('pin', value)} 
+            validate={value => this.validatePin(value)} />
         </Row>
         <Row>
         <Button
@@ -118,7 +126,7 @@ class Login extends React.Component {
           titleStyle={{ fontWeight: "700" }}
           buttonStyle={style.btnLogin}
           containerStyle={{ marginTop: 20 }}
-          onPress={() => this.signIn()}
+          onPress={() => this.onSubmit()}
         />
           </Row>
       </Section>

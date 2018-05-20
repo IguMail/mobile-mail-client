@@ -11,6 +11,12 @@ class FormField extends React.PureComponent {
     value: ''
   }
 
+  setValidationError(error) {
+    this.setState({
+      error
+    })
+  }
+
   render() {
 
     const { label, onChangeText, validate, formInputRef } = this.props
@@ -19,9 +25,7 @@ class FormField extends React.PureComponent {
       console.log("input changed", value)
       
       if (validate) {
-        this.setState({
-          error: validate(value)
-        })
+        this.setValidationError(validate(value))
       }
       onChangeText && onChangeText(value)
     }
@@ -31,9 +35,9 @@ class FormField extends React.PureComponent {
     }
 
     const inputRef = ref => {
-      //this.formInput = ref
+      this.formInput = ref
       console.log('ref', ref)
-      //formInputRef && formInputRef(ref)
+      formInputRef && formInputRef(ref)
     }
 
     return (<Row>
