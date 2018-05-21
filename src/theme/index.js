@@ -4,6 +4,9 @@ import Logo from './Logo'
 import LogoText from './LogoText'
 import Header from './Header'
 import FormField from './FormField'
+import AccountHeader from './AccountHeader'
+import InboxHeader from './InboxHeader'
+import InboxFooter from './InboxFooter'
 
 export {
   Section,
@@ -11,5 +14,8 @@ export {
   Logo,
   LogoText,
   Header,
-  FormField
+  FormField,
+  AccountHeader,
+  InboxHeader,
+  InboxFooter
 }

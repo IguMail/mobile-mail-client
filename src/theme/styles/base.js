@@ -1,6 +1,6 @@
 const fontDefault = {
   fontFamily: "Lato",
-  fontSize: 20,
+  fontSize: 14,
   fontWeight: "normal",
   fontStyle: "normal",
   color: "#9aa7af",
@@ -19,7 +19,8 @@ const styles = {
   fontDefault,
   splash: {
     ...center,
-    backgroundColor: "#fcfcfc"
+    backgroundColor: "#fcfcfc",
+    flexGrow: 1
   },
   logo: {
     width: 76,
@@ -34,7 +35,14 @@ const styles = {
   slogan: {
     ...fontDefault,
     textAlign: "center",
-    color: "#9aa7af"
+    color: "#9aa7af",
+    fontSize: 20
+  },
+  welcome: {
+    ...fontDefault,
+    textAlign: "center",
+    letterSpacing: 0.71,
+    color: "#3f8efc"
   },
   section: {
     paddingBottom: 20,

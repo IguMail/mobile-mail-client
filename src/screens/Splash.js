@@ -1,9 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { LogoText } from './theme'
-import styles from './theme/styles'
-
-const CHATTER = 'Chatter'
+import { LogoText } from '../theme'
+import styles from '../theme/styles'
 
 class Splash extends React.Component {
 

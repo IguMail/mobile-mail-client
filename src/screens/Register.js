@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Section, Row, FormField, Logo } from '../theme'
 import styles from '../theme/styles'
+import button from '../theme/styles/button'
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -9,27 +10,10 @@ const NUM_ERR_MSG = 'Phone number can contain + sign, numbers, dashes and spaces
 const PIN_ERR_MSG = 'Pin can only contain numbers'
 const FIELD_REQ_MSG = 'This field is required'
 
-const btnFont = {
-  fontFamily: "Lato",
-  fontSize: 16,
-  fontWeight: "500",
-  fontStyle: "normal",
-  letterSpacing: 0.57,
-  textAlign: "center",
-  color: "#ffffff"
-}
-
-const style = {
-  btnLogin: {
-    ...styles.btnPrimary,
-    width: 250,
-    height: 50
-  }
-}
 
 console.log('Styles', styles, style)
 
-class Login extends React.Component {
+class Register extends React.Component {
 
   state = {
     form: {
@@ -100,7 +84,7 @@ class Login extends React.Component {
     console.log('Field values', this.state.form.fields)
   }
 
-  loginForm() {
+  RegisterForm() {
 
     const errorMsg = name => this.state.form.fields[name].error
 
@@ -114,7 +98,7 @@ class Login extends React.Component {
         </Row>
         <Row>
           <FormField 
-          ref={ref => this.fields['pin'] = ref}
+            ref={ref => this.fields['pin'] = ref}
             label="PIN" 
             onChangeText={value => this.onChangeText('pin', value)} 
             validate={value => this.validatePin(value)} />
@@ -123,7 +107,7 @@ class Login extends React.Component {
         <Button
           title="SIGN IN"
           titleStyle={{ fontWeight: "700" }}
-          buttonStyle={style.btnLogin}
+          buttonStyle={style.btnPrimary}
           containerStyle={{ marginTop: 20 }}
           onPress={() => this.onSubmit()}
         />
@@ -141,7 +125,7 @@ class Login extends React.Component {
           <Text style={styles.welcome}>Welcome to</Text>
           <Text style={styles.welcome}>Chatterr</Text>
         </View>
-        {this.loginForm()}
+        {this.RegisterForm()}
       </Row>
       <Row style={{ flex: 0 }}>
         <Text style={{ marginBottom: 30, color: "#9aa7af" }}>Sign up for an account</Text>
@@ -150,4 +134,4 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+export default Register;
