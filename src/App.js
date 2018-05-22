@@ -8,6 +8,8 @@ import AddAccount from './screens/account/Add'
 import Inbox from './screens/Inbox'
 import styles from './theme/styles'
 
+const debug = require('debug')('chaterr:App')
+
 class App extends React.Component {
 
   state = {
@@ -32,7 +34,7 @@ class App extends React.Component {
 
     const { loaded } = this.props
 
-    console.log('props', this.props)
+    debug('props', this.props)
 
     const SplashRoute = props => (<Splash loaded={loaded} {...props} />)
 

@@ -1,9 +1,11 @@
-import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import React from "react"
+import { StyleSheet, View, Text } from "react-native"
 import { Section, Row, FormField, Logo } from '../theme'
 import styles from '../theme/styles'
 import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome'
+
+const debug = require('debug')('chaterr:Login')
 
 const NUM_ERR_MSG = 'Phone number can contain + sign, numbers, dashes and spaces'
 const PIN_ERR_MSG = 'Pin can only contain numbers'
@@ -26,8 +28,6 @@ const style = {
     height: 50
   }
 }
-
-console.log('Styles', styles, style)
 
 class Login extends React.Component {
 
@@ -82,9 +82,9 @@ class Login extends React.Component {
   onSubmit() {
     const errors = this.validateForm()
     if (errors.length) {
-      return console.log('Errors exist', errors)
+      return debug('Errors exist', errors)
     }
-    console.log('sumitting form')
+    debug('sumitting form')
   }
 
   onChangeText = (name, value) => {
@@ -97,7 +97,7 @@ class Login extends React.Component {
         }
       }
     })
-    console.log('Field values', this.state.form.fields)
+    debug('Field values', this.state.form.fields)
   }
 
   loginForm() {

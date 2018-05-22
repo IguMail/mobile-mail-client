@@ -4,6 +4,8 @@ import styles from './styles'
 import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
 import { Row } from '../theme'
 
+const debug = require('debug')('chaterr:FormField')
+
 class FormField extends React.PureComponent {
 
   state = {
@@ -22,7 +24,7 @@ class FormField extends React.PureComponent {
     const { label, onChangeText, validate, formInputRef } = this.props
 
     const onChange = (value) => {
-      console.log("input changed", value)
+      debug("input changed", value)
       
       if (validate) {
         this.setValidationError(validate(value))
@@ -36,7 +38,7 @@ class FormField extends React.PureComponent {
 
     const inputRef = ref => {
       this.formInput = ref
-      console.log('ref', ref)
+      debug('ref', ref)
       formInputRef && formInputRef(ref)
     }
 

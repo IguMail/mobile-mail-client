@@ -32,7 +32,11 @@ class InboxFooter extends React.PureComponent {
             height: -2
           },
           shadowRadius: 2,
-          shadowOpacity: 1
+          shadowOpacity: 1,
+          position: 'fixed',
+          bottom: 0,
+          zIndex: 10,
+          backgroundColor: '#fff'
         }
       }
     }

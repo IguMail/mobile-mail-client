@@ -1,17 +1,16 @@
-import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import React from "react"
+import { StyleSheet, View, Text } from "react-native"
 import { Section, Row, FormField, Logo } from '../theme'
 import styles from '../theme/styles'
 import button from '../theme/styles/button'
-import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Button } from 'react-native-elements'
+import Icon from 'react-native-vector-icons/FontAwesome'
+
+const debug = require('debug')('chaterr:Register')
 
 const NUM_ERR_MSG = 'Phone number can contain + sign, numbers, dashes and spaces'
 const PIN_ERR_MSG = 'Pin can only contain numbers'
 const FIELD_REQ_MSG = 'This field is required'
-
-
-console.log('Styles', styles, style)
 
 class Register extends React.Component {
 
@@ -66,9 +65,9 @@ class Register extends React.Component {
   onSubmit() {
     const errors = this.validateForm()
     if (errors.length) {
-      return console.log('Errors exist', errors)
+      return debug('Errors exist', errors)
     }
-    console.log('sumitting form')
+    debug('sumitting form')
   }
 
   onChangeText = (name, value) => {
@@ -81,7 +80,7 @@ class Register extends React.Component {
         }
       }
     })
-    console.log('Field values', this.state.form.fields)
+    debug('Field values', this.state.form.fields)
   }
 
   RegisterForm() {
@@ -134,4 +133,4 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+export default Register
