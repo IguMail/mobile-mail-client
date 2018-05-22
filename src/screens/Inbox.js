@@ -2,6 +2,8 @@ import React from "react";
 import { View, Text, Image } from "react-native";
 import { Section, Row, InboxHeader, InboxFooter } from '../theme'
 import styles from '../theme/styles'
+import Splash from './Splash'
+import sampleMessages from '../assets/sample.messages'
 
 const style = {
   section: {
@@ -12,6 +14,10 @@ const style = {
     height: 10,
     backgroundColor: "#fc0a0a",
     borderRadius: 100
+  },
+  labelDot: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
   MessageLink: {
     marginTop: 20,
@@ -59,46 +65,86 @@ const MessageIcon = props => (
     backgroundColor: props.backgroundColor || "#95d7a2",
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 100
+    borderRadius: 100,
+    ...props.style
   }}>
     {props.children}
   </View>
 )
 
-const MessageLink = (props) => (<Row style={style.MessageLink}>
-    <MessageIcon>
+const MessageLink = props => {
+  const { iconStyle, iconText, from, time, subject } = props
+  return <Row style={style.MessageLink}>
+    <MessageIcon style={iconStyle}>
       <Text style={{
         ...styles.fontDefault,
         fontSize: 16,
         color: '#fff'
-      }}>J</Text>
+      }}>{iconText || from && from[0]}</Text>
     </MessageIcon>
     <View style={style.messageTextContainer}>
       <View style={style.messageTextHeader}>
         <View style={{
           flex: 1
         }}>
-          <Text style={style.messageTextFrom}>Jasleen</Text>
+          <Text style={style.messageTextFrom}>{from}</Text>
         </View>
         <View>
-          <Text style={style.messageTextTime}>14:15</Text>
+          <Text style={style.messageTextTime}>{time}</Text>
         </View>
       </View>
       <View>
-        <Text style={style.messagetextSubject}>Lorem ipsum dolor sit amet, consectetur</Text>
-        <View style={{
-          flexDirection: 'row',
-          justifyContent: 'flex-end',
-        }}>
+        <Text style={style.messagetextSubject}>{subject}</Text>
+        <View style={style.labelDot}>
           <View style={style.dot}></View>
         </View>
       </View>
     </View>
-  </Row>)
+  </Row>
+}
 
 class Inbox extends React.Component {
 
+  state = {
+    messages: [],
+    loaded: false
+  }
+
+  componentDidMount() {
+    this.fetchMessages()
+      .then(res => {
+        console.log('Got resp', res.json())
+        return res.json()
+      })
+      .then(messages => {
+        console.log('got messages', messages)
+        return this.setState({
+          messages,
+          loaded: true
+        })
+      })
+      .catch(err => {
+        console.log('Error fetching mail', err)
+        this.setState({ loaded: true })
+      })
+  }
+
+  fetchMessages() {
+    return fetch('https://api.igumail.com/messages')
+  }
+
   render() {
+
+    const { loaded, messages } = this.state
+
+    if (!loaded) {
+      return <Splash />
+    }
+
+    console.log('messages', messages)
+
+    // TODO remove dev only
+    const displayMessages = messages.length > 1 ? messages : sampleMessages
 
     return (<Section style={{
       ...style.section,
@@ -108,21 +154,12 @@ class Inbox extends React.Component {
 
       <InboxHeader title={'All Priority'} />
 
-      <MessageLink>
-       
-      </MessageLink>
-      <MessageLink>
-       
-      </MessageLink>
-      <MessageLink>
-       
-      </MessageLink>
-      <MessageLink>
-       
-      </MessageLink>
-      <MessageLink>
-       
-      </MessageLink>
+      {
+        (displayMessages)
+          .map( ({ id, from, date, subject }) => {
+            return <MessageLink key={id} from={from[0].name} time={date} subject={subject} />
+          })
+      }
 
       <InboxFooter />
 

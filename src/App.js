@@ -36,6 +36,10 @@ class App extends React.Component {
 
     const SplashRoute = props => (<Splash loaded={loaded} {...props} />)
 
+    if (!loaded) {
+      return <SplashRoute />
+    }
+
     return (<NativeRouter>
       <View style={{ flex: 1 }}>
         <Route path="/" component={SplashRoute} exact />
