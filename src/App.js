@@ -12,24 +12,6 @@ const debug = require('debug')('chaterr:App')
 
 class App extends React.Component {
 
-  state = {
-    redirect: false
-  }
-
-  currentScreen = '/'
-
-  componentDidMount() {
-    setTimeout(() => this.setState({ redirect: '/inbox' }), 200)
-  }
-
-  redirect() {
-    const redirect = this.state.redirect
-    if (redirect) {
-      return (<Redirect to={redirect} />)
-    }
-    return null
-  }
-
   render() {
 
     const { loaded } = this.props
@@ -48,8 +30,8 @@ class App extends React.Component {
         <Route path="/login" component={Login}/>
         <Route path="/account/add" component={AddAccount}/>
         <Switch>
-        <Route path="/inbox" component={Inbox}/>
-          {this.redirect()}
+          <Route path="/inbox" component={Inbox}/>
+          <Redirect to='/inbox' />
         </Switch>
       </View>
     </NativeRouter>)

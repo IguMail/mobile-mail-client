@@ -1,5 +1,5 @@
 import React from "react"
-import { View, Text, Image, TextInput } from "react-native"
+import { View, Text, Image, TextInput, ScrollView } from "react-native"
 import { Section, Row, InboxHeader, InboxFooter } from '../theme'
 import styles from '../theme/styles'
 import inbox from '../theme/styles/inbox'
@@ -7,12 +7,23 @@ import Splash from './Splash'
 import MessageLink from '../theme/MessageLink'
 import SearchBox from '../theme/SearchBox'
 import sampleMessages from '../assets/sample.messages'
-import { FormInput } from "react-native-elements"
 
 const debug = require('debug')('chaterr:Inbox')
 
 const style = {
   ...inbox
+}
+
+const MessagesList = props => {
+  return <View style={style.MessageList}>
+    {
+      props.messages
+      .map(
+        ({ id, from, date, subject, priority }, i) =>
+        <MessageLink 
+          key={i} from={from[0].name} time={date} subject={subject} priority={priority} />)
+    }
+  </View>
 }
 
 class Inbox extends React.Component {
@@ -24,10 +35,6 @@ class Inbox extends React.Component {
 
   componentDidMount() {
     this.fetchMessages()
-      .then(res => {
-        debug('Got resp', res.json())
-        return res.json()
-      })
       .then(messages => {
         debug('got messages', messages)
         return this.setState({
@@ -42,7 +49,13 @@ class Inbox extends React.Component {
   }
 
   fetchMessages() {
+    // TODO: remove dev
+    if (process.env.NODE_ENV === 'development') {
+      return new Promise(resolve => resolve([...sampleMessages, ...sampleMessages]))
+    }
+    // TODO: use service
     return fetch('https://api.igumail.com/messages')
+      .then(res => res.json())
   }
 
   render() {
@@ -55,23 +68,19 @@ class Inbox extends React.Component {
 
     debug('messages', messages)
 
-    // TODO remove dev only
-    const displayMessages = messages.length > 1 ? messages : sampleMessages
-
     return (<Section style={{
-      ...style.section,
+      ...style.screen,
       ...styles.center,
-      justifyContent: 'flex-start'
+      justifyContent: 'flex-start',
+      flex: 1
     }}>
-      <InboxHeader title={'All Priority'} />
-      <SearchBox placeholder="Search" />
-      {
-        (displayMessages)
-          .map( ({ id, from, date, subject, priority }) => {
-            return <MessageLink 
-              key={id} from={from[0].name} time={date} subject={subject} priority={priority} />
-          })
-      }
+      <ScrollView style={{
+        width: '100%'
+      }}>
+        <InboxHeader title={'All Priority'} />
+        <SearchBox placeholder="Search" />
+        <MessagesList messages={messages} />
+      </ScrollView>
       <InboxFooter />
     </Section>)
   }

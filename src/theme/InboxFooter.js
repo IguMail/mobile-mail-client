@@ -17,14 +17,11 @@ class InboxFooter extends React.PureComponent {
           justifyContent: 'flex-end',
           width: '100%',
           flex: 1,
-          backgroundColor: "#ffffff",
+          backgroundColor: "#fff"
         },
         footer: {
           width: '100%',
-          paddingTop: 30,
-          paddingBottom: 30,
-          paddingRight: 20,
-          paddingLeft: 20,
+          padding: 20,
           flexDirection: 'row',
           shadowColor: "rgba(51, 51, 51, 0.1)",
           shadowOffset: {
@@ -33,9 +30,8 @@ class InboxFooter extends React.PureComponent {
           },
           shadowRadius: 2,
           shadowOpacity: 1,
-          position: 'fixed',
+          position: 'absolute',
           bottom: 0,
-          zIndex: 10,
           backgroundColor: '#fff'
         }
       }

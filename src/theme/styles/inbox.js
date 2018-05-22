@@ -1,12 +1,16 @@
 import styles from './base'
 
 const inbox = {
-  section: {
-    marginTop: 0
+  screen: {
+    marginTop: 0,
+    backgroundColor: '#fcfcfc'
   },
   priorityDot: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
+  },
+  MessageList: {
+    marginBottom: 60
   },
   MessageLink: {
     marginTop: 20,
@@ -49,7 +53,10 @@ const inbox = {
   search: {
     flexDirection: 'row',
     width: '100%',
-    paddingLeft: 30
+    marginLeft: 30,
+    paddingRight: 30,
+    height: 20,
+    alignItems: 'center'
   }
 }
 

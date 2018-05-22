@@ -14,7 +14,7 @@ const priorityColors = {
   default: '#eeeeee',
   1: '#fc0a0a',
   2: '#f4ed42',
-  3: '#f4ed42'
+  3: '#81da61'
 }
 
 const priorityColor = (priority) => {

@@ -123,6 +123,7 @@ module.exports = [
     receivedDate: "2018-05-11T21:05:14.000Z",
     snippet:
       " Title Goes Here in this Placeholder Area body{ font-family:arial; font-size:16px; line-height:1.5; } h1{ font-size:24px; margin:0 0 2px !important; font-weight:bold; } h2{ font-size:20px; margin:0 0 ",
-    attachments: []
+    attachments: [],
+    priority: 2
   }
 ];
