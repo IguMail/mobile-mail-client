@@ -11,18 +11,20 @@ const style = {
 const SearchBox = props => {
 
   return <View style={style.search}>
-      <SearchBar placeholder="Search"
-      containerStyle={{
-        backgroundColor: '#fcfcfc',
-        borderBottomColor: '#fcfcfc',
-        borderTopColor: '#fcfcfc',
-        flex: 1
-      }}
-      inputStyle={{
-        ...styles.fontDefault,
-        backgroundColor: '#fff'
-      }}
-      placeholderTextColor="#9aa7af" />
+      <SearchBar
+        placeholder="Search"
+        placeholderTextColor="#9aa7af"
+        containerStyle={{
+          backgroundColor: '#fcfcfc',
+          borderBottomColor: '#fcfcfc',
+          borderTopColor: '#fcfcfc',
+          flex: 1
+        }}
+        inputStyle={{
+          ...styles.fontDefault,
+          backgroundColor: '#fff'
+        }}
+      />
     </View>
 }
 

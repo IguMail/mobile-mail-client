@@ -1,11 +1,8 @@
-// @flow
-import * as React from "react";
-import { View } from "react-native";
-import { NativeRouter, Route, Redirect, Switch } from 'react-router-native'
+import React from "react";
+import { View, Text } from "react-native";
+import { NativeRouter, Route, Redirect, Switch, Link, withRouter } from 'react-router-native'
 import Splash from './screens/Splash'
-import Login from './screens/Login'
-import AddAccount from './screens/account/Add'
-import Inbox from './screens/Inbox'
+import AppRoutes from './AppRoutes'
 import styles from './theme/styles'
 
 const debug = require('debug')('chaterr:App')
@@ -15,25 +12,18 @@ class App extends React.Component {
   render() {
 
     const { loaded } = this.props
-
     debug('props', this.props)
 
-    const SplashRoute = props => (<Splash loaded={loaded} {...props} />)
+    const SplashRoute = props => (<Splash loaded={loaded} />)
 
     if (!loaded) {
       return <SplashRoute />
     }
 
+    const Routes = withRouter(AppRoutes)
+
     return (<NativeRouter>
-      <View style={{ flex: 1 }}>
-        <Route path="/" component={SplashRoute} exact />
-        <Route path="/login" component={Login}/>
-        <Route path="/account/add" component={AddAccount}/>
-        <Switch>
-          <Route path="/inbox" component={Inbox}/>
-          <Redirect to='/inbox' />
-        </Switch>
-      </View>
+      <Routes loaded={loaded} />
     </NativeRouter>)
   }
 }

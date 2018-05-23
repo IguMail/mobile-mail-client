@@ -3,32 +3,17 @@ import ColorHash from 'color-hash'
 import styles from '../theme/styles'
 import inbox from '../theme/styles/inbox'
 import PriorityDot from '../theme/PriorityDot'
+import MessageIcon from '../theme/MessageIcon'
 import { View, Text } from "react-native"
-import { Section, Row } from '../theme'
+import { Section, Row, TouchLink } from '../theme'
 import moment from 'moment'
 
 const style = {
   ...inbox
 }
 
-const MessageIcon = props => (
-  <View style={{
-    width: 42,
-    height: 42,
-    backgroundColor: props.backgroundColor || (new ColorHash()).hex(props.text),
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 100,
-    ...props.style
-  }}>
-    {props.children}
-  </View>
-)
-
-
-
 const MessageLink = props => {
-  const { iconStyle, iconText, from, time, subject, priority } = props
+  const { iconStyle, iconText, id, from, time, subject, priority } = props
 
   const date = new Date(time)
   const now = new Date()
@@ -47,7 +32,7 @@ const MessageLink = props => {
   const fromNow = moment(time).fromNow()
   const iconSingleLetter = iconText || from && from[0]
 
-  return (<Row style={style.MessageLink}>
+  return (<TouchLink style={style.MessageLink} to={'/message/' + id}>
     <MessageIcon style={iconStyle} text={from}>
       <Text style={{
         ...styles.fontDefault,
@@ -73,7 +58,7 @@ const MessageLink = props => {
         </View>
       </View>
     </View>
-  </Row>)
+  </TouchLink>)
 }
 
 export default MessageLink

@@ -7,6 +7,9 @@ import FormField from './FormField'
 import AccountHeader from './AccountHeader'
 import InboxHeader from './InboxHeader'
 import InboxFooter from './InboxFooter'
+import TouchLink from './TouchLink'
+import MessageHeader from './Message/Header'
+import MessageFooter from './Message/Footer'
 
 export {
   Section,
@@ -17,5 +20,8 @@ export {
   FormField,
   AccountHeader,
   InboxHeader,
-  InboxFooter
+  InboxFooter,
+  TouchLink,
+  MessageHeader,
+  MessageFooter
 }

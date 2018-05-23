@@ -22,7 +22,9 @@
     "react-dom": "^16.2.0",
     "react-native": "^0.52.2",
     "react-native-elements": "^0.19.1",
+    "react-native-render-html": "^3.10.0",
     "react-native-web": "^0.3.2",
+    "react-native-web-webview": "^0.2.5",
     "react-router-native": "^4.2.0",
     "react-scripts": "1.1.0",
     "svgs": "^3.1.2"

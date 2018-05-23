@@ -1,6 +1,6 @@
 import React from "react"
 import { View, Text, Image, TextInput, ScrollView } from "react-native"
-import { Section, Row, InboxHeader, InboxFooter } from '../theme'
+import { Section, Row, InboxHeader, InboxFooter, TouchLink } from '../theme'
 import styles from '../theme/styles'
 import inbox from '../theme/styles/inbox'
 import Splash from './Splash'
@@ -21,7 +21,7 @@ const MessagesList = props => {
       .map(
         ({ id, from, date, subject, priority }, i) =>
         <MessageLink 
-          key={i} from={from[0].name} time={date} subject={subject} priority={priority} />)
+          key={i} id={id} from={from[0].name} time={date} subject={subject} priority={priority} />)
     }
   </View>
 }
