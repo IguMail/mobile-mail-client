@@ -4,6 +4,8 @@ import "./web/index.css";
 import App from "./App";
 import registerServiceWorker from "./web/registerServiceWorker";
 
+global.PLATFORM = 'web'
+
 ReactDOM.render(<App loaded={true} />, document.getElementById("root"));
 registerServiceWorker();
 

@@ -41,6 +41,10 @@ class InboxFooter extends React.PureComponent {
       ...this.props
     }
 
+    if (global.PLATFORM === 'web') {
+      style.footer.position = 'fixed'
+    }
+
     const lines = !Array.isArray(title) ? [ title ] : title
 
     return (<Section style={style.containerStyle}>

@@ -3,6 +3,8 @@ import * as React from "react";
 import App from "./src/App";
 import { Font } from 'expo';
 
+global.PLATFORM = 'native'
+
 export default class AppNative extends React.Component {
 
   state = {

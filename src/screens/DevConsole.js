@@ -50,7 +50,7 @@ const DevConsole = props => {
     <ScreenLink>
       <TouchLink to="/account/add"><Text>Add Account</Text></TouchLink>
     </ScreenLink>
-    <RedirectOnce to="/message/004f63fe-faf1-4544-af15-71f6a3cb2631" />
+    <RedirectOnce to="/inbox" />
   </Section>)
 }
 

@@ -3,6 +3,8 @@ import { Text, View, Image } from "react-native";
 import styles from './styles'
 import { Section } from './'
 
+const debug = require('debug')('chaterr:InboxFooter')
+
 class InboxFooter extends React.PureComponent {
   render() {
     const defaults = {
@@ -32,6 +34,8 @@ class InboxFooter extends React.PureComponent {
           shadowOpacity: 1,
           position: 'absolute',
           bottom: 0,
+          right: 0,
+          left: 0,
           backgroundColor: '#fff'
         }
       }
@@ -40,6 +44,12 @@ class InboxFooter extends React.PureComponent {
       ...defaults,
       ...this.props
     }
+
+    if (global.PLATFORM === 'web') {
+      style.footer.position = 'fixed'
+    }
+
+    debug('platform', global.PLATFORM)
 
     const lines = !Array.isArray(title) ? [ title ] : title
 

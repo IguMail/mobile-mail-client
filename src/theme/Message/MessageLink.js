@@ -15,7 +15,7 @@ const style = {
 }
 
 const MessageLink = props => {
-  const { iconStyle, iconText, id, from, time, subject, priority, mail } = props
+  const { iconStyle, iconText, id, from, time, subject, snippet, priority } = props
 
   const date = new Date(time)
   const now = new Date()
@@ -34,9 +34,8 @@ const MessageLink = props => {
   const fromNow = moment(time).fromNow()
   const iconSingleLetter = iconText || from && from[0]
 
-  debug('mail', mail)
-
-  const text = mail.html.replace(/<(?:.|\n)*?>/gm, ' ').replace(/[ ]+/, ' ')
+  //const text = snippet.replace(/<(?:.|\n)*?>/gm, ' ').replace(/[ ]+/, ' ')
+  const [text] = snippet.split('--')
 
   return (<View style={style.MessageLink} to={'/message/' + id}>
     <MessageIcon style={iconStyle} text={from}>
