@@ -1,15 +1,13 @@
-import React from "react"
-import { View, Text, Image, TextInput, 
-  ScrollView, WebView, ActivityIndicator, Modal } from "react-native"
+import React from 'react'
+import { View, Text, Image, TextInput, ScrollView, Modal } from 'react-native'
 import { Button } from 'react-native-elements'
-import { Section, Row, MessageHeader, MessageFooter, MenuIcon, TouchLink } from '../theme'
+import { Section, MessageHeader, MessageFooter } from '../theme'
 import styles from '../theme/styles'
 import conversation from '../theme/styles/conversation'
-import FakeMessage from '../theme/Message/FakeMessage'
-import MessageLink from '../theme/Message/MessageLink'
-import SearchBox from '../theme/SearchBox'
+import Conversation from '../theme/Message/Conversation'
+import FakeConversation from '../theme/Message/FakeConversation'
 import sampleThread from '../assets/sample/thread'
-import Swipeout from 'react-native-swipeout'
+import MailApi from '../store/MailApi'
 
 const debug = require('debug')('chaterr:Message')
 
@@ -19,60 +17,10 @@ const style = {
 
 let apiUrl = 'https://api.igumail.com'
 if (process.env.NODE_ENV === 'development') {
-  apiUrl = 'http://192.168.100.102:3030'
+  apiUrl = 'http://192.168.100.103:3030'
 }
 
 const ERR_HTTP_FAIL = 'Could not retrieve thread at this time'
-
-const Conversation = props => {
-
-  const { messages } = props
-
-  debug('threading conversation', messages)
-
-  const MessageList = () => messages.map(message => {
-    const { id, from, snippet, date } = message
-
-    const deleteMessage = message => {
-      debug('delete note', message)
-    }
-
-    const MoveIcon = () => (<TouchLink to="/">
-      <Image source={require('../images/search.png')} style={{
-        width: 16,
-        height: 16
-      }} />
-    </TouchLink>)
-
-    const swipeBtns = [{
-      component: <MoveIcon />,
-      backgroundColor: 'red',
-      underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-      onPress: () => deleteMessage(message)
-    }]
-
-    return (
-      <Swipeout 
-        key={id} 
-        left={swipeBtns}
-        autoClose={true}
-        backgroundColor= 'transparent'>
-        <MessageLink {...message} from={from[0].name} time={date} />
-      </Swipeout>
-    )
-  })
-
-  return <View style={style.MessageList}>
-    <MessageList />
-  </View>
-}
-
-const FakeConversation = props => (
-  <View style={style.MessageList}>
-    <FakeMessage />
-    <View><ActivityIndicator /></View>
-  </View>
-)
 
 class Message extends React.Component {
 
@@ -100,7 +48,7 @@ class Message extends React.Component {
   }
 
   fetchThread(id) {
-    return fetch(apiUrl + '/account/mailsync2018@gmail.com/thread/07b7ac52-0287-4119-8752-e00f3b89ec56')
+    return fetch(apiUrl + '/account/mailsync2018@gmail.com/thread/' + id)
       .then(res => res.json())
       .catch(error => {
         this.setState({

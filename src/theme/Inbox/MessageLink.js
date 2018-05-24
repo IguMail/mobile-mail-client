@@ -1,11 +1,11 @@
 import React from 'react'
 import ColorHash from 'color-hash'
-import styles from '../theme/styles'
-import inbox from '../theme/styles/inbox'
-import PriorityDot from '../theme/PriorityDot'
-import MessageIcon from '../theme/MessageIcon'
+import styles from '../styles'
+import inbox from '../styles/inbox'
+import PriorityDot from '../PriorityDot'
+import MessageIcon from '../MessageIcon'
 import { View, Text } from "react-native"
-import { Section, Row, TouchLink } from '../theme'
+import { Section, Row, TouchLink } from '../'
 import moment from 'moment'
 
 const style = {
