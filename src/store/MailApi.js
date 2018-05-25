@@ -21,12 +21,28 @@
     }
   }
 
+  setApiUrl(url) {
+    this.url = url
+  }
+
   setAuthToken(token) {
     this.options.headers['X-Auth-Token'] = token
   }
 
   messages() {
-    this.get('/account/:account/messages')
+    return this.get('/account/:account/messages')
+  }
+
+  message(id) {
+    return this.get('/account/:account/messages/' + id)
+  }
+
+  threads() {
+    return this.get('/account/:account/threads')
+  }
+
+  thread(id) {
+    return this.get('/account/:account/thread/' + id)
   }
 
   buildUrl(path) {
@@ -88,3 +104,5 @@
   }
 
  }
+
+ export default MailApi

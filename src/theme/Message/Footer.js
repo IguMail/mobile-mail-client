@@ -16,7 +16,6 @@ class InboxFooter extends React.PureComponent {
         containerStyle: {
           justifyContent: 'flex-end',
           width: '100%',
-          flex: 1,
           backgroundColor: "#fff"
         },
         footer: {
