@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, Image } from "react-native";
-import styles from './styles'
-import { Section, TouchLink } from './'
+import styles from '../styles'
+import { Section, TouchLink } from '../'
 
 class InboxHeader extends React.PureComponent {
   render() {
@@ -15,7 +15,7 @@ class InboxHeader extends React.PureComponent {
         },
         containerStyle: {
           marginTop: 30,
-          marginBottom: 30,
+          marginBottom: 10,
           paddingRight: 20,
           paddingLeft: 20,
           alignItems: 'center',
@@ -33,7 +33,7 @@ class InboxHeader extends React.PureComponent {
 
     return (<Section style={style.containerStyle}>
       <TouchLink to="/dev">
-        <Image source={require('../images/icon-home.png')} style={{
+        <Image source={require('../../images/icon-home.png')} style={{
           width: 19,
           height: 15
         }} />

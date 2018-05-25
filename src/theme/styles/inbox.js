@@ -10,10 +10,11 @@ const inbox = {
     justifyContent: 'flex-end',
   },
   MessageList: {
-    marginBottom: 60
+    marginBottom: 60,
+    marginTop: 0
   },
   MessageLink: {
-    marginTop: 20,
+    paddingTop: 20,
     paddingBottom: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
@@ -52,11 +53,24 @@ const inbox = {
   },
   search: {
     flexDirection: 'row',
-    width: '100%',
+    flex: 1,
     marginLeft: 30,
     paddingRight: 30,
-    height: 20,
+    marginBottom: 0,
+    marginTop: 0,
+    paddingTop: 0,
+    marginTop: 0,
     alignItems: 'center'
+  },
+  SwipeIconText: {
+    // fontFamily: "Montserrat", // TODO: Add font
+    fontSize: 10,
+    fontWeight: "normal",
+    fontStyle: "normal",
+    letterSpacing: 0.36,
+    textAlign: "center",
+    color: "#3f8efc",
+    marginTop: 9
   }
 }
 

@@ -12,14 +12,17 @@ const style = {
   ...inbox
 }
 
-const MessageList = props => {
+const ThreadList = props => {
 
   return <View style={style.MessageList}>
     {
-      props.messages
+      Object.keys(props.threads)
       .map(
-        (message, i) => {
+        (key, i) => {
 
+          const thread = props.threads[key]
+
+          const message = thread.messages.pop()
           const { id, from, date, subject, priority } = message
 
           const deleteMessage = message => {
@@ -92,4 +95,4 @@ const MessageList = props => {
   </View>
 }
 
-export default MessageList
+export default ThreadList

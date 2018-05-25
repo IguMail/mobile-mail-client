@@ -3,9 +3,16 @@ import inbox from './inbox'
 
 const conversation = {
   ...inbox,
+  MessageList: {
+    ...inbox.MessageList,
+    marginBottom: 60,
+    marginTop: 20
+  },
   MessageLink: {
     ...inbox.MessageLink,
-    borderBottomWidth: 0
+    borderBottomWidth: 0,
+    paddingTop: 10,
+    paddingBottom: 0
   },
   messageTextFrom: {
     color: "#333333",

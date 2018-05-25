@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, Image } from "react-native";
-import styles from './styles'
-import { Section } from './'
+import styles from '../styles'
+import { Section } from '../'
 
 const debug = require('debug')('chaterr:InboxFooter')
 
@@ -56,7 +56,7 @@ class InboxFooter extends React.PureComponent {
     return (<Section style={style.containerStyle}>
       <View style={style.footer}>
         <View style={{}}>
-          <Image source={require('../images/userGroupManWoman.png')} style={{
+          <Image source={require('../../images/userGroupManWoman.png')} style={{
             width: 25,
             height: 20
           }} />
@@ -67,13 +67,13 @@ class InboxFooter extends React.PureComponent {
           alignItems: 'center',
           justifyContent: 'center' 
         }}>
-          <Image source={require('../images/icon_ios_edit.png')} style={{
+          <Image source={require('../../images/icon_ios_edit.png')} style={{
             width: 23,
             height: 22
           }} />
         </View>
         <View>
-        <Image source={require('../images/iconCogwheel.png')} style={{
+        <Image source={require('../../images/iconCogwheel.png')} style={{
             width: 20,
             height: 20
           }} />

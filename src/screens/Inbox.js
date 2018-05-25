@@ -4,9 +4,9 @@ import { Section, Row, InboxHeader, InboxFooter, TouchLink } from '../theme'
 import styles from '../theme/styles'
 import inbox from '../theme/styles/inbox'
 import Splash from './Splash'
-import MessageList from '../theme/Inbox/MessageList'
+import ThreadList from '../theme/Inbox/ThreadList'
 import SearchBox from '../theme/SearchBox'
-import sampleMessages from '../assets/sample/messages'
+import sampleThreads from '../assets/sample/threads'
 import Swipeout from 'react-native-swipeout'
 
 const debug = require('debug')('chaterr:Inbox')
@@ -23,45 +23,45 @@ const style = {
 class Inbox extends React.Component {
 
   state = {
-    messages: [],
+    threads: [],
     loaded: false
   }
 
   componentDidMount() {
-    this.fetchMessages()
-      .then(messages => {
-        debug('got messages', messages)
+    this.fetchThreads()
+      .then(threads => {
+        debug('got threads', threads)
         return this.setState({
-          messages,
+          threads: threads.threads,
           loaded: true
         })
       })
       .catch(err => {
-        debug('Error fetching messages', err)
+        debug('Error fetching threads', err)
         this.setState({ loaded: true })
       })
   }
 
-  fetchMessages() {
-    return fetch(apiUrl + '/account/mailsync2018@gmail.com/messages')
+  fetchThreads() {
+    return fetch(apiUrl + '/account/mailsync2018@gmail.com/threads')
       .then(res => res.json())
       .catch(err => {
         // TODO: remove dev
         if (process.env.NODE_ENV === 'development') {
-          return new Promise(resolve => resolve(sampleMessages))
+          return new Promise(resolve => resolve(sampleThreads))
         }
       })
   }
 
   render() {
 
-    const { loaded, messages } = this.state
+    const { loaded, threads } = this.state
 
     if (!loaded) {
       return <Splash loaded={true} />
     }
 
-    debug('messages', messages)
+    debug('threads', threads)
 
     return (<Section style={{
       ...style.screen,
@@ -74,7 +74,7 @@ class Inbox extends React.Component {
       }}>
         <InboxHeader title={'All Priority'} />
         <SearchBox placeholder="Search" />
-        <MessageList messages={messages} />
+        <ThreadList threads={threads} />
       </ScrollView>
       <InboxFooter />
     </Section>)

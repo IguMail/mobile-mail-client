@@ -5,7 +5,7 @@ import { Section, TouchLink } from '../'
 import MenuIcon from '../MenuIcon'
 import MenuIconDots from '../MenuIconDots'
 
-class InboxHeader extends React.PureComponent {
+class MessageHeader extends React.PureComponent {
   render() {
     const defaults = {
       style: { 
@@ -52,7 +52,9 @@ class InboxHeader extends React.PureComponent {
         flex: 1,
         flexGrow: 1, 
         alignItems: 'center',
-        justifyContent: 'center' 
+        justifyContent: 'center',
+        paddingLeft: 20,
+        paddingRight: 20 
       }}>
         {lines.map( (text, i) => (<Text key={i} style={style.titleStyle}>{text}</Text>))} 
       </View>
@@ -79,4 +81,4 @@ class InboxHeader extends React.PureComponent {
   }
 }
 
-export default InboxHeader;
+export default MessageHeader;

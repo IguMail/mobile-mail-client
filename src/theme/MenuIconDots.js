@@ -14,9 +14,11 @@ const style = {
 
 const MenuIconDots = props => (
   <MenuIcon to={props.to} style={style.link}>
-    <Dot style={style.dot} />
-    <Dot style={style.dot} />
-    <Dot style={style.dot} />
+    <View>
+      <Dot style={style.dot} />
+      <Dot style={style.dot} />
+      <Dot style={style.dot} />
+    </View>
   </MenuIcon>
 )
 
