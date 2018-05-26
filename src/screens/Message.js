@@ -8,6 +8,7 @@ import Conversation from '../theme/Message/Conversation'
 import FakeConversation from '../theme/Message/FakeConversation'
 import sampleThread from '../assets/sample/thread'
 import MailApi from '../store/MailApi'
+import config from '../config'
 
 const debug = require('debug')('chaterr:Message')
 
@@ -15,12 +16,8 @@ const style = {
   ...conversation
 }
 
-let apiUrl = 'https://api.igumail.com'
-if (process.env.NODE_ENV === 'development') {
-  apiUrl = 'http://192.168.100.103:3030'
-}
 const mailApi = new MailApi('gabe@fijiwebdesign.com')
-mailApi.setApiUrl(apiUrl)
+mailApi.setApiUrl(config.api.url)
 
 const ERR_HTTP_FAIL = 'Could not retrieve thread at this time'
 
