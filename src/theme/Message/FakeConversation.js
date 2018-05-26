@@ -8,9 +8,10 @@ const style = {
 }
 
 const FakeConversation = props => (
-  <View style={style.MessageList}>
-    <FakeMessage />
-    <View><ActivityIndicator /></View>
+  <View>
+    <View style={style.MessageList}>
+      <FakeMessage />
+    </View>
   </View>
 )
 

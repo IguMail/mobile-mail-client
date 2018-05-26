@@ -45,6 +45,7 @@ class Inbox extends React.Component {
 
   fetchThreads() {
     return mailApi.threads()
+      .fetch()
       .catch(err => {
         // TODO: remove dev
         if (process.env.NODE_ENV === 'development') {

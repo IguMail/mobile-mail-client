@@ -40,13 +40,9 @@ const Conversation = props => {
     }]
 
     return (
-      <Swipeout 
-        key={id} 
-        left={swipeBtns}
-        autoClose={true}
-        backgroundColor= 'transparent'>
+      <View key={id} >
         <MessageLink {...message} from={from[0].name} time={date} />
-      </Swipeout>
+      </View>
     )
   })
 

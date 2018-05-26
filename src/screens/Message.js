@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TextInput, ScrollView, Modal } from 'react-native'
+import { View, Text, Image, TextInput, ScrollView, Modal, ActivityIndicator } from 'react-native'
 import { Button } from 'react-native-elements'
 import { Section, MessageHeader, MessageFooter } from '../theme'
 import styles from '../theme/styles'
@@ -13,7 +13,20 @@ import config from '../config'
 const debug = require('debug')('chaterr:Message')
 
 const style = {
-  ...conversation
+  ...conversation,
+  ActivityIndicatorContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: '100%',
+    height: '100%',
+    alignItems: 'center', 
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    opacity: 0.5
+  }
 }
 
 const mailApi = new MailApi('gabe@fijiwebdesign.com')
@@ -48,6 +61,7 @@ class Message extends React.Component {
 
   fetchThread(id) {
     return mailApi.thread(id)
+      .fetch()
       .catch(error => {
         this.setState({
           error
@@ -69,6 +83,12 @@ class Message extends React.Component {
       const close = () => this.setState({ error: null })
       setTimeout(() => close(), 1000)
       return <ErrorModal error={error} close={() => close()} />
+    }
+
+    if (!loaded) {
+      return (<View  style={style.ActivityIndicatorContainer}>
+        <ActivityIndicator />
+      </View>)
     }
 
     return (<Section style={{

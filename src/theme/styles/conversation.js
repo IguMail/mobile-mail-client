@@ -54,6 +54,9 @@ const conversation = {
     right: 0,
     top: 0,
     margin: 10
+  },
+  attachments: {
+    marginTop: 15
   }
 }
 

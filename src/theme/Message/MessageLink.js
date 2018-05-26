@@ -6,6 +6,7 @@ import PriorityDot from '../../theme/PriorityDot'
 import MessageIcon from '../../theme/MessageIcon'
 import { View, Text, WebView, Image } from "react-native"
 import { Section, Row, TouchLink } from '../../theme'
+import AttachmentList from '../../theme/Message/AttachmentList'
 import moment from 'moment'
 
 const debug = require('debug')('chaterr:Message:Link')
@@ -14,8 +15,16 @@ const style = {
   ...conversation
 }
 
+const Attachments = props => {
+  return props.attachments.length ? 
+  (<View style={style.attachments}>
+    <AttachmentList attachments={props.attachments} />
+  </View>) :
+  null
+}
+
 const MessageLink = props => {
-  const { iconStyle, iconText, id, from, time, subject, snippet, priority } = props
+  const { iconStyle, iconText, id, from, time, subject, snippet, priority, attachments } = props
 
   const date = new Date(time)
   const now = new Date()
@@ -67,6 +76,7 @@ const MessageLink = props => {
             height: 14
           }}/>
         </TouchLink>
+        <Attachments attachments={attachments} />
       </View>
       <View>
         <Text style={style.messageTextTime}>{dateFormatted}</Text>
