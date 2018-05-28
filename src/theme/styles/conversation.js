@@ -1,4 +1,3 @@
-import styles from './base'
 import inbox from './inbox'
 
 const conversation = {
@@ -15,7 +14,6 @@ const conversation = {
     paddingBottom: 0
   },
   messageTextFrom: {
-    color: "#333333",
     fontWeight: "500",
     fontStyle: "normal",
     letterSpacing: 0.44,

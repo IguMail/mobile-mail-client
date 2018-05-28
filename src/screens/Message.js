@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TextInput, ScrollView, Modal, ActivityIndicator } from 'react-native'
+import { View, Text, ScrollView, Modal, ActivityIndicator } from 'react-native'
 import { Button } from 'react-native-elements'
 import { Section, MessageHeader, MessageFooter } from '../theme'
 import styles from '../theme/styles'
@@ -42,12 +42,27 @@ class Message extends React.Component {
     error: false
   }
 
+  // TODO: move to server
+  addAttachmentUrls(thread) {
+    thread.messages.forEach(message => {
+      if (message.attachments) {
+        message.attachments.forEach(attachment => {
+          attachment.url = mailApi.attachment(attachment.id).request.url.href
+        })
+      }
+    })
+  }
+
   componentDidMount() {
     const messageId = this.props.match.params.id
     debug('Fetch message', this.props.match.params.id)
     this.fetchThread(messageId)
       .then(thread => {
         debug('got thread', thread)
+        debug('MailApi', mailApi)
+
+        this.addAttachmentUrls(thread)
+        
         return this.setState({
           thread,
           loaded: true

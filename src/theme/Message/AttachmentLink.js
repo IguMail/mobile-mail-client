@@ -1,9 +1,7 @@
 import React from 'react'
 import styles from '../../theme/styles'
-import { View, Text, Button, Image } from "react-native"
-import { Section, Row, TouchLink } from '../../theme'
-
-const debug = require('debug')('chaterr:Message:Attachment')
+import { View, Text, Image } from "react-native"
+import { TouchLink } from '../../theme'
 
 const defaultStyle = {
   container: {

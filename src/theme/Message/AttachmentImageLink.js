@@ -1,15 +1,7 @@
 import React from 'react'
-import styles from '../../theme/styles'
-import { View, Text, Button, Image } from "react-native"
-import { Section, Row, TouchLink } from '../../theme'
+import { View } from "react-native"
+import { TouchLink } from '../../theme'
 import ResponsiveImage from '../../theme/ResponsiveImage'
-import MailApi from '../../store/MailApi'
-import config from '../../config'
-
-const debug = require('debug')('chaterr:Message/AttachmentImage')
-
-const mailApi = new MailApi('gabe@fijiwebdesign.com')
-mailApi.setApiUrl(config.api.url)
 
 const defaultStyle = {
   container: {
@@ -32,7 +24,7 @@ const defaultStyle = {
 }
 
 const AttachmentImageLink = props => {
-  const { id, fileName  } = props.attachment || {}
+  const { id, url  } = props.attachment || {}
   let { style } = props
 
   style = {
@@ -40,18 +32,11 @@ const AttachmentImageLink = props => {
     ...(style || {})
   }
 
-  const title = fileName || '[Untitled]'
-  debug('MailApi', mailApi)
-
-  const imageUrl = mailApi.attachment(id).request.url.href
-
-  debug('imageUrl', imageUrl)
-
   const onPress = () => {}
 
   return (<TouchLink style={style.container} to={'/attachment/' + id} onPress={onPress}>
     <View style={style.imageContainer}>
-      <ResponsiveImage source={{ uri: imageUrl }} />
+      <ResponsiveImage source={{ uri: url }} style={style.images} />
     </View>
   </TouchLink>)
 }

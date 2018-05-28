@@ -1,13 +1,12 @@
 import React from "react"
-import { View, Text, Image, TextInput, ScrollView } from "react-native"
-import { Section, Row, InboxHeader, InboxFooter, TouchLink } from '../theme'
+import { ScrollView } from "react-native"
+import { Section, InboxHeader, InboxFooter } from '../theme'
 import styles from '../theme/styles'
 import inbox from '../theme/styles/inbox'
 import Splash from './Splash'
 import ThreadList from '../theme/Inbox/ThreadList'
 import SearchBox from '../theme/SearchBox'
 import sampleThreads from '../assets/sample/threads'
-import Swipeout from 'react-native-swipeout'
 import MailApi from '../store/MailApi'
 import config from '../config'
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, Image } from "react-native";
+import { View, Image } from "react-native";
 import styles from '../styles'
 import { Section } from '../'
 
@@ -35,7 +35,7 @@ class InboxFooter extends React.PureComponent {
         }
       }
     }
-    const { style, title } = {
+    const { style } = {
       ...defaults,
       ...this.props
     }
@@ -43,8 +43,6 @@ class InboxFooter extends React.PureComponent {
     if (global.PLATFORM === 'web') {
       style.footer.position = 'fixed'
     }
-
-    const lines = !Array.isArray(title) ? [ title ] : title
 
     return (<Section style={style.containerStyle}>
       <View style={style.footer}>

@@ -1,10 +1,6 @@
-import React from "react";
-import { View, Text } from "react-native";
-import { Route, Redirect, Switch, Link } from 'react-router-native'
-import Splash from '../screens/Splash'
-import Login from '../screens/Login'
-import AddAccount from '../screens/account/Add'
-import Inbox from '../screens/Inbox'
+import React from "react"
+import { Text } from "react-native"
+import { Redirect } from 'react-router-native'
 import styles from '../theme/styles'
 import { Section, Row, AccountHeader, TouchLink } from '../theme'
 

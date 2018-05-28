@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Image } from "react-native";
 import { Section, Row, AccountHeader } from '../../theme'
 import styles from '../../theme/styles'
 

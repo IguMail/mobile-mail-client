@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, ActivityIndicator } from 'react-native'
+import { View } from 'react-native'
 import conversation from '../styles/conversation'
 import FakeMessage from './FakeMessage'
 

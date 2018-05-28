@@ -1,7 +1,5 @@
 import React from 'react'
-import styles from '../../theme/styles'
-import { View, Text, Image } from "react-native"
-import { Section, Row, TouchLink } from '../../theme'
+import { View } from "react-native"
 import AttachmentLink from '../../theme/Message/AttachmentLink'
 import AttachmentImageLink from '../../theme/Message/AttachmentImageLink'
 

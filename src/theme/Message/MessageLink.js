@@ -1,11 +1,9 @@
 import React from 'react'
-import ColorHash from 'color-hash'
 import styles from '../../theme/styles'
 import conversation from '../../theme/styles/conversation'
-import PriorityDot from '../../theme/PriorityDot'
 import MessageIcon from '../../theme/MessageIcon'
-import { View, Text, WebView, Image } from "react-native"
-import { Section, Row, TouchLink } from '../../theme'
+import { View, Text, Image } from "react-native"
+import { TouchLink } from '../../theme'
 import AttachmentList from '../../theme/Message/AttachmentList'
 import moment from 'moment'
 
@@ -24,7 +22,9 @@ const Attachments = props => {
 }
 
 const MessageLink = props => {
-  const { iconStyle, iconText, id, from, time, subject, snippet, priority, attachments } = props
+  const { iconStyle, iconText, id, from, time, snippet, attachments } = props
+
+  debug('render', props)
 
   const date = new Date(time)
   const now = new Date()
@@ -40,10 +40,8 @@ const MessageLink = props => {
   } else {
     dateFormatted = moment(time).format('MMMM D YYYYY')
   }
-  const fromNow = moment(time).fromNow()
-  const iconSingleLetter = iconText || from && from[0]
-
-  //const text = snippet.replace(/<(?:.|\n)*?>/gm, ' ').replace(/[ ]+/, ' ')
+  
+  const iconSingleLetter = iconText || (from && from[0])
   const [text] = snippet.split('--')
 
   return (<View style={style.MessageLink} to={'/message/' + id}>

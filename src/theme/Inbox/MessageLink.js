@@ -1,11 +1,10 @@
 import React from 'react'
-import ColorHash from 'color-hash'
 import styles from '../styles'
 import inbox from '../styles/inbox'
 import PriorityDot from '../PriorityDot'
 import MessageIcon from '../MessageIcon'
 import { View, Text } from "react-native"
-import { Section, Row, TouchLink } from '../'
+import { TouchLink } from '../'
 import moment from 'moment'
 
 const style = {
@@ -29,8 +28,8 @@ const MessageLink = props => {
   } else {
     dateFormatted = moment(time).format('MMMM D YYYYY')
   }
-  const fromNow = moment(time).fromNow()
-  const iconSingleLetter = iconText || from && from[0]
+  
+  const iconSingleLetter = iconText || (from && from[0])
 
   return (<TouchLink style={style.MessageLink} to={'/message/' + id}>
     <MessageIcon style={iconStyle} text={from}>

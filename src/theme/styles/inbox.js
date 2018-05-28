@@ -59,7 +59,6 @@ const inbox = {
     marginBottom: 0,
     marginTop: 0,
     paddingTop: 0,
-    marginTop: 0,
     alignItems: 'center'
   },
   SwipeIconText: {

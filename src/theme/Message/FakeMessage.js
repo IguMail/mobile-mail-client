@@ -1,12 +1,7 @@
 import React from 'react'
-import ColorHash from 'color-hash'
-import styles from '../../theme/styles'
 import conversation from '../../theme/styles/conversation'
 import MessageIcon from '../../theme/MessageIcon'
 import { View, Text } from "react-native"
-import { Section, Row } from '../../theme'
-
-const debug = require('debug')('chaterr:Message:FakeMessage')
 
 const style = {
   ...conversation

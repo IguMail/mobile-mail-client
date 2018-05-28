@@ -1,6 +1,4 @@
 import React from "react";
-import { Image } from "react-native";
-import styles from './styles'
 import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
 import { Row } from '../theme'
 

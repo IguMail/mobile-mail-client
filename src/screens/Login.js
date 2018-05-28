@@ -1,25 +1,14 @@
 import React from "react"
-import { StyleSheet, View, Text } from "react-native"
+import { View, Text } from "react-native"
 import { Section, Row, FormField, Logo } from '../theme'
 import styles from '../theme/styles'
-import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome'
+import { Button } from 'react-native-elements'
 
 const debug = require('debug')('chaterr:Login')
 
 const NUM_ERR_MSG = 'Phone number can contain + sign, numbers, dashes and spaces'
 const PIN_ERR_MSG = 'Pin can only contain numbers'
 const FIELD_REQ_MSG = 'This field is required'
-
-const btnFont = {
-  fontFamily: "Lato",
-  fontSize: 16,
-  fontWeight: "500",
-  fontStyle: "normal",
-  letterSpacing: 0.57,
-  textAlign: "center",
-  color: "#ffffff"
-}
 
 const style = {
   btnLogin: {
@@ -74,6 +63,7 @@ class Login extends React.Component {
           this.fields[key].setValidationError(err)
           return err
         }
+        return null
       })
       .filter(err => err)
     return errors
@@ -101,9 +91,6 @@ class Login extends React.Component {
   }
 
   loginForm() {
-
-    const errorMsg = name => this.state.form.fields[name].error
-
     return (<Section>
         <Row>
           <FormField 

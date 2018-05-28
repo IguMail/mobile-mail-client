@@ -1,46 +1,48 @@
 import React from "react";
-import { Text, View, Image } from "react-native";
+import { View, Image } from "react-native";
 import styles from '../styles'
 import { Section } from '../'
 
 const debug = require('debug')('chaterr:InboxFooter')
 
+const defaults = {
+  style: {
+    titleStyle: {
+      ...styles.fontDefault,
+      fontSize: 16,
+      fontWeight: "bold",
+      color: '#333333',
+    },
+    containerStyle: {
+      justifyContent: 'flex-end',
+      width: '100%',
+      flex: 1,
+      backgroundColor: "#fff"
+    },
+    footer: {
+      width: '100%',
+      padding: 20,
+      flexDirection: 'row',
+      shadowColor: "rgba(51, 51, 51, 0.1)",
+      shadowOffset: {
+        width: 0,
+        height: -2
+      },
+      shadowRadius: 2,
+      shadowOpacity: 1,
+      position: 'absolute',
+      bottom: 0,
+      right: 0,
+      left: 0,
+      backgroundColor: '#fff'
+    }
+  }
+}
+
 class InboxFooter extends React.PureComponent {
   render() {
-    const defaults = {
-      style: { 
-        titleStyle: {
-          ...styles.fontDefault,
-          fontSize: 16,
-          fontWeight: "bold",
-          color: '#333333',
-        },
-        containerStyle: {
-          justifyContent: 'flex-end',
-          width: '100%',
-          flex: 1,
-          backgroundColor: "#fff"
-        },
-        footer: {
-          width: '100%',
-          padding: 20,
-          flexDirection: 'row',
-          shadowColor: "rgba(51, 51, 51, 0.1)",
-          shadowOffset: {
-            width: 0,
-            height: -2
-          },
-          shadowRadius: 2,
-          shadowOpacity: 1,
-          position: 'absolute',
-          bottom: 0,
-          right: 0,
-          left: 0,
-          backgroundColor: '#fff'
-        }
-      }
-    }
-    const { style, title } = {
+    
+    const { style } = {
       ...defaults,
       ...this.props
     }
@@ -50,8 +52,6 @@ class InboxFooter extends React.PureComponent {
     }
 
     debug('platform', global.PLATFORM)
-
-    const lines = !Array.isArray(title) ? [ title ] : title
 
     return (<Section style={style.containerStyle}>
       <View style={style.footer}>
