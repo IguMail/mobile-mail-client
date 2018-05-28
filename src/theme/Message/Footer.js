@@ -1,40 +1,84 @@
-import React from "react";
-import { View, Image } from "react-native";
+import React from 'react'
+import { View, Image, Text, TextInput } from 'react-native'
 import styles from '../styles'
 import { Section } from '../'
 
+const icon = {
+  marginLeft: 10,
+  marginRight: 10,
+}
+
+const defaults = {
+  style: {
+    containerStyle: {
+      width: '100%',
+      backgroundColor: '#fff'
+    },
+    footer: {
+      padding: 10,
+      flexDirection: 'column',
+      width: '100%',
+      position: 'absolute',
+      bottom: 0,
+      backgroundColor: '#fff'
+    },
+    row: {
+      flexDirection: 'row',
+      flex: 1
+    },
+    icon: {
+      document: {
+        ...icon,
+        width: 16,
+        height: 20
+      },
+      camera: {
+        ...icon,
+        width: 23,
+        height: 17
+      },
+      pin: {
+        ...icon,
+        width: 15,
+        height: 23
+      },
+      picture: {
+        ...icon,
+        width: 20,
+        height: 16
+      },
+      send: {
+        ...icon,
+        width: 19,
+        height: 20,
+        position: 'absolute', 
+        right: 0
+      },
+      reply: {
+        ...icon,
+        width: 16,
+        height: 14
+      },
+      maximize: {
+        ...icon,
+        width: 14,
+        height: 14
+      }
+    },
+    textInput: {
+      flexGrow: 1,
+      flex: 1,
+      flexBasis: 10,
+      fontSize: 14,
+      lineHeight: 18,
+      letterSpacing: 0.58
+    }
+  }
+}
+
 class InboxFooter extends React.PureComponent {
   render() {
-    const defaults = {
-      style: { 
-        titleStyle: {
-          ...styles.fontDefault,
-          fontSize: 16,
-          fontWeight: "bold",
-          color: '#333333',
-        },
-        containerStyle: {
-          justifyContent: 'flex-end',
-          width: '100%',
-          backgroundColor: "#fff"
-        },
-        footer: {
-          width: '100%',
-          padding: 20,
-          flexDirection: 'row',
-          shadowColor: "rgba(51, 51, 51, 0.1)",
-          shadowOffset: {
-            width: 0,
-            height: -2
-          },
-          shadowRadius: 2,
-          shadowOpacity: 1,
-          position: 'absolute',
-          bottom: 0,
-          backgroundColor: '#fff'
-        }
-      }
-    }
+    
     const { style } = {
       ...defaults,
       ...this.props
@@ -44,34 +88,28 @@ class InboxFooter extends React.PureComponent {
       style.footer.position = 'fixed'
     }
 
+    const textInputDefaultText = 'Reply...'
+
     return (<Section style={style.containerStyle}>
       <View style={style.footer}>
-        <View style={{}}>
-          <Image source={require('../../images/userGroupManWoman.png')} style={{
-            width: 25,
-            height: 20
-          }} />
+        <View style={[style.row]}>
+          <Image source={require('../../images/icon_ios_reply_filled.png')} style={style.icon.reply} />
+          <TextInput style={[styles.fontDefault, style.textInput]} defaultValue={textInputDefaultText} />
+          <Image source={require('../../images/maximize.png')} style={style.icon.maximize} />
         </View>
-        <View style={{ 
-          flex: 1,
-          flexGrow: 1, 
-          alignItems: 'center',
-          justifyContent: 'center' 
+        <View style={{
+          ...style.row,
+          marginTop: 10
         }}>
-          <Image source={require('../../images/icon_ios_edit.png')} style={{
-            width: 23,
-            height: 22
-          }} />
-        </View>
-        <View>
-        <Image source={require('../../images/iconCogwheel.png')} style={{
-            width: 20,
-            height: 20
-          }} />
+          <Image source={require('../../images/document.png')} style={style.icon.document} />
+          <Image source={require('../../images/camera.png')} style={style.icon.camera} />
+          <Image source={require('../../images/icon_ios_pin.png')} style={style.icon.pin} />
+          <Image source={require('../../images/picture.png')} style={style.icon.picture} />
+          <Image source={require('../../images/send.png')} style={style.icon.send} />
         </View>
       </View>
     </Section>)
   }
 }
 
-export default InboxFooter;
+export default InboxFooter
