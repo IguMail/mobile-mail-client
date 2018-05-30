@@ -4,7 +4,6 @@ const conversation = {
   ...inbox,
   MessageList: {
     ...inbox.MessageList,
-    marginBottom: 60,
     marginTop: 20
   },
   MessageLink: {

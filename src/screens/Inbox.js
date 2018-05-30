@@ -23,7 +23,8 @@ class Inbox extends React.Component {
 
   state = {
     threads: [],
-    loaded: false
+    loaded: false,
+    error: null
   }
 
   componentDidMount() {
@@ -36,16 +37,16 @@ class Inbox extends React.Component {
           loaded: true
         })
       })
-      .catch(err => {
-        debug('Error fetching threads', err)
-        this.setState({ loaded: true })
+      .catch(error => {
+        debug('Error fetching threads', error)
+        this.setState({ loaded: true, error })
       })
   }
 
   fetchThreads() {
     return mailApi.threads()
       .fetch()
-      .catch(err => {
+      .catch(error => {
         // TODO: remove dev
         if (process.env.NODE_ENV === 'development') {
           return new Promise(resolve => resolve(sampleThreads))
@@ -55,10 +56,15 @@ class Inbox extends React.Component {
 
   render() {
 
-    const { loaded, threads } = this.state
+    const { loaded, threads, error } = this.state
 
     if (!loaded) {
       return <Splash loaded={true} />
+    }
+
+    if (error) {
+      // TODO: handle
+      debug('handle error', error)
     }
 
     debug('threads', threads)
@@ -74,7 +80,7 @@ class Inbox extends React.Component {
       }}>
         <InboxHeader title={'All Priority'} />
         <SearchBox placeholder="Search" />
-        <ThreadList threads={threads} />
+        <ThreadList threads={threads || {}} />
       </ScrollView>
       <InboxFooter />
     </Section>)

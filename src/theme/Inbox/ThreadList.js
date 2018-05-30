@@ -14,13 +14,15 @@ const style = {
 
 const ThreadList = props => {
 
+  const { threads } = props
+
   return <View style={style.MessageList}>
     {
-      Object.keys(props.threads)
+      Object.keys(threads)
       .map(
         (key, i) => {
 
-          const thread = props.threads[key]
+          const thread = threads[key]
 
           const message = thread.messages.pop()
           const { id, from, date, subject, priority } = message

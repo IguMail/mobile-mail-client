@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { KeyboardAvoidingView } from "react-native";
 import { Route, Redirect, Switch, withRouter } from 'react-router-native'
 import Splash from './screens/Splash'
 import Login from './screens/Login'
@@ -20,7 +20,7 @@ const AppRoutes = props => {
   const DevConsoleRoute = withRouter(DevConsole)
   const MessageRoute = withRouter(Message)
 
-  return (<View style={{ flex: 1 }}>
+  return (<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
     <Route path="/" component={SplashRoute} exact />  
     <Route path="/splash" component={SplashRoute} />
     <Route path="/login" component={Login} />
@@ -31,7 +31,7 @@ const AppRoutes = props => {
       <Route path="/dev" component={DevConsoleRoute} />
       {location.pathname === '/' && <Redirect to='/dev' />}
     </Switch>
-  </View>)
+  </KeyboardAvoidingView>)
 }
 
 export default AppRoutes

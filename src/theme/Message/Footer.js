@@ -3,16 +3,19 @@ import { View, Image, Text, TextInput } from 'react-native'
 import styles from '../styles'
 import { Section } from '../'
 
+const debug = require('debug')('chaterr:Message:Footer')
+
 const icon = {
   marginLeft: 10,
-  marginRight: 10,
+  marginRight: 10
 }
 
 const defaults = {
   style: {
     containerStyle: {
       width: '100%',
-      backgroundColor: '#fff'
+      backgroundColor: '#fff',
+      height: 71
     },
     footer: {
       padding: 10,
@@ -24,7 +27,8 @@ const defaults = {
     },
     row: {
       flexDirection: 'row',
-      flex: 1
+      flex: 1,
+      alignItems: 'center'
     },
     icon: {
       document: {
@@ -77,6 +81,11 @@ const defaults = {
 }
 
 class InboxFooter extends React.PureComponent {
+
+  onSubmitEditing(event) {
+    debug('onSubmitEditing', event)
+  }
+
   render() {
     
     const { style } = {
@@ -92,9 +101,12 @@ class InboxFooter extends React.PureComponent {
 
     return (<Section style={style.containerStyle}>
       <View style={style.footer}>
-        <View style={[style.row]}>
+        <View style={style.row}>
           <Image source={require('../../images/icon_ios_reply_filled.png')} style={style.icon.reply} />
-          <TextInput style={[styles.fontDefault, style.textInput]} defaultValue={textInputDefaultText} />
+          <TextInput 
+            style={[styles.fontDefault, style.textInput]} 
+            placeholder={textInputDefaultText} 
+            onSubmitEditing={event => this.onSubmitEditing(event)} />
           <Image source={require('../../images/maximize.png')} style={style.icon.maximize} />
         </View>
         <View style={{

@@ -45,7 +45,7 @@ class MailApi {
   }
 
   thread(id) {
-    return this.get('/account/:account/thread/' + id)
+    return this.get('/account/:account/threads/' + id)
   }
 
   attachment(id) {
