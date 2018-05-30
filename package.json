@@ -1,5 +1,5 @@
 {
-  "name": "rne-cross-platform-example",
+  "name": "chaterr",
   "version": "0.1.0",
   "private": true,
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
@@ -14,12 +14,18 @@
     "test": "jest"
   },
   "dependencies": {
+    "color-hash": "^1.0.3",
+    "debug": "^3.1.0",
     "expo": "^27.0.2",
+    "moment": "^2.22.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-native": "^0.52.2",
     "react-native-elements": "^0.19.1",
+    "react-native-render-html": "^3.10.0",
+    "react-native-swipeout": "^2.3.3",
     "react-native-web": "^0.3.2",
+    "react-native-web-webview": "^0.2.5",
     "react-router-native": "^4.2.0",
     "react-scripts": "1.1.0",
     "svgs": "^3.1.2"

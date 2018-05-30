@@ -4,7 +4,9 @@ import "./web/index.css";
 import App from "./App";
 import registerServiceWorker from "./web/registerServiceWorker";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+global.PLATFORM = 'web'
+
+ReactDOM.render(<App loaded={true} />, document.getElementById("root"));
 registerServiceWorker();
 
 const injectFonts = () => {
@@ -63,6 +65,21 @@ font-family: 'Octions';
   }
 
   document.head.appendChild(style);
+
+  // Lato Font
+  const latoFont = require('./assets/fonts/Lato-Regular.ttf');
+  const latoFontStyles = `@font-face {
+  src: url(${latoFont});
+  font-family: 'Lato';
+  }`;
+  style.type = "text/css";
+  if (style.styleSheet) {
+    style.styleSheet.cssText = latoFontStyles;
+  } else {
+    style.appendChild(document.createTextNode(latoFontStyles));
+  }
+  document.head.appendChild(style);
+
 };
 
 injectFonts();

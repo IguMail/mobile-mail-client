@@ -1,56 +1,29 @@
-// @flow
-import * as React from "react";
-import {
-  Platform,
-  ScrollView,
-  StyleSheet,
-  StatusBar,
-  View
-} from "react-native";
-import { Header, Text } from "react-native-elements";
-//import { Font } from 'expo'; // Fix Expo
-import { NativeRouter, Route, Link, Redirect, withRouter } from 'react-router-native'
-import Auth from './Auth'
-import Splash from './Splash'
+import React from "react"
+import { NativeRouter, withRouter } from 'react-router-native'
+import Splash from './screens/Splash'
+import AppRoutes from './AppRoutes'
+
+const debug = require('debug')('chaterr:App')
 
 class App extends React.Component {
 
-  componentDidMount() {
-  }
-
   render() {
+
+    const { loaded } = this.props
+    debug('props', this.props)
+
+    const SplashRoute = props => (<Splash loaded={loaded} />)
+
+    if (!loaded) {
+      return <SplashRoute />
+    }
+
+    const Routes = withRouter(AppRoutes)
+
     return (<NativeRouter>
-      <View style={styles.main}>
-        <Route path="/" component={Splash} exact />
-        <Route path="/auth" component={Auth}/>
-        <RedirectToApp />
-      </View>
+      <Routes loaded={loaded} />
     </NativeRouter>)
   }
 }
-
-const RedirectToApp = withRouter(
-  ({history}) => {
-    //setTimeout(() => history.push('/auth'), 2000)
-    return null
-  }
-)
-
-const styles = StyleSheet.create({
-  main: {
-    flex: 1,
-    backgroundColor: "#fcfcfc"
-  },
-  title: {
-    height: 155,
-    backgroundColor: "#222",
-    padding: 10,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  titleText: {
-    color: "#aaa"
-  }
-});
 
 export default App;
