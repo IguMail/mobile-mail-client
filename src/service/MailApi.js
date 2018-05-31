@@ -1,5 +1,5 @@
 const URL = require('url')
-const debug = require('debug')('Chaterr:MailAPI')
+const debug = require('debug')('chaterr:MailApi')
 
 /**
  * IguMail REST API

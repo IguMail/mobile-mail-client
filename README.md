@@ -1,6 +1,8 @@
-# rne-cross-platform-example
+# Chaterr
 
-## A React Native Elements example app for android, iOS, and web that shares a single codebase.
+Mobile mail client for android, iOS. 
+
+## Built using React Native Elements for android, iOS, and web that shares a single codebase.
 
 ### "Write once, run anywhere... including UI"
 

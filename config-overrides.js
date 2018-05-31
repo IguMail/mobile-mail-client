@@ -1,6 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 const { getLoader, loaderNameMatches } = require("react-app-rewired");
+const rewireMobX = require('react-app-rewire-mobx');
 
 const rewireBabelLoader = require("react-app-rewire-babel-loader");
 
@@ -24,6 +25,9 @@ module.exports = function override(config, env) {
 
   // transpile libraries
   config = rewireBabelLoader.include(config, elements, vectorIcons, router, expo);
+
+  // mobx decorators
+  config = rewireMobX(config, env)
 
   return config;
 };

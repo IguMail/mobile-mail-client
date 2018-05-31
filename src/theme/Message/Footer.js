@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image, Text, TextInput } from 'react-native'
+import { View, Image, TextInput } from 'react-native'
 import styles from '../styles'
 import { Section } from '../'
 
@@ -84,6 +84,7 @@ class InboxFooter extends React.PureComponent {
 
   onSubmitEditing(event) {
     debug('onSubmitEditing', event)
+    // TODO: send the email
   }
 
   render() {

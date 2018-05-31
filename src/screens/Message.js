@@ -1,4 +1,5 @@
 import React from 'react'
+import { observer, inject } from 'mobx-react'
 import { View, Text, ScrollView, Modal, ActivityIndicator } from 'react-native'
 import { Button } from 'react-native-elements'
 import { Section, MessageHeader, MessageFooter } from '../theme'
@@ -6,9 +7,6 @@ import styles from '../theme/styles'
 import conversation from '../theme/styles/conversation'
 import Conversation from '../theme/Message/Conversation'
 import FakeConversation from '../theme/Message/FakeConversation'
-import sampleThread from '../assets/sample/thread'
-import MailApi from '../store/MailApi'
-import config from '../config'
 
 const debug = require('debug')('chaterr:Message')
 
@@ -29,75 +27,36 @@ const style = {
   }
 }
 
-const mailApi = new MailApi('gabe@fijiwebdesign.com')
-mailApi.setApiUrl(config.api.url)
-
 const ERR_HTTP_FAIL = 'Could not retrieve thread at this time'
 
+@inject('getThread')
+@observer
 class Message extends React.Component {
-
-  state = {
-    messages: [],
-    loaded: false,
-    error: false
-  }
-
-  // TODO: move to server
-  addAttachmentUrls(thread) {
-    thread.messages.forEach(message => {
-      if (message.attachments) {
-        message.attachments.forEach(attachment => {
-          attachment.url = mailApi.attachment(attachment.id).request.url.href
-        })
-      }
-    })
-  }
 
   componentDidMount() {
     const messageId = this.props.match.params.id
-    debug('Fetch message', this.props.match.params.id)
+    debug('Fetch message', messageId)
     this.fetchThread(messageId)
-      .then(thread => {
-        debug('got thread', thread)
-        debug('MailApi', mailApi)
-
-        this.addAttachmentUrls(thread)
-        
-        return this.setState({
-          thread,
-          loaded: true
-        })
-      })
-      .catch(err => {
-        debug('Error fetching mail', err)
-        this.setState({ error: new Error(ERR_HTTP_FAIL) })
-      })
   }
 
   fetchThread(id) {
-    return mailApi.thread(id)
-      .fetch()
-      .catch(error => {
-        this.setState({
-          error
-        })
-        // TODO: remove dev
-        if (process.env.NODE_ENV === 'development') {
-          return new Promise(resolve => resolve(sampleThread))
-        }
-      })
+    return this.props.getThread(id).get()
   }
 
   render() {
 
-    const { loaded, thread, error } = this.state
+    const id = this.props.match.params.id
+    const { thread, loaded, error } = this.props.getThread(id)
 
-    debug('thread', thread)
+    debug('Thread', thread)
+    
+    const closeErrorModal = event => {
+      this.props.getThread.dismissError()
+    }
 
     if (error) {
-      const close = () => this.setState({ error: null })
-      setTimeout(() => close(), 1000)
-      return <ErrorModal error={error} close={() => close()} />
+      setTimeout(() => closeErrorModal(), 5000)
+      return <ErrorModal error={error} close={() => closeErrorModal()} />
     }
 
     if (!loaded) {
@@ -118,7 +77,7 @@ class Message extends React.Component {
         backgroundColor: "#f7f8f9"
       }}>
         <MessageHeader title={loaded ? thread.subject : ''} />
-        {loaded ? <Conversation messages={thread.messages} /> : <FakeConversation />}
+        {loaded ? <Conversation messages={thread.messages || []} /> : <FakeConversation />}
       </ScrollView>
       <MessageFooter />
     </Section>)
