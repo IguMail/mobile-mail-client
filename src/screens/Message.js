@@ -1,103 +1,137 @@
 import React from 'react'
-import { View, Text, ScrollView, Modal, ActivityIndicator } from 'react-native'
-import { Button } from 'react-native-elements'
+import { autorun } from 'mobx'
+import { observer, inject } from 'mobx-react'
+import { View, ScrollView, ActivityIndicator, Alert } from 'react-native'
 import { Section, MessageHeader, MessageFooter } from '../theme'
 import styles from '../theme/styles'
 import conversation from '../theme/styles/conversation'
 import Conversation from '../theme/Message/Conversation'
-import FakeConversation from '../theme/Message/FakeConversation'
-import sampleThread from '../assets/sample/thread'
-import MailApi from '../store/MailApi'
-import config from '../config'
+import ErrorModal from '../theme/ErrorModal'
 
 const debug = require('debug')('chaterr:Message')
 
 const style = {
-  ...conversation,
-  ActivityIndicatorContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    width: '100%',
-    height: '100%',
-    alignItems: 'center', 
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-    opacity: 0.5
-  }
+  ...conversation
 }
-
-const mailApi = new MailApi('gabe@fijiwebdesign.com')
-mailApi.setApiUrl(config.api.url)
 
 const ERR_HTTP_FAIL = 'Could not retrieve thread at this time'
 
+@inject('getThread', 'sendMail')
+@observer
 class Message extends React.Component {
 
-  state = {
-    messages: [],
-    loaded: false,
-    error: false
+  scrollView = null
+
+  get id() {
+    return this.props.match.params.id
   }
 
-  // TODO: move to server
-  addAttachmentUrls(thread) {
-    thread.messages.forEach(message => {
-      if (message.attachments) {
-        message.attachments.forEach(attachment => {
-          attachment.url = mailApi.attachment(attachment.id).request.url.href
-        })
-      }
-    })
+  get account() {
+    // TODO: unmock
+    return {
+      email: 'gabe@fijiwebdesign.com',
+      displayName: 'Gabe'
+    }
+  }
+
+  get getThread() {
+    return this.props.getThread(this.id)
+  }
+
+  get sendMail() {
+    return this.props.sendMail(this.account.email)
+  }
+
+  getReplyTo(messages = []) {
+    return messages && messages.length && messages[messages.length - 1].messageId
   }
 
   componentDidMount() {
-    const messageId = this.props.match.params.id
-    debug('Fetch message', this.props.match.params.id)
-    this.fetchThread(messageId)
-      .then(thread => {
-        debug('got thread', thread)
-        debug('MailApi', mailApi)
-
-        this.addAttachmentUrls(thread)
-        
-        return this.setState({
-          thread,
-          loaded: true
-        })
-      })
-      .catch(err => {
-        debug('Error fetching mail', err)
-        this.setState({ error: new Error(ERR_HTTP_FAIL) })
-      })
+    debug('Fetch message thread', this.id)
+    this.getThread.get()
+    autorun(() => {
+      debug('autorun', this.getThread)
+    })
   }
 
-  fetchThread(id) {
-    return mailApi.thread(id)
-      .fetch()
-      .catch(error => {
-        this.setState({
-          error
-        })
-        // TODO: remove dev
-        if (process.env.NODE_ENV === 'development') {
-          return new Promise(resolve => resolve(sampleThread))
-        }
-      })
+  generateMessageId() {
+    return Math.random() // TODO: proper uid
+  }
+
+  onSubmitEditing(text) {
+    debug('onSubmitMessage', text)
+    // TODO: send the email
+    const { displayName, email } = this.account
+    let { subject, messages } = this.getThread
+    const messageId = this.generateMessageId()
+
+    debug('messages', messages, messages.length)
+
+    // TODO: choose reply-to options
+    const toAddresses = messages
+      .map(message => message.from)
+      .reduce((froms, value) => value.concat(froms), [])
+    const to = toAddresses
+      .filter((value, i, self) => self.indexOf(value) === i)
+
+    if (!text) return
+
+    let message = {
+      messageId,
+      to,
+      subject,
+      text,
+      snippet: text,
+      inReplyTo: this.getReplyTo(messages),
+      date: new Date()
+    }
+
+    this.sendMail.send({
+      mail: message // TODO: rename
+    })
+    .then(info => {
+      debug('sendMail info', info)
+      // TODO: Validate message sent on success
+      // TODO: Watch conversation updates from store
+    })
+
+    message = {
+      ...message,
+      id: Math.random(),
+      from: [{
+        name: displayName,
+        address: email
+      }]
+    }
+
+    setTimeout(() => this.scrollView.scrollToEnd({animated: true}))
+
+    // preload message
+    this.getThread.messages = [
+      ...messages,
+      message
+    ]
+
+    debug('messages new', messages, messages.length)
+    
   }
 
   render() {
 
-    const { loaded, thread, error } = this.state
+    const thread = this.getThread
+    const { subject, messages, loaded, error } = thread
 
-    debug('thread', thread)
+    global.thread = thread
+
+    debug('Thread', thread)
+    
+    const closeErrorModal = event => {
+      thread.dismissError()
+    }
 
     if (error) {
-      const close = () => this.setState({ error: null })
-      setTimeout(() => close(), 1000)
-      return <ErrorModal error={error} close={() => close()} />
+      setTimeout(() => closeErrorModal(), 5000)
+      return <ErrorModal error={error} errorMsg={ERR_HTTP_FAIL} close={() => closeErrorModal()} />
     }
 
     if (!loaded) {
@@ -106,42 +140,39 @@ class Message extends React.Component {
       </View>)
     }
 
+    if (this.sendMail.error) {
+      Alert.alert(
+        'Mail Error',
+        'Failed to send your email. Please check your network connectivity.',
+        [
+          {text: 'Try Again', onPress: () => console.log('Ask me later pressed')},
+          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        { cancelable: false }
+      )
+    }
+
     return (<Section style={{
       ...style.screen,
       ...styles.center,
       justifyContent: 'flex-start',
       flex: 1
     }}>
-      <ScrollView style={{
-        width: '100%',
-        height: '100%',
-        backgroundColor: "#f7f8f9"
-      }}>
-        <MessageHeader title={loaded ? thread.subject : ''} />
-        {loaded ? <Conversation messages={thread.messages} /> : <FakeConversation />}
+      <ScrollView 
+        style={{
+          width: '100%',
+          height: '100%',
+          backgroundColor: "#f7f8f9"
+        }}
+        ref={ref => this.scrollView = ref}
+      >
+        <MessageHeader title={subject} />
+        <Conversation messages={messages} />
       </ScrollView>
-      <MessageFooter />
+      <MessageFooter onSubmitEditing={text => this.onSubmitEditing(text)} />
     </Section>)
   }
 }
-
-const ErrorModal = props => (<Modal
-  style={{
-    ...styles.center
-  }}
-  animationType="slide"
-  transparent={false}
-  visible={true}>
-  <View style={{padding: 50}}>
-    <View>
-      <Text style={{ padding: 20 }}>{props.error.message}</Text>
-      <Button
-        title="Close"
-        buttonStyle={styles.btnPrimary}
-        onPress={props.close}
-      />
-    </View>
-  </View>
-</Modal>)
 
 export default Message;

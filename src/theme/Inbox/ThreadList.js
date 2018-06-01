@@ -1,4 +1,5 @@
 import React from "react"
+import { observer } from 'mobx-react'
 import { View, Text, Image } from "react-native"
 import { TouchLink } from '../'
 import styles from '../styles'
@@ -6,7 +7,7 @@ import inbox from '../styles/inbox'
 import MessageLink from './MessageLink'
 import Swipeout from 'react-native-swipeout'
 
-const debug = require('debug')('chaterr:Inbox:MessageList')
+const debug = require('debug')('chaterr:Inbox:ThreadList')
 
 const style = {
   ...inbox
@@ -16,16 +17,17 @@ const ThreadList = props => {
 
   const { threads } = props
 
+  debug('Threads', threads)
+
+  global.threads = threads // debug
+
   return <View style={style.MessageList}>
     {
-      Object.keys(threads)
-      .map(
-        (key, i) => {
+      threads.map( (thread, i) => {
 
-          const thread = threads[key]
-
-          const message = thread.messages.pop()
+          const message = (thread.messages && thread.messages[0]) || {}
           const { id, from, date, subject, priority } = message
+          const fromName = (from && from[0] && from[0].name) || 'Unknown'
 
           const deleteMessage = message => {
             debug('delete note', message)
@@ -82,13 +84,13 @@ const ThreadList = props => {
 
           return (
             <Swipeout 
-              key={id} 
+              key={i}
               left={swipeBtns}
               autoClose={true}
               buttonWidth={180}
               backgroundColor= 'transparent'>
               <MessageLink 
-                key={i} id={id} from={from[0].name} time={date} subject={subject} priority={priority} />
+                key={i} id={id} from={fromName} time={date} subject={subject} priority={priority} />
             </Swipeout>
           )
 
@@ -97,4 +99,4 @@ const ThreadList = props => {
   </View>
 }
 
-export default ThreadList
+export default observer(ThreadList)

@@ -1,5 +1,6 @@
-import React from "react"
-import { View } from "react-native"
+import React from 'react'
+import { observer } from 'mobx-react'
+import { View } from 'react-native'
 import conversation from '../styles/conversation'
 import MessageLink from '../Message/MessageLink'
 
@@ -9,7 +10,7 @@ const style = {
   ...conversation
 }
 
-const Conversation = props => {
+const Conversation = observer(props => {
 
   const { messages } = props
 
@@ -17,17 +18,14 @@ const Conversation = props => {
 
   const MessageList = () => messages.map(message => {
     const { id, from, date } = message
-
     return (
-      <View key={id} >
-        <MessageLink {...message} from={from[0].name} time={date} />
-      </View>
+      <MessageLink key={id} {...message} from={from[0].name} time={date} />
     )
   })
 
   return <View style={style.MessageList}>
     <MessageList />
   </View>
-}
+})
 
 export default Conversation

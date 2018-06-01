@@ -20,7 +20,7 @@ const AppRoutes = props => {
   const DevConsoleRoute = withRouter(DevConsole)
   const MessageRoute = withRouter(Message)
 
-  return (<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+  return (<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled="enabled">
     <Route path="/" component={SplashRoute} exact />  
     <Route path="/splash" component={SplashRoute} />
     <Route path="/login" component={Login} />

@@ -14,9 +14,10 @@ const style = {
 }
 
 const Attachments = props => {
-  return props.attachments.length ? 
+  const attachments = { props }
+  return (attachments && attachments.length) ? 
   (<View style={style.attachments}>
-    <AttachmentList attachments={props.attachments} />
+    <AttachmentList attachments={attachments} />
   </View>) :
   null
 }

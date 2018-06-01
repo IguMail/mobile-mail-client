@@ -1,5 +1,5 @@
 const URL = require('url')
-const debug = require('debug')('Chaterr:MailAPI')
+const debug = require('debug')('chaterr:MailApi')
 
 /**
  * IguMail REST API
@@ -50,6 +50,12 @@ class MailApi {
 
   attachment(id) {
     return this.get('/attachments/download/' + id)
+  }
+
+  sendMail(email, mail) {
+    return this.postJson('/account/:account/sendmail/' + email, {
+      mail
+    })
   }
 
   buildUrl(path) {
