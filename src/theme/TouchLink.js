@@ -4,8 +4,9 @@ import { TouchableOpacity } from 'react-native'
 
 export default props => 
   (<Link
-    to='/'
+    onPress={() => {}}
     component={TouchableOpacity}
-    activeOpacity={0.8} {...props}>
+    activeOpacity={0.8}
+    {...props}>
     {props.children}
   </Link>)

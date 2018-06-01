@@ -52,6 +52,12 @@ class MailApi {
     return this.get('/attachments/download/' + id)
   }
 
+  sendMail(email, mail) {
+    return this.postJson('/account/:account/sendmail/' + email, {
+      mail
+    })
+  }
+
   buildUrl(path) {
     path = path.replace([
       ':account'

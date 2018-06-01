@@ -7,8 +7,6 @@ import inbox from '../theme/styles/inbox'
 import Splash from './Splash'
 import ThreadList from '../theme/Inbox/ThreadList'
 import SearchBox from '../theme/SearchBox'
-import sampleThreads from '../assets/sample/threads'
-import config from '../config'
 
 const debug = require('debug')('chaterr:Inbox')
 

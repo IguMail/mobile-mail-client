@@ -1,7 +1,6 @@
 import { observable } from 'mobx'
 import MailApi from '../service/MailApi'
 import config from '../config'
-import sampleThread from '../assets/sample/thread'
 
 const debug = require('debug')('chaterr:stores:getThread')
 
@@ -11,31 +10,30 @@ mailApi.setApiUrl(config.api.url)
 export default class GetThread {
   
   id
-  @observable thread = {
-    subject: '',
-    messages: []
-  }
-  @observable error;
-  @observable loaded
+  @observable subject = ''
+  @observable messages = []
+  @observable error = null
+  @observable loaded = false
 
+  /**
+  * @param {id} Thread message id
+  **/
   constructor(id: string) {
+    if (!id) {
+      throw new Error('Thread message id required')
+    }
     this.id = id
   }
 
   async get() {
-    if (!this.id) {
-      this.thread = {
-        subject: '',
-        messages: []
-      };
-      return;
-    }
+    debug('Fetching thread', this.id)
     return mailApi.thread(this.id)
       .fetch()
       .then(thread => {
-        debug('Thread', thread)
-        this.addAttachmentUrls(thread)
-        this.thread = thread
+        debug('Got thread', thread)
+        this.addAttachmentUrls(thread.messages)
+        this.messages = thread.messages
+        this.subject = thread.subject
         this.loaded = true
         return thread
       })
@@ -48,11 +46,11 @@ export default class GetThread {
   }
 
   lastMessage() {
-    return [...this.thread.messages].pop()
+    return [...this.messages].pop()
   }
 
   addMessage(message) {
-    this.thread.messages.push(message)
+    this.messages.push(message)
   }
 
   dismissError() {
@@ -60,8 +58,8 @@ export default class GetThread {
   }
 
   // TODO: move to server
-  addAttachmentUrls(thread) {
-    thread.messages.forEach(message => {
+  addAttachmentUrls(messages) {
+    messages.forEach(message => {
       if (message.attachments) {
         message.attachments.forEach(attachment => {
           attachment.url = mailApi.attachment(attachment.id).request.url.href

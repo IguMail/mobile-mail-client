@@ -19,6 +19,8 @@ const ThreadList = props => {
 
   debug('Threads', threads)
 
+  global.threads = threads // debug
+
   return <View style={style.MessageList}>
     {
       threads.map( (thread, i) => {
