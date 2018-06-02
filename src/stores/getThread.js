@@ -25,14 +25,15 @@ export default class GetThread {
     this.id = id
   }
 
-  async get() {
+  fetch() {
     debug('Fetching thread', this.id)
     return mailApi.thread(this.id)
       .fetch()
       .then(thread => {
         debug('Got thread', thread)
         this.addAttachmentUrls(thread.messages)
-        this.messages = thread.messages
+        thread.messages
+          .forEach(message => this.addMessage(message))
         this.subject = thread.subject
         this.loaded = true
         return thread
@@ -46,11 +47,33 @@ export default class GetThread {
   }
 
   lastMessage() {
-    return [...this.messages].pop()
+    return this.messages 
+      && this.messages[this.messages.length - 1]
+  }
+
+  getMessageIndex(message) {
+    return [...this.messages.keys()]
+      .find(i => this.messages[i].messageId === message.messageId)
+  }
+
+  replaceMessage(message) {
+    var index = this.getMessageIndex(message)
+    debug('replace index', index)
+    if (index !== undefined) {
+      this.messages[index] = message
+    }
   }
 
   addMessage(message) {
-    this.messages.push(message)
+    var index = this.getMessageIndex(message)
+    debug('add index', index)
+    if (index !== undefined) {
+      return this.replaceMessage(message)
+    }
+    this.messages = [
+      ...this.messages,
+      message
+    ]
   }
 
   dismissError() {

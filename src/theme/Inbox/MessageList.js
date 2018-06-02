@@ -22,6 +22,8 @@ const MessageList = props => {
 
           const { id, from, date, subject, priority } = message
 
+          if (!id) return null
+
           const deleteMessage = message => {
             debug('delete note', message)
           }

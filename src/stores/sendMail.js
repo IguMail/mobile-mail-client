@@ -27,6 +27,9 @@ export default class SendMail {
     return mailApi.sendMail(this.email, mail)
       .fetch()
       .then(info => {
+        if (info.error) {
+          throw new Error(info.error)
+        }
         this.info = info
         this.sent = true
         this.updatedAt = (new Date()).getTime()
@@ -37,6 +40,7 @@ export default class SendMail {
         debug('error', error)
         this.error = error
         this.sent = true
+        return { error }
       })
   }
 

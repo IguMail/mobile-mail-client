@@ -1,4 +1,5 @@
 import inbox from './inbox'
+import styles from './'
 
 const conversation = {
   ...inbox,
@@ -67,6 +68,12 @@ const conversation = {
     justifyContent: 'center',
     backgroundColor: '#fff',
     opacity: 0.5
+  },
+  error: {
+    inline: {
+      ...styles.fontDefault,
+      color: 'red'
+    }
   }
 }
 

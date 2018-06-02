@@ -13,6 +13,8 @@ const style = {
   ...inbox
 }
 
+const MSG_INBOX_EMPTY = 'No Messages found'
+
 const ThreadList = props => {
 
   const { threads } = props
@@ -21,12 +23,23 @@ const ThreadList = props => {
 
   global.threads = threads // debug
 
+  const threadsNotEmpty = threads
+      .filter(thread => thread.messages.length && thread.messages[0].id)
+
+  if (threadsNotEmpty.length === 0) {
+    return <View style={styles.center}>
+      <Text style={styles.fontDefault}>{MSG_INBOX_EMPTY}</Text>
+    </View>
+  }
+
   return <View style={style.MessageList}>
     {
-      threads.map( (thread, i) => {
+      threadsNotEmpty
+      .map( (thread, i) => {
 
           const message = (thread.messages && thread.messages[0]) || {}
-          const { id, from, date, subject, priority } = message
+          const { id, from, date, priority, subject } = message
+
           const fromName = (from && from[0] && from[0].name) || 'Unknown'
 
           const deleteMessage = message => {

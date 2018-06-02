@@ -1,4 +1,6 @@
 import React from 'react'
+import { autorun } from 'mobx'
+import { observer } from 'mobx-react'
 import styles from '../../theme/styles'
 import conversation from '../../theme/styles/conversation'
 import MessageIcon from '../../theme/MessageIcon'
@@ -13,6 +15,15 @@ const style = {
   ...conversation
 }
 
+const MSG_SENDING = 'sending...'
+const ERR_SEND_FAIL = 'send failed!'
+const MSG_SENT = 'sent'
+
+// debug
+autorun(() => {
+  debug('autorun')
+})
+
 const Attachments = props => {
   const attachments = { props }
   return (attachments && attachments.length) ? 
@@ -23,7 +34,8 @@ const Attachments = props => {
 }
 
 const MessageLink = props => {
-  const { iconStyle, iconText, id, from, time, snippet, attachments } = props
+  const { iconStyle, iconText, message } = props
+  const { id, from, time, snippet, attachments, local, success, error } = message
 
   debug('render', props)
 
@@ -44,6 +56,15 @@ const MessageLink = props => {
   
   const iconSingleLetter = iconText || (from && from[0])
   const [text] = snippet.split('--')
+
+  const status = () => {
+    let status = local && !success && MSG_SENDING
+    if (error) {
+      status = <Text style={style.error.inline}>{ERR_SEND_FAIL}</Text>
+    }
+    if (local && success) status = MSG_SENT
+    return status
+  }
 
   return (<View style={style.MessageLink} to={'/message/' + id}>
     <MessageIcon style={iconStyle} text={from}>
@@ -78,10 +99,10 @@ const MessageLink = props => {
         <Attachments attachments={attachments} />
       </View>
       <View>
-        <Text style={style.messageTextTime}>{dateFormatted}</Text>
+        <Text style={style.messageTextTime}>{dateFormatted} {status()}</Text>
       </View>
     </View>
   </View>)
 }
 
-export default MessageLink
+export default observer(MessageLink)

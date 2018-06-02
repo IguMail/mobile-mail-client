@@ -1,7 +1,7 @@
 import React from 'react'
 import { autorun } from 'mobx'
 import { observer, inject } from 'mobx-react'
-import { View, ScrollView, ActivityIndicator, Alert } from 'react-native'
+import { View, ScrollView, ActivityIndicator } from 'react-native'
 import { Section, MessageHeader, MessageFooter } from '../theme'
 import styles from '../theme/styles'
 import conversation from '../theme/styles/conversation'
@@ -15,6 +15,7 @@ const style = {
 }
 
 const ERR_HTTP_FAIL = 'Could not retrieve thread at this time'
+const ERR_SEND_FAIL = 'Failed to send your email. Please check your network connectivity.'
 
 @inject('getThread', 'sendMail')
 @observer
@@ -48,7 +49,7 @@ class Message extends React.Component {
 
   componentDidMount() {
     debug('Fetch message thread', this.id)
-    this.getThread.get()
+    this.getThread.fetch()
     autorun(() => {
       debug('autorun', this.getThread)
     })
@@ -65,7 +66,7 @@ class Message extends React.Component {
     let { subject, messages } = this.getThread
     const messageId = this.generateMessageId()
 
-    debug('messages', messages, messages.length)
+    debug('messages', messages.toJSON(), messages.length)
 
     // TODO: choose reply-to options
     const toAddresses = messages
@@ -77,42 +78,52 @@ class Message extends React.Component {
     if (!text) return
 
     let message = {
+      id: messageId,
       messageId,
       to,
       subject,
       text,
       snippet: text,
       inReplyTo: this.getReplyTo(messages),
-      date: new Date()
-    }
-
-    this.sendMail.send({
-      mail: message // TODO: rename
-    })
-    .then(info => {
-      debug('sendMail info', info)
-      // TODO: Validate message sent on success
-      // TODO: Watch conversation updates from store
-    })
-
-    message = {
-      ...message,
-      id: Math.random(),
+      date: new Date(),
       from: [{
         name: displayName,
         address: email
-      }]
+      }],
+      local: true,
+      success: false,
+      error: null
     }
 
-    setTimeout(() => this.scrollView.scrollToEnd({animated: true}))
+    this.sendMail.send(message)
+    .then(info => {
+      debug('sendMail info', info)
+      if (info.error) {
+        throw new Error(info.error)
+      }
+      this.getThread.replaceMessage({
+        ...message,
+        error: null,
+        success: true
+      })
+    })
+    .catch(error => {
+      debug('sendMail error', error)
+      this.getThread.replaceMessage({
+        ...message,
+        error: new Error('Failed to send message'),
+        success: false
+      })
+    })
+
+    setTimeout(() => {
+      this.scrollView && this.scrollView.scrollToEnd({animated: true})
+    })
 
     // preload message
-    this.getThread.messages = [
-      ...messages,
-      message
-    ]
+    this.getThread.addMessage(message)
 
-    debug('messages new', messages, messages.length)
+    debug('messages new', messages.toJSON(), messages.length)
     
   }
 
@@ -124,14 +135,11 @@ class Message extends React.Component {
     global.thread = thread
 
     debug('Thread', thread)
-    
-    const closeErrorModal = event => {
-      thread.dismissError()
-    }
 
     if (error) {
-      setTimeout(() => closeErrorModal(), 5000)
-      return <ErrorModal error={error} errorMsg={ERR_HTTP_FAIL} close={() => closeErrorModal()} />
+      const closeModal = () => thread.dismissError()
+      setTimeout(() => closeModal(), 5000)
+      return <ErrorModal error={error} errorMsg={ERR_HTTP_FAIL} close={() => closeModal()} />
     }
 
     if (!loaded) {
@@ -141,16 +149,9 @@ class Message extends React.Component {
     }
 
     if (this.sendMail.error) {
-      Alert.alert(
-        'Mail Error',
-        'Failed to send your email. Please check your network connectivity.',
-        [
-          {text: 'Try Again', onPress: () => console.log('Ask me later pressed')},
-          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
-        ],
-        { cancelable: false }
-      )
+      const closeModal = () => this.sendMail.dismissError()
+      setTimeout(() => closeModal(), 5000)
+      return <ErrorModal errorMsg={ERR_SEND_FAIL} close={() => closeModal()} />
     }
 
     return (<Section style={{

@@ -10,7 +10,7 @@ const style = {
   ...conversation
 }
 
-const Conversation = observer(props => {
+const Conversation = props => {
 
   const { messages } = props
 
@@ -19,13 +19,17 @@ const Conversation = observer(props => {
   const MessageList = () => messages.map(message => {
     const { id, from, date } = message
     return (
-      <MessageLink key={id} {...message} from={from[0].name} time={date} />
+      <MessageLink key={id} message={{
+        ...message,
+        from: from[0].name,
+        time: date
+      }} />
     )
   })
 
   return <View style={style.MessageList}>
     <MessageList />
   </View>
-})
+}
 
-export default Conversation
+export default observer(Conversation)
