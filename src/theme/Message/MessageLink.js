@@ -25,7 +25,7 @@ autorun(() => {
 })
 
 const Attachments = props => {
-  const attachments = { props }
+  const { attachments } = props
   return (attachments && attachments.length) ? 
   (<View style={style.attachments}>
     <AttachmentList attachments={attachments} />

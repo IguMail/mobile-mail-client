@@ -33,7 +33,6 @@ const AttachmentList = props => {
           <AttachmentImageLink attachment={attachment} /> : 
           <AttachmentLink attachment={attachment} />
         }
-        
       </View>)
     })}
   </View>)
