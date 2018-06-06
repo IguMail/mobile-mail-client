@@ -1,22 +1,31 @@
+import GetAccount from './getAccount'
 import GetThreads from './getThreads'
 import GetThread from './getThread'
 import SendMail from './sendMail'
 
-const threads = {}
-const sendMails = {}
+const instances = {}
+
+function factory(creator, args) {
+  const name = creator.toString()
+  const id = JSON.stringify(args)
+  if (!instances[name]) {
+    instances[name] = {}
+  }
+  if (!instances[name][id]) {
+    instances[name][id] = new creator(...args)
+  }
+  return instances[name][id]
+}
 
 export default {
-  getThreads: new GetThreads(),
-  getThread: id => {
-    if (!threads[id]) {
-      threads[id] = new GetThread(id)
-    }
-    return threads[id]
+  getAccount: new GetAccount(),
+  getThreads(accountId) {
+    return factory(GetThreads, [accountId])
   },
-  sendMail: email => {
-    if (!sendMails[email]) {
-      sendMails[email] = new SendMail(email)
-    }
-    return sendMails[email]
+  getThread(accountId, id) {
+    return factory(GetThread, [accountId, id])
+  },
+  sendMail(accountId, email) {
+    return factory(SendMail, [accountId, email])
   }
 };

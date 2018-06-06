@@ -4,36 +4,53 @@ import config from '../config'
 
 const debug = require('debug')('chaterr:stores:getThread')
 
-const mailApi = new MailApi('gabe@fijiwebdesign.com')
-mailApi.setApiUrl(config.api.url)
-
 export default class GetThread {
   
-  id
+  id = null
+  accountId = null
   @observable subject = ''
   @observable messages = []
   @observable error = null
   @observable loaded = false
 
   /**
+  * @param {accountId} User Account Id
   * @param {id} Thread message id
   **/
-  constructor(id: string) {
+  constructor(accountId, id) {
+    if (!accountId) {
+      throw new Error('Account id required')
+    }
     if (!id) {
       throw new Error('Thread message id required')
     }
+    this.accountId = accountId
     this.id = id
+    global.getThread = this // debugging
+  }
+
+  get service() {
+    if (!this.accountId) throw new Error('User not logged in')
+    if (!this._service) {
+      this._service = new MailApi(this.accountId)
+      this._service.setApiUrl(config.api.url)
+    }
+    return this._service
   }
 
   fetch() {
     debug('Fetching thread', this.id)
-    return mailApi.thread(this.id)
+    return this.service
+      .thread(this.id)
       .fetch()
       .then(thread => {
+        if (thread.error) {
+          throw new Error(thread.error)
+        }
         debug('Got thread', thread)
         this.addAttachmentUrls(thread.messages)
-        thread.messages
-          .forEach(message => this.addMessage(message))
+        this.messages = thread.messages
+          //.forEach(message => this.addMessage(message))
         this.subject = thread.subject
         this.loaded = true
         return thread
@@ -53,7 +70,7 @@ export default class GetThread {
 
   getMessageIndex(message) {
     return [...this.messages.keys()]
-      .find(i => this.messages[i].messageId === message.messageId)
+      .find(i => this.messages[i].id === message.id)
   }
 
   replaceMessage(message) {
@@ -66,7 +83,7 @@ export default class GetThread {
 
   addMessage(message) {
     var index = this.getMessageIndex(message)
-    debug('add index', index)
+    debug('add message', index, message.id)
     if (index !== undefined) {
       return this.replaceMessage(message)
     }
@@ -85,7 +102,7 @@ export default class GetThread {
     messages.forEach(message => {
       if (message.attachments) {
         message.attachments.forEach(attachment => {
-          attachment.url = mailApi.attachment(attachment.id).request.url.href
+          attachment.url = this.service.attachment(attachment.id).request.url.href
         })
       }
     })

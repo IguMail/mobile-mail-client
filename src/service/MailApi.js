@@ -6,30 +6,42 @@ const debug = require('debug')('chaterr:MailApi')
  */
 class MailApi {
 
-  url = 'https://api.igumail.com'
-  account = null
-
+  accountId = null
+  
   options = {
+    url: 'https://api.igumail.com',
     headers: {
       'user-agent': 'Chaterr 1.0',
     }
   }
 
-  constructor(account, options = {}) {
-    if (!account) throw new Error('Account parameter required')
-    this.account = account
+  constructor(accountId, options = {}) {
+    if (!accountId) throw new Error('accountId parameter required')
+    debug('new mailAPI', accountId, options)
+    this.accountId = accountId
     this.options = {
       ...this.options,
-      options
+      ...options
     }
   }
 
+  /**
+  * @deprecated
+  */
   setApiUrl(url) {
-    this.url = url
+    this.options.url = url
   }
 
   setAuthToken(token) {
     this.options.headers['X-Auth-Token'] = token
+  }
+
+  account(email) {
+    return this.get('/account/:account/accounts/' + email)
+  }
+
+  accounts() {
+    return this.get('/account/:account/accounts')
   }
 
   messages() {
@@ -62,9 +74,9 @@ class MailApi {
     path = path.replace([
       ':account'
     ], [
-      this.account
+      this.accountId
     ])
-    return URL.parse(this.url + path)
+    return URL.parse(this.options.url + path)
   }
 
   get(path, params, options = {}) {
@@ -129,8 +141,12 @@ class Endpoint {
   }
 
   fetch() {
+    debug('fetching', this.request)
     return fetch(this.request.url.href, this.request.options)
-      .then(res => this.then ? this.then(res) : res)
+      .then(res => {
+        debug('fetch complete', res)
+        return this.then ? this.then(res) : res
+      })
       .catch(err => debug('Request failed'))
   }
 

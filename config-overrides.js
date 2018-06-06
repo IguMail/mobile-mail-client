@@ -15,16 +15,10 @@ module.exports = function override(config, env) {
   const elements = resolveApp("node_modules/react-native-elements");
   const router = resolveApp("node_modules/react-router-native");
   const expo = resolveApp("node_modules/expo");
-
-  // const fileLoader = getLoader(config.module.rules, rule =>
-  //   loaderNameMatches(rule, "file-loader")
-  // );
-  // if (!fileLoader) throw new Error("can't find file-loader");
-  // if (!fileLoader.include) fileLoader.include = [vectorIcons];
-  // else fileLoader.include.push(vectorIcons);
+  const storage = resolveApp("node_modules/react-native-storage");
 
   // transpile libraries
-  config = rewireBabelLoader.include(config, elements, vectorIcons, router, expo);
+  config = rewireBabelLoader.include(config, elements, vectorIcons, router, expo, storage);
 
   // mobx decorators
   config = rewireMobX(config, env)

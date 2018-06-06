@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Image } from "react-native";
-import { Section, Row, AccountHeader } from '../../theme'
+import { Section, Row, AccountHeader, TouchLink } from '../../theme'
 import styles from '../../theme/styles'
 
 const style = {
@@ -50,9 +50,9 @@ const style = {
   }
 }
 
-const AuthServiceLink = (props) => (<Row style={style.authServiceLink}>
+const AuthServiceLink = (props) => (<TouchLink style={style.authServiceLink} to="/">
     {props.children}
-  </Row>)
+  </TouchLink>)
 
 class AddAccount extends React.Component {
 

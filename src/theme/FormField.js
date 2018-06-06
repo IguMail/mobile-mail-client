@@ -8,7 +8,11 @@ class FormField extends React.PureComponent {
 
   state = {
     error: null,
-    value: ''
+    value: undefined
+  }
+
+  componentDidMount() {
+    this.formInput.defaultValue = this.props.defaultValue
   }
 
   setValidationError(error) {
@@ -42,7 +46,7 @@ class FormField extends React.PureComponent {
 
     return (<Row>
       <FormLabel>{label}</FormLabel>
-      <FormInput ref={ref => inputRef(ref)} onChangeText={onChange} />
+      <FormInput ref={ref => inputRef(ref)} onChangeText={onChange} defaultValue={this.props.defaultValue} />
       <FormValidationMessage>{errorMsg()}</FormValidationMessage>
     </Row>)
   }

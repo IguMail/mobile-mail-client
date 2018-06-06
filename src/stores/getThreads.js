@@ -4,9 +4,6 @@ import config from '../config'
 
 const debug = require('debug')('chaterr:stores:getThreads')
 
-const mailApi = new MailApi('gabe@fijiwebdesign.com')
-mailApi.setApiUrl(config.api.url)
-
 export default class GetThreads {
 
   @observable threads = [{
@@ -17,10 +14,32 @@ export default class GetThreads {
   @observable loaded
   @observable updatedAt
 
-  get() {
-    return mailApi.threads()
+  /**
+  * @param {accountId} User Account Id
+  **/
+  constructor(accountId) {
+    if (!accountId) {
+      throw new Error('Account id required')
+    }
+    this.accountId = accountId
+    global.getThreads = this // debugging
+  }
+
+  get service() {
+    if (!this.accountId) throw new Error('User not logged in')
+    if (!this._service) {
+      this._service = new MailApi(this.accountId)
+      this._service.setApiUrl(config.api.url)
+    }
+    return this._service
+  }
+
+  fetch() {
+    return this.service.threads()
       .fetch()
       .then(threads => {
+        if (!threads || threads.length > 0) throw new Error('Could not get threads') 
+        debug('got threads', threads)
         this.threads = threads.threads
         this.loaded = true
         this.updatedAt = (new Date()).getTime()

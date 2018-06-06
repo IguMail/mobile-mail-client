@@ -1,6 +1,6 @@
 import React from "react"
 import { View, Text } from "react-native"
-import { Section, Row, FormField, Logo } from '../theme'
+import { Section, Row, FormField, Logo, TouchLink } from '../theme'
 import styles from '../theme/styles'
 import { Button } from 'react-native-elements'
 
@@ -131,7 +131,9 @@ class Login extends React.Component {
         {this.loginForm()}
       </Row>
       <Row style={{ flex: 0 }}>
-        <Text style={{ marginBottom: 30, color: "#9aa7af" }}>Sign up for an account</Text>
+        <TouchLink to="/register">
+          <Text style={{ marginBottom: 30, color: "#9aa7af" }}>Sign up for an account</Text>
+        </TouchLink>
       </Row>
     </Section>)
   }

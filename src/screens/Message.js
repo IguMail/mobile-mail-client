@@ -17,7 +17,7 @@ const style = {
 const ERR_HTTP_FAIL = 'Could not retrieve thread at this time'
 const ERR_SEND_FAIL = 'Failed to send your email. Please check your network connectivity.'
 
-@inject('getThread', 'sendMail')
+@inject('getAccount', 'getThread', 'sendMail')
 @observer
 class Message extends React.Component {
 
@@ -27,20 +27,32 @@ class Message extends React.Component {
     return this.props.match.params.id
   }
 
+  get accountId() {
+    return this.getAccount.accountId
+  }
+
   get account() {
-    // TODO: unmock
+    const { user } = this.getAccount.mainAccount
+    if (!user) return {}
     return {
-      email: 'gabe@fijiwebdesign.com',
-      displayName: 'Gabe'
+      email: user.email,
+      displayName: Object.values(user.name).join(' ')
     }
   }
 
+  get getAccount() {
+    const getAccount = this.props.getAccount
+    debug('getAccount', getAccount)
+    return getAccount
+  }
+
   get getThread() {
-    return this.props.getThread(this.id)
+    debug('get Thread', this.accountId, this.id)
+    return this.props.getThread(this.accountId, this.id)
   }
 
   get sendMail() {
-    return this.props.sendMail(this.account.email)
+    return this.props.sendMail(this.accountId, this.account.email)
   }
 
   getReplyTo(messages = []) {
@@ -48,7 +60,6 @@ class Message extends React.Component {
   }
 
   componentDidMount() {
-    debug('Fetch message thread', this.id)
     this.getThread.fetch()
     autorun(() => {
       debug('autorun', this.getThread)
@@ -116,13 +127,13 @@ class Message extends React.Component {
       })
     })
 
+    // TODO: listen for event rather than setTimeout
     setTimeout(() => {
       this.scrollView && this.scrollView.scrollToEnd({animated: true})
     })
 
     // preload message
     this.getThread.addMessage(message)
-
     debug('messages new', messages.toJSON(), messages.length)
     
   }

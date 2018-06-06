@@ -8,12 +8,12 @@ const style = {
     margin: 1
   },
   link: {
-    marginLeft: 10
+    paddingLeft: 10
   }
 }
 
 const MenuIconDots = props => (
-  <MenuIcon to={props.to} style={style.link}>
+  <MenuIcon to={props.to} style={{...props.style, ...style.link}}>
     <View>
       <Dot style={style.dot} />
       <Dot style={style.dot} />

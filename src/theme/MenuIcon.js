@@ -2,16 +2,13 @@ import React from 'react'
 import TouchLink from './TouchLink'
 
 const style = {
-  dot: {
-    margin: 1
-  },
   link: {
-    marginLeft: 10
+    paddingLeft: 10
   }
 }
 
 const MenuIcon = props => (
-  <TouchLink to={props.to} style={style.link}>
+  <TouchLink to={props.to} style={{...props.style, ...style.link}}>
       {props.children}
     </TouchLink>
 )

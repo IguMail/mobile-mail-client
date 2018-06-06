@@ -14,9 +14,27 @@ const style = {
   ...inbox
 }
 
-@inject('getThreads')
+@inject('getAccount', 'getThreads')
 @observer
 class Inbox extends React.Component {
+
+  get accountId() {
+    return this.props.getAccount.accountId
+  }
+
+  get account() {
+    const { user } = this.props.getAccount.mainAccount
+    debug('User account', user)
+    if (!user) return {}
+    return {
+      email: user.email,
+      displayName: Object.values(user.name).join(' ')
+    }
+  }
+
+  get threads() {
+    return this.props.getThreads(this.accountId, this.id)
+  }
 
   componentDidMount() {
     debug('Fetching threads...')
@@ -24,12 +42,12 @@ class Inbox extends React.Component {
   }
 
   fetchThreads() {
-    return this.props.getThreads.get()
+    return this.threads.fetch()
   }
 
   render() {
 
-    const { loaded, error, threads, updatedAt } = this.props.getThreads
+    const { loaded, error, threads, updatedAt } = this.threads
 
     if (!loaded) {
       return <Splash loaded={true} />
