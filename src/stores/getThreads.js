@@ -40,6 +40,9 @@ export default class GetThreads {
       .then(threads => {
         if (!threads || threads.length > 0) throw new Error('Could not get threads') 
         debug('got threads', threads)
+        if (threads.error) {
+          throw new Error('Unable to retrieve threads')
+        }
         this.threads = threads.threads
         this.loaded = true
         this.updatedAt = (new Date()).getTime()

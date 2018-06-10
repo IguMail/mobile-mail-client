@@ -79,12 +79,22 @@ class Message extends React.Component {
 
     debug('messages', messages.toJSON(), messages.length)
 
-    // TODO: choose reply-to options
-    const toAddresses = messages
+    const getAllAddresses = messages => messages
       .map(message => message.from)
       .reduce((froms, value) => value.concat(froms), [])
-    const to = toAddresses
-      .filter((value, i, self) => self.indexOf(value) === i)
+
+    const getUniqueAddresses = addresses => {
+      const list = addresses.map(address => address.address)
+      const uniqueList = [...new Set(list)]
+      const uniqueAddresses = uniqueList.map( 
+        (address, i, self) => addresses[list.indexOf(address)]
+      )
+      return uniqueAddresses
+    }
+
+    // TODO: choose reply-to options
+    const addresses = getAllAddresses(messages)
+    const to = getUniqueAddresses(addresses)
 
     if (!text) return
 

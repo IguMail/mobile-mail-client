@@ -9,7 +9,14 @@ export default class GetThread {
   id = null
   accountId = null
   @observable subject = ''
-  @observable messages = []
+  @observable messages = [{
+    id: null,
+    messageId: null,
+    subject: null,
+    local: null,
+    success: null,
+    error: null
+  }]
   @observable error = null
   @observable loaded = false
 
@@ -78,6 +85,7 @@ export default class GetThread {
     debug('replace index', index)
     if (index !== undefined) {
       this.messages[index] = message
+      this.messages = this.messages.toJS() // TODO: Fix this
     }
   }
 

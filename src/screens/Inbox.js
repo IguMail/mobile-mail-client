@@ -7,6 +7,7 @@ import inbox from '../theme/styles/inbox'
 import Splash from './Splash'
 import ThreadList from '../theme/Inbox/ThreadList'
 import SearchBox from '../theme/SearchBox'
+import ErrorModal from '../theme/ErrorModal'
 
 const debug = require('debug')('chaterr:Inbox')
 
@@ -32,7 +33,7 @@ class Inbox extends React.Component {
     }
   }
 
-  get threads() {
+  get getThreads() {
     return this.props.getThreads(this.accountId, this.id)
   }
 
@@ -42,23 +43,25 @@ class Inbox extends React.Component {
   }
 
   fetchThreads() {
-    return this.threads.fetch()
+    return this.getThreads.fetch()
   }
 
   render() {
 
-    const { loaded, error, threads, updatedAt } = this.threads
+    const { loaded, error, threads, updatedAt } = this.getThreads
 
     if (!loaded) {
       return <Splash loaded={true} />
     }
 
     if (error) {
-      // TODO: handle
-      debug('handle error', error)
+      debug('Error', error)
+      const closeModal = () => this.getThreads.dismissError()
+      setTimeout(() => closeModal(), 5000)
+      return <ErrorModal error={error} errorMsg={error.message} close={() => closeModal()} />
     }
 
-    debug('threads', threads)
+    debug('threads', this.getThreads, threads, error)
 
     return (<Section style={{
       ...style.screen,
