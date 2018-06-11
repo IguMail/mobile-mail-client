@@ -1,11 +1,12 @@
 import { observable } from 'mobx'
-import MailApi from '../service/MailApi'
+import { MqttClientFactory, MailApiFactory } from '../service'
 import config from '../config'
 
 const debug = require('debug')('chaterr:stores:getThreads')
 
 export default class GetThreads {
 
+  Account = null
   @observable threads = [{
     subject: '',
     messages: []
@@ -14,24 +15,29 @@ export default class GetThreads {
   @observable loaded
   @observable updatedAt
 
+  get accountId() {
+    return this.Account.account
+  }
+
   /**
-  * @param {accountId} User Account Id
+  * @param {Account} User Account
   **/
-  constructor(accountId) {
-    if (!accountId) {
+  constructor(Account) {
+    if (!Account.id) {
       throw new Error('Account id required')
     }
-    this.accountId = accountId
+    this.Account = Account
     global.getThreads = this // debugging
   }
 
   get service() {
     if (!this.accountId) throw new Error('User not logged in')
-    if (!this._service) {
-      this._service = new MailApi(this.accountId)
-      this._service.setApiUrl(config.api.url)
-    }
-    return this._service
+    return MailApiFactory(this.accountId, config.api)
+  }
+
+  get mqttClient() {
+    if (!this.accountId) throw new Error('User not logged in')
+    return MqttClientFactory(this.Account, config.mqtt)
   }
 
   fetch() {
@@ -40,6 +46,9 @@ export default class GetThreads {
       .then(threads => {
         if (!threads || threads.length > 0) throw new Error('Could not get threads') 
         debug('got threads', threads)
+        if (threads.error) {
+          throw new Error('Unable to retrieve threads')
+        }
         this.threads = threads.threads
         this.loaded = true
         this.updatedAt = (new Date()).getTime()
@@ -51,6 +60,10 @@ export default class GetThreads {
         this.error = error
         this.loaded = true
       })
+  }
+
+  sync() {
+    return this.mqttClient.connect()
   }
 
   dismissError() {

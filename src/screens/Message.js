@@ -14,8 +14,10 @@ const style = {
   ...conversation
 }
 
-const ERR_HTTP_FAIL = 'Could not retrieve thread at this time'
-const ERR_SEND_FAIL = 'Failed to send your email. Please check your network connectivity.'
+const CHECK_NETWORK = 'Please check your network connection.'
+const ERR_HTTP_FAIL = 'Could not retrieve thread at this time. ' + CHECK_NETWORK
+const ERR_SEND_FAIL = 'Failed to send your email. ' + CHECK_NETWORK
+const ERR_AUTH_FAIL = 'Failed to log you into your Chaterr account. Please log in again.'
 
 @inject('getAccount', 'getThread', 'sendMail')
 @observer
@@ -29,6 +31,10 @@ class Message extends React.Component {
 
   get accountId() {
     return this.getAccount.accountId
+  }
+
+  get mainAccount() {
+    return this.getAccount.mainAccount
   }
 
   get account() {
@@ -47,8 +53,8 @@ class Message extends React.Component {
   }
 
   get getThread() {
-    debug('get Thread', this.accountId, this.id)
-    return this.props.getThread(this.accountId, this.id)
+    debug('get Thread', this.mainAccount, this.id)
+    return this.props.getThread(this.mainAccount, this.id)
   }
 
   get sendMail() {
@@ -61,6 +67,7 @@ class Message extends React.Component {
 
   componentDidMount() {
     this.getThread.fetch()
+    setTimeout(() => this.getThread.sync(), 1)
     autorun(() => {
       debug('autorun', this.getThread)
     })
@@ -79,12 +86,22 @@ class Message extends React.Component {
 
     debug('messages', messages.toJSON(), messages.length)
 
-    // TODO: choose reply-to options
-    const toAddresses = messages
+    const getAllAddresses = messages => messages
       .map(message => message.from)
       .reduce((froms, value) => value.concat(froms), [])
-    const to = toAddresses
-      .filter((value, i, self) => self.indexOf(value) === i)
+
+    const getUniqueAddresses = addresses => {
+      const list = addresses.map(address => address.address)
+      const uniqueList = [...new Set(list)]
+      const uniqueAddresses = uniqueList.map( 
+        (address, i, self) => addresses[list.indexOf(address)]
+      )
+      return uniqueAddresses
+    }
+
+    // TODO: choose reply-to options
+    const addresses = getAllAddresses(messages)
+    const to = getUniqueAddresses(addresses)
 
     if (!text) return
 
@@ -140,15 +157,24 @@ class Message extends React.Component {
 
   render() {
 
-    const thread = this.getThread
-    const { subject, messages, loaded, error } = thread
+    const getThread = this.getThread
+    const { subject, messages, loaded, error, authError } = getThread
 
-    global.thread = thread
+    global.getThread = getThread
 
-    debug('Thread', thread)
+    debug('getThread', getThread)
+
+    if (authError) {
+      const closeModal = () => {
+        this.props.history.push('/login')
+        getThread.dismissError()
+      }
+      setTimeout(() => closeModal(), 5000)
+      return <ErrorModal error={error} errorMsg={ERR_AUTH_FAIL} close={() => closeModal()} />
+    }
 
     if (error) {
-      const closeModal = () => thread.dismissError()
+      const closeModal = () => getThread.dismissError()
       setTimeout(() => closeModal(), 5000)
       return <ErrorModal error={error} errorMsg={ERR_HTTP_FAIL} close={() => closeModal()} />
     }

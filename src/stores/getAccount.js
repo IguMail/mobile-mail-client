@@ -1,7 +1,7 @@
 import { observable } from 'mobx'
 import MailApi from '../service/MailApi'
 import config from '../config'
-import createLocalStorage from './local'
+import createLocalStorage from '../service/LocalStorage'
 
 const debug = require('debug')('chaterr:stores:getAccounts')
 

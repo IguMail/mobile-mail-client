@@ -1,9 +1,6 @@
-// @flow
-import * as React from "react";
-import App from "./src/App";
-import { Font } from 'expo';
-
-global.PLATFORM = 'native'
+import React from 'react'
+import App from './src/App'
+import { Font } from 'expo'
 
 export default class AppNative extends React.Component {
 

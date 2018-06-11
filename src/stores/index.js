@@ -20,12 +20,12 @@ function factory(creator, args) {
 export default {
   getAccount: new GetAccount(),
   getThreads(accountId) {
-    return factory(GetThreads, [accountId])
+    return factory(GetThreads, [...arguments])
   },
   getThread(accountId, id) {
-    return factory(GetThread, [accountId, id])
+    return factory(GetThread, [...arguments])
   },
   sendMail(accountId, email) {
-    return factory(SendMail, [accountId, email])
+    return factory(SendMail, [...arguments])
   }
 };

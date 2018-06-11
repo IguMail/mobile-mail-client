@@ -14,12 +14,15 @@
     "test": "jest"
   },
   "dependencies": {
+    "buffer": "^5.1.0",
     "color-hash": "^1.0.3",
     "debug": "^3.1.0",
+    "eventemitter2": "^5.0.1",
     "expo": "^27.0.2",
     "mobx": "^4.3.0",
     "mobx-react": "^5.1.2",
     "moment": "^2.22.1",
+    "mqtt": "^2.18.0",
     "react": "^16.2.0",
     "react-app-rewire-mobx": "^1.0.8",
     "react-dom": "^16.2.0",
