@@ -63,7 +63,10 @@ export default class GetThreads {
   }
 
   sync() {
-    return this.mqttClient.connect()
+    const client = this.mqttClient
+
+    debug('sync connecting mqtt client', client)
+    return client.connect()
   }
 
   dismissError() {

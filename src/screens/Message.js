@@ -58,7 +58,7 @@ class Message extends React.Component {
   }
 
   get sendMail() {
-    return this.props.sendMail(this.accountId, this.account.email)
+    return this.props.sendMail(this.mainAccount, this.account.email)
   }
 
   getReplyTo(messages = []) {

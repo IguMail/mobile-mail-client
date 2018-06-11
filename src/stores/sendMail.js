@@ -1,30 +1,44 @@
 import { observable } from 'mobx'
-import MailApi from '../service/MailApi'
+import { MailApiFactory } from '../service'
 import config from '../config'
 
 const debug = require('debug')('chaterr:stores:sendMail')
 
-const mailApi = new MailApi('gabe@fijiwebdesign.com')
-mailApi.setApiUrl(config.api.url)
-
 export default class SendMail {
 
-  email
   @observable mail
   @observable error
   @observable sent
   @observable updatedAt
   @observable response
 
-  constructor(email) {
-    if (!email) {
-      throw new Error('Email required')
+  get accountId() {
+    return this.Account.account
+  }
+
+  get email() {
+    // TODO: choose email account
+    return this.Account.account
+  }
+
+  /**
+  * @param {Account} User Account
+  **/
+  constructor(Account) {
+    if (!Account.id) {
+      throw new Error('Account id required')
     }
-    this.email = email
+    this.Account = Account
+    global.sendMail = this // debugging
+  }
+
+  get service() {
+    if (!this.accountId) throw new Error('User not logged in')
+    return MailApiFactory(this.accountId, config.api)
   }
 
   send(mail) {
-    return mailApi.sendMail(this.email, mail)
+    return this.service.sendMail(this.email, mail)
       .fetch()
       .then(info => {
         if (info.error) {

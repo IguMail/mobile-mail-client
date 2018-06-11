@@ -9,6 +9,7 @@ export default class GetThread {
   id = null
   Account = null
   @observable subject = ''
+  @observable mailbox = {}
   @observable messages = [{
     id: null,
     messageId: null,
@@ -81,11 +82,12 @@ export default class GetThread {
 
   sync() {
     const client = this.mqttClient
-    client.on('imap', () => {
+    client.on('imap/connected', () => {
       this.mqttConnected = true
     })
-    client.on('imap/connected', mailbox => {
+    client.on('imap/mailbox', mailbox => {
       this.mqttInboxConnected = true
+      this.mailbox = mailbox
     })
     client.on('imap/error', error => {
       debug('imap/error', error)
@@ -101,6 +103,8 @@ export default class GetThread {
     client.on('mail/saved', entry => {
       this.fetch()
     })
+
+    debug('sync connecting mqtt client', client)
     return client.connect()
   }
 

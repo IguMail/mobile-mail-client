@@ -19,9 +19,16 @@ export default class MqttClient extends EventEmitter {
 
   Account = null
   mqtt = mqtt
+  client = null
+  transport = null
+  channel = null
+  mailbox = null
+
+  lastSyncTime = 0
   
   options = {
-    url: MQTT_HOST || 'mqtt://localhost:1883'
+    url: MQTT_HOST || 'mqtt://localhost:1883',
+    syncInterval: 15000 // 15 secs
   }
 
   constructor(Account, options = {}) {
@@ -35,6 +42,10 @@ export default class MqttClient extends EventEmitter {
     }
   }
 
+  get connected() {
+    return this.client && this.client.connected && !this.client.reconnecting
+  }
+
   connect() {
 
     const { Account } = this
@@ -45,17 +56,29 @@ export default class MqttClient extends EventEmitter {
       password: Account.user.xOAuth2Token
     }
 
-    debug('Connecting to ', this.options.url, 'as', mqttOptions)
-    this.client = this.mqtt.connect(this.options.url, mqttOptions)
-    this.transport = new mqttTransport({
-      id: 'channelId',
-      client: this.client
-    })
-
+    if (this.connected) {
+      debug('Already connected to mqtt')
+    } else {
+      debug('Connecting to ', this.options.url, 'as', mqttOptions)
+      this.client = this.mqtt.connect(this.options.url, mqttOptions)
+      this.transport = new mqttTransport({
+        id: 'channelId',
+        client: this.client
+      })
+    }
+    
     global.mqttClient = this // debugging
 
-    this.subscribe()
-    this.sync()
+    if (!this.channel) {
+      this.subscribe()
+    }
+    
+    const lastSyncTimeElapsed = parseInt((new Date().getTime()) - this.lastSyncTime, 10)
+
+    if (!this.mailbox || ( lastSyncTimeElapsed > this.opts.syncInterval )) {
+      this.sync()
+    }
+    
   }
 
   subscribe() {
@@ -66,14 +89,15 @@ export default class MqttClient extends EventEmitter {
 
     this.channel = channel
 
-    debug('On secure channel')
-    channel.subscribe('imap', () => {
+    debug('Subscribing to secure channels')
+
+    channel.subscribe('imap/connected', () => {
       debug('connected to mail sync broker')
-      this.emit('imap')
+      this.emit('imap/connected')
     })
-    channel.subscribe('imap/connected', mailbox => {
+    channel.subscribe('imap/mailbox', mailbox => {
       debug('connected to mailbox', mailbox)
-      this.emit('imap/connected', mailbox)
+      this.emit('imap/mailbox', mailbox)
     })
     channel.subscribe('imap/error', message => {
       const { error } = message
@@ -97,7 +121,9 @@ export default class MqttClient extends EventEmitter {
   }
 
   sync() {
+    debug('Sending sync request')
     const { channel, Account } = this
     channel.publish('imap/sync', { userId: Account.id })
+    this.lastSyncTime = (new Date().getTime())
   }
 }

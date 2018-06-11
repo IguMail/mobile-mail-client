@@ -47,11 +47,10 @@ const MenuComponent = props => (<View style={style.MenuComponent}>
     <List containerStyle={{marginBottom: 20}}>
     {
       list.map((l, i) => (
-        <TouchLink to={l.to}>
+        <TouchLink to={l.to} key={i}>
           <ListItem
             roundAvatar
             avatar={l.avatar_url}
-            key={i}
             title={l.name}
             subtitle={l.subtitle}
           />
