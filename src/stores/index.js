@@ -29,5 +29,5 @@ export default {
   sendMail(accountId, email) {
     return factory(SendMail, accountId, email)
   },
-  sideMenu: new SideMenu
+  sideMenu: new SideMenu()
 };

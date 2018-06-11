@@ -3,7 +3,6 @@ import { View, Text } from 'react-native'
 import { List, ListItem } from 'react-native-elements'
 import SideMenu from 'react-native-side-menu'
 import TouchLink from './TouchLink'
-import { withRouter } from 'react-router-native'
 import styles from './styles'
 
 const debug = require('debug')('chaterr:side-menu')
