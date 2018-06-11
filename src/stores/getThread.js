@@ -1,5 +1,5 @@
 import { observable } from 'mobx'
-import MailApi from '../service/MailApi'
+import { MqttClientFactory, MailApiFactory } from '../service'
 import config from '../config'
 
 const debug = require('debug')('chaterr:stores:getThread')
@@ -7,7 +7,7 @@ const debug = require('debug')('chaterr:stores:getThread')
 export default class GetThread {
   
   id = null
-  accountId = null
+  Account = null
   @observable subject = ''
   @observable messages = [{
     id: null,
@@ -17,32 +17,41 @@ export default class GetThread {
     success: null,
     error: null
   }]
+  @observable authError = null
   @observable error = null
   @observable loaded = false
+
+  mqttConnected = false
+  mqttInboxConnected = false
+
+  get accountId() {
+    return this.Account.account
+  }
 
   /**
   * @param {accountId} User Account Id
   * @param {id} Thread message id
   **/
-  constructor(accountId, id) {
-    if (!accountId) {
+  constructor(Account, id) {
+    if (!Account.id) {
       throw new Error('Account id required')
     }
     if (!id) {
       throw new Error('Thread message id required')
     }
-    this.accountId = accountId
+    this.Account = Account
     this.id = id
     global.getThread = this // debugging
   }
 
   get service() {
     if (!this.accountId) throw new Error('User not logged in')
-    if (!this._service) {
-      this._service = new MailApi(this.accountId)
-      this._service.setApiUrl(config.api.url)
-    }
-    return this._service
+    return MailApiFactory(this.accountId, config.api)
+  }
+
+  get mqttClient() {
+    if (!this.accountId) throw new Error('User not logged in')
+    return MqttClientFactory(this.Account, config.mqtt)
   }
 
   fetch() {
@@ -68,6 +77,31 @@ export default class GetThread {
         this.error = error
         this.loaded = true
       })
+  }
+
+  sync() {
+    const client = this.mqttClient
+    client.on('imap', () => {
+      this.mqttConnected = true
+    })
+    client.on('imap/connected', mailbox => {
+      this.mqttInboxConnected = true
+    })
+    client.on('imap/error', error => {
+      debug('imap/error', error)
+      this.error = new Error(error)
+    })
+    client.on('imap/error/auth', error => {
+      debug('imap/error/auth', error)
+      this.authError = new Error(error)
+    })
+    client.on('mail/action', entry => {
+      this.fetch()
+    })
+    client.on('mail/saved', entry => {
+      this.fetch()
+    })
+    return client.connect()
   }
 
   lastMessage() {

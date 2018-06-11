@@ -2,7 +2,7 @@ const URL = require('url')
 const debug = require('debug')('chaterr:MailApi')
 
 /**
- * IguMail REST API
+ * Chaterr REST API
  */
 class MailApi {
 

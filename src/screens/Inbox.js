@@ -23,6 +23,10 @@ class Inbox extends React.Component {
     return this.props.getAccount.accountId
   }
 
+  get mainAccount() {
+    return this.props.getAccount.mainAccount
+  }
+
   get account() {
     const { user } = this.props.getAccount.mainAccount
     debug('User account', user)
@@ -34,7 +38,7 @@ class Inbox extends React.Component {
   }
 
   get getThreads() {
-    return this.props.getThreads(this.accountId, this.id)
+    return this.props.getThreads(this.mainAccount, this.id)
   }
 
   componentDidMount() {
