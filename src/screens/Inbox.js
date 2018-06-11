@@ -8,14 +8,20 @@ import Splash from './Splash'
 import ThreadList from '../theme/Inbox/ThreadList'
 import SearchBox from '../theme/SearchBox'
 import ErrorModal from '../theme/ErrorModal'
+import SideMenu from '../theme/SideMenu'
 
 const debug = require('debug')('chaterr:Inbox')
 
 const style = {
-  ...inbox
+  ...inbox,
+  full: {
+    height: '100%',
+    flex: 1,
+    width: '100%'
+  }
 }
 
-@inject('getAccount', 'getThreads')
+@inject('getAccount', 'getThreads', 'sideMenu')
 @observer
 class Inbox extends React.Component {
 
@@ -54,6 +60,8 @@ class Inbox extends React.Component {
 
     const { loaded, error, threads, updatedAt } = this.getThreads
 
+    debug('props', this.props)
+
     if (!loaded) {
       return <Splash loaded={true} />
     }
@@ -66,22 +74,26 @@ class Inbox extends React.Component {
     }
 
     debug('threads', this.getThreads, threads, error)
+    debug('sidemenu', this.props.sideMenu.isOpen)
 
-    return (<Section style={{
-      ...style.screen,
-      ...styles.center,
-      justifyContent: 'flex-start',
-      flex: 1
-    }}>
-      <ScrollView style={{
-        width: '100%'
-      }}>
-        <InboxHeader title={'All Priority'} />
-        <SearchBox placeholder="Search" />
-        <ThreadList updatedAt={updatedAt} threads={threads || {}} />
-      </ScrollView>
-      <InboxFooter />
-    </Section>)
+    const sideMenuStateChange = isOpen => 
+      this.props.sideMenu.isOpen = isOpen
+
+    return (
+      <SideMenu 
+        isOpen={this.props.sideMenu.isOpen} 
+        onChange={isOpen => sideMenuStateChange(isOpen)} 
+        style={style.full}>
+        <Section style={style.screen}>
+          <ScrollView style={style.full}>
+            <InboxHeader title={'All Priority'} />
+            <SearchBox placeholder="Search" />
+            <ThreadList updatedAt={updatedAt} threads={threads || {}} />
+          </ScrollView>
+          <InboxFooter />
+        </Section>
+      </SideMenu>
+    )
   }
 }
 

@@ -2,10 +2,11 @@ import GetAccount from './getAccount'
 import GetThreads from './getThreads'
 import GetThread from './getThread'
 import SendMail from './sendMail'
+import SideMenu from './sideMenu'
 
 const instances = {}
 
-function factory(creator, args) {
+function factory(creator, ...args) {
   const name = creator.toString()
   const id = JSON.stringify(args)
   if (!instances[name]) {
@@ -20,12 +21,13 @@ function factory(creator, args) {
 export default {
   getAccount: new GetAccount(),
   getThreads(accountId) {
-    return factory(GetThreads, [...arguments])
+    return factory(GetThreads, accountId)
   },
   getThread(accountId, id) {
-    return factory(GetThread, [...arguments])
+    return factory(GetThread, accountId, id)
   },
   sendMail(accountId, email) {
-    return factory(SendMail, [...arguments])
-  }
+    return factory(SendMail, accountId, email)
+  },
+  sideMenu: new SideMenu
 };

@@ -1,9 +1,14 @@
-import React from "react";
-import { Text, View, Image } from "react-native";
+import React from 'react'
+import { Text, View, Image } from 'react-native'
+import { observer, inject } from 'mobx-react'
 import styles from '../styles'
 import { Section, TouchLink } from '../'
 
-class InboxHeader extends React.PureComponent {
+const debug = require('debug')('chaterr:Header')
+
+@inject('sideMenu')
+@observer
+class InboxHeader extends React.Component {
   render() {
     const defaults = {
       style: { 
@@ -21,6 +26,10 @@ class InboxHeader extends React.PureComponent {
           alignItems: 'center',
           width: '100%',
           flexDirection: 'row'
+        },
+        homeIcon: {
+          width: 19,
+          height: 15
         }
       }
     }
@@ -30,13 +39,18 @@ class InboxHeader extends React.PureComponent {
     }
 
     const lines = !Array.isArray(title) ? [ title ] : title
+    
+    const toggleSideMenu = () => {
+      const sideMenu = this.props.sideMenu
+      sideMenu.isOpen ? sideMenu.close() : sideMenu.open()
+    }
 
     return (<Section style={style.containerStyle}>
-      <TouchLink to="/dev">
-        <Image source={require('../../images/icon-home.png')} style={{
-          width: 19,
-          height: 15
-        }} />
+      <TouchLink onPress={() => {
+        debug('clicked sidemenu toggle')
+        toggleSideMenu()
+      }}>
+        <Image source={require('../../images/icon-home.png')} style={style.homeIcon} />
       </TouchLink>
       <View style={{ 
         flex: 1,
@@ -54,4 +68,4 @@ class InboxHeader extends React.PureComponent {
   }
 }
 
-export default InboxHeader;
+export default InboxHeader
