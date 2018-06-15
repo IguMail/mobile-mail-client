@@ -1,4 +1,5 @@
 import React from 'react'
+import { observer, inject } from 'mobx-react'
 import { View, Text, Image } from 'react-native'
 import { Icon } from 'react-native-elements'
 import TouchLink from './TouchLink'
@@ -84,6 +85,8 @@ const MenuItem = props => (
   </View>
 )
 
+@inject('sideMenu')
+@observer
 class SideMenu extends React.Component {
 
   get menuItems() {
@@ -102,7 +105,11 @@ class SideMenu extends React.Component {
 
   render() {
 
-    const { account } = this.props
+    const { account, sideMenu } = this.props
+
+    const onPress = () => {
+      sideMenu.isOpen = false
+    }
 
     return (
       <View style={style.MenuComponent}>
@@ -118,7 +125,10 @@ class SideMenu extends React.Component {
         <View style={style.menuList}>
         {
           this.menuItems.map((l, i) => (
-            <TouchLink to={l.to} key={i}>
+            <TouchLink 
+              to={l.to} 
+              key={i}
+              onPress={() => onPress()}>
               <MenuItem
                 iconName={l.iconName}
                 iconType={l.iconType}
