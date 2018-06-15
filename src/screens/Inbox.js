@@ -7,7 +7,7 @@ import Splash from './Splash'
 import ThreadList from '../theme/Inbox/ThreadList'
 import SearchBox from '../theme/SearchBox'
 import ErrorModal from '../theme/ErrorModal'
-import SideMenu from '../theme/SideMenu'
+import SideMenuLink from '../theme/SideMenuLink'
 
 const debug = require('debug')('chaterr:Inbox')
 
@@ -77,7 +77,8 @@ class Inbox extends React.Component {
       this.props.sideMenu.isOpen = isOpen
 
     return (
-      <SideMenu 
+      <SideMenuLink 
+        account={this.props.getAccount}
         isOpen={this.props.sideMenu.isOpen} 
         onChange={isOpen => sideMenuStateChange(isOpen)} 
         style={style.full}>
@@ -89,7 +90,7 @@ class Inbox extends React.Component {
           </ScrollView>
           <InboxFooter />
         </Section>
-      </SideMenu>
+      </SideMenuLink>
     )
   }
 }

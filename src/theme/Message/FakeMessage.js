@@ -1,6 +1,6 @@
 import React from 'react'
 import conversation from '../../theme/styles/conversation'
-import MessageIcon from '../../theme/MessageIcon'
+import Avatar from '../../theme/Avatar'
 import { View, Text } from "react-native"
 
 const style = {
@@ -17,7 +17,7 @@ const FakeText = props => (
 
 const FakeMessage = props => {
   return (<View style={style.MessageLink}>
-    <MessageIcon style={{
+    <Avatar style={{
       ...style.iconStyle,
       backgroundColor: '#eee'
     }} />

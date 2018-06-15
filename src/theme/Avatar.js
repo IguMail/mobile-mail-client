@@ -2,7 +2,7 @@ import React from 'react'
 import ColorHash from 'color-hash'
 import { View } from "react-native"
 
-const MessageIcon = props => (
+const Avatar = props => (
   <View style={{
     width: 42,
     height: 42,
@@ -16,4 +16,4 @@ const MessageIcon = props => (
   </View>
 )
 
-export default MessageIcon
+export default Avatar

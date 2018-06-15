@@ -2,7 +2,7 @@ import React from 'react'
 import styles from '../styles'
 import inbox from '../styles/inbox'
 import PriorityDot from '../PriorityDot'
-import MessageIcon from '../MessageIcon'
+import Avatar from '../Avatar'
 import { View, Text } from "react-native"
 import { TouchLink } from '../'
 import moment from 'moment'
@@ -32,13 +32,13 @@ const MessageLink = props => {
   const iconSingleLetter = iconText || (from && from[0])
 
   return (<TouchLink style={style.MessageLink} to={'/message/' + id}>
-    <MessageIcon style={iconStyle} text={from}>
+    <Avatar style={iconStyle} text={from}>
       <Text style={{
         ...styles.fontDefault,
         fontSize: 16,
         color: '#fff'
       }}>{iconSingleLetter}</Text>
-    </MessageIcon>
+    </Avatar>
     <View style={style.messageTextContainer}>
       <View style={style.messageTextHeader}>
         <View style={{

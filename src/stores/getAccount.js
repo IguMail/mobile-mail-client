@@ -19,6 +19,25 @@ export default class GetAccount {
     return new MailApi(this.accountId, config.api)
   }
 
+  get name() {
+    const { name } = this.mainAccount.user
+    return name.givenName + (name.familyName && ' ' + name.familyName)
+  }
+
+  get email() {
+    return this.mainAccount.user.email
+  }
+
+  get photo() {
+    try {
+      return this.mainAccount.user.photos[0].value
+    } catch(e) {}
+  }
+
+  get status() {
+    return 'Online' // TODO
+  }
+
   constructor() {
     this.localStorage = createLocalStorage()
   }

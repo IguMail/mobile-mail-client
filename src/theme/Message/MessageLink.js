@@ -3,7 +3,7 @@ import { autorun } from 'mobx'
 import { observer } from 'mobx-react'
 import styles from '../../theme/styles'
 import conversation from '../../theme/styles/conversation'
-import MessageIcon from '../../theme/MessageIcon'
+import Avatar from '../../theme/Avatar'
 import { View, Text, Image } from "react-native"
 import { TouchLink } from '../../theme'
 import AttachmentList from '../../theme/Message/AttachmentList'
@@ -67,13 +67,13 @@ const MessageLink = props => {
   }
 
   return (<View style={style.MessageLink} to={'/message/' + id}>
-    <MessageIcon style={iconStyle} text={from}>
+    <Avatar style={iconStyle} text={from}>
       <Text style={{
         ...styles.fontDefault,
         fontSize: 16,
         color: '#fff'
       }}>{iconSingleLetter}</Text>
-    </MessageIcon>
+    </Avatar>
     <View style={style.messageTextContainer}>
       <View style={style.messageTextHeader}>
         <View style={{

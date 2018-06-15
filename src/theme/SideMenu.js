@@ -1,96 +1,137 @@
 import React from 'react'
-import { View, Text } from 'react-native'
-import { List, ListItem } from 'react-native-elements'
-import SideMenu from 'react-native-side-menu'
+import { View, Text, Image } from 'react-native'
+import { Icon } from 'react-native-elements'
 import TouchLink from './TouchLink'
-import styles from './styles'
+import style from './styles/sideMenu'
+import Avatar from './Avatar'
 
-const debug = require('debug')('chaterr:side-menu')
+//const debug = require('debug')('chaterr:side-menu')
 
-const style = {
-  MenuComponent: {
-    flex: 1, 
-    backgroundColor: '#efefef', 
-    paddingTop: 50
-  },
-  header: {
-    ...styles.fontDefault,
-    paddingLeft: 50
-  }
+const CREATE_ACCOUNT = 'Create an account on Chaterr'
+
+const allMailMenuItem = {
+  title: 'All Email',
+  iconName: 'email',
+  to: '/inbox'
 }
 
-const list = [
+const staticMenuItems = [
   {
-    name: 'Splash',
-    subtitle: 'View Splash Screen',
-    to: '/splash'
+    title: 'Settings',
+    iconName: 'settings',
+    to: '/'
   },
   {
-    name: 'Login',
-    subtitle: 'View Login Screen',
-    to: '/login'
+    title: 'Invite Friends',
+    iconName: 'account-multiple-plus',
+    iconType: 'material-community',
+    to: '/'
   },
   {
-    name: 'Inbox',
-    subtitle: 'View Inbox Screen',
-    to: '/inbox'
+    title: 'Help',
+    iconName: 'help',
+    to: '/'
   },
   {
-    name: 'Account',
-    subtitle: 'Add Account Screen',
-    to: '/account/add'
+    title: 'Trash',
+    iconName: 'trash',
+    iconType: 'font-awesome',
+    to: '/'
+  },
+  {
+    title: 'Logout',
+    iconName: 'power-off',
+    iconType: 'font-awesome',
+    to: '/'
   }
 ]
 
-const MenuComponent = props => (<View style={style.MenuComponent}>
-    <Text style={style.header}>Testing Menu</Text>
-    <List containerStyle={{marginBottom: 20}}>
-    {
-      list.map((l, i) => (
-        <TouchLink to={l.to} key={i}>
-          <ListItem
-            roundAvatar
-            avatar={l.avatar_url}
-            title={l.name}
-            subtitle={l.subtitle}
-          />
-        </TouchLink>
-      ))
-    }
-    </List>
-  </View>)
+const Status = props => (
+  <View style={style.status}>
+    <Text style={style.statusText}>{props.status}</Text>
+    <Icon name="chevron-down" type="feather" color={style.statusIcon.color} size={15} containerStyle={style.statusIconContainer} />
+  </View>
+)
 
-export default class SideMenuComponent extends React.Component {
+const Header = props => (
+  <TouchLink style={style.header} to="/">
+    <Avatar text={props.name} style={style.avatar}>
+      {props.source.uri 
+        && <Image source={props.source} style={style.avatarImage} />}
+    </Avatar>
+    <View style={style.accountInfo}>
+      <Text style={style.nameText}>{props.name}</Text>
+      <Status status={props.status} />
+    </View>
+    <View style={style.linkIconContainer}>
+      <Icon name="chevron-right" type="feather" color={style.linkIcon.color} size={30} />
+    </View>
+  </TouchLink>
+)
 
-  constructor () {
-    super()
-    this.state = {
-      isOpen: false
-    }
-    this.toggleSideMenu = this.toggleSideMenu.bind(this)
+const MenuItem = props => (
+  <View style={[style.menuItem, props.selected && style.menuItemSelected]}>
+    <Icon 
+      name={props.iconName} 
+      type={props.iconType} 
+      color={(props.selected ? style.menuItemIconSelected.color : style.menuItemIcon.color)} 
+      size={20} 
+    />
+    <Text 
+      style={[style.menuItemText,  props.selected && style.menuItemTextSelected]}>
+      {props.title}
+    </Text>
+  </View>
+)
+
+class SideMenu extends React.Component {
+
+  get menuItems() {
+    const { account } = this.props
+    const accounts = [
+      {
+        title: account.name || account.email,
+        iconName: 'account-circle',
+        to: '/inbox', // '/inbox/' + account.id,
+        selected: true
+      }
+    ]
+    return [allMailMenuItem, ...accounts, ...staticMenuItems]
   }
 
-  toggleSideMenu () {
-    this.setState({
-      isOpen: !this.state.isOpen
-    })
-  }
 
-  render () {
+  render() {
 
-    const onChange = (isOpen) => {
-      debug('Menu state change', isOpen)
-      this.props.onChange && this.props.onChange(isOpen)
-    }
+    const { account } = this.props
 
     return (
-      <SideMenu
-        disableGestures={this.props.disableGestures}
-        isOpen={this.props.isOpen}
-        onChange={(isOpen) => onChange(isOpen)}
-        menu={<MenuComponent />}>
-        {this.props.children}
-      </SideMenu>
+      <View style={style.MenuComponent}>
+        <Header 
+          source={{uri: account.photo}} 
+          name={account.name || account.email} 
+          status={account.status}
+        />
+        <TouchLink style={style.menuItemPrimary} to="/account/create">
+          <Icon name="inbox" color="#fff" size={20} />
+          <Text style={style.menuItemPrimaryText}>{CREATE_ACCOUNT}</Text>
+        </TouchLink>
+        <View style={style.menuList}>
+        {
+          this.menuItems.map((l, i) => (
+            <TouchLink to={l.to} key={i}>
+              <MenuItem
+                iconName={l.iconName}
+                iconType={l.iconType}
+                title={l.title}
+                selected={l.selected}
+              />
+            </TouchLink>
+          ))
+        }
+        </View>
+      </View>
     )
   }
 }
+
+  export default SideMenu
