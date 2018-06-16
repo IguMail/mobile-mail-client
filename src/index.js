@@ -7,7 +7,7 @@ import registerServiceWorker from "./web/registerServiceWorker";
 global.PLATFORM = 'web'
 
 // load expo 
-
+// TODO: Expo web compatible
 
 ReactDOM.render(<App loaded={true} />, document.getElementById("root"));
 registerServiceWorker();

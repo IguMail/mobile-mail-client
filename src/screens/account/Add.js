@@ -66,7 +66,7 @@ class AddAccount extends React.Component {
 
       <AccountHeader title={['Select the account that you wish to', 'link']} />
 
-      <AuthServiceLink to="/account/oauth">
+      <AuthServiceLink to="/account/oauth/google">
         <Image
           source={require('../../images/Google.png')}
           style={style.google}

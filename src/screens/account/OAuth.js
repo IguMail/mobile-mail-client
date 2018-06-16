@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Button, View, StyleSheet, Text } from 'react-native'
-import url, { URLSearchParams } from 'url'
+import { Button, View } from 'react-native'
+import { Text } from 'react-native-elements'
 import { Constants, Linking, WebBrowser } from 'expo'
 import config from '../../config'
 
@@ -15,10 +15,18 @@ export default class App extends Component {
   state = {
     opener: {
       url: null,
-      type: null
+      type: null,
+      params: {
+        path: null,
+        queryParams: {}
+      }
     },
     returnUrl: null,
     browserState: {}
+  }
+
+  get service() {
+    return this.props.match.params.service
   }
 
   componentDidMount() {
@@ -28,9 +36,12 @@ export default class App extends Component {
     })
   }
 
+  parseUrl(url) {
+    return Linking.parse(url)
+  }
+
   _onOpenedWithUrl(url, type) {
-    const params = Linking.parse(url)
-    //Linking.parseInitialURLAsync(url)
+    const params = this.parseUrl(url)
     debug('Opened with URL', url, type, params)
     this.setState({
       opener: {
@@ -39,17 +50,25 @@ export default class App extends Component {
         params
       }
     })
-    WebBrowser.dismissBrowser()
+    if (type === 'return') {
+      WebBrowser.dismissBrowser()
+      if (this.props.onSuccess) this.props.onSuccess(params.queryParams)
+    }
+    else this._openWithWebBrowser()
   }
 
   render() {
+    const params = this.state.opener.params.queryParams
     return (
       <View style={styles.container}>
-        <Text>{'Debug: ' + JSON.stringify({ state: this.state, OAuthUrl })}</Text>
-        
+        <Text>{'Service: ' + JSON.stringify({ service: this.service })}</Text>
+        <Text>{'Params: ' + JSON.stringify(params)}</Text>
+
+        {params.userId && <Text h1>Login Success</Text>}
+        {!params.userId && <Text h1>Login Failed</Text>}
         <Button
-          title="Login with Google"
-          onPress={this._handleOpenWithWebBrowser}
+          title="Re-Login with Google"
+          onPress={this._openWithWebBrowser}
           style={styles.button}
         />
       </View>
@@ -63,12 +82,12 @@ export default class App extends Component {
     })
   }
   
-  _handleOpenWithWebBrowser = () => {
+  _openWithWebBrowser = () => {
     const returnUrl = this._makeReturnUrl()
     this.setState({
       returnUrl
     })
-    Linking.addEventListener('url', url => this._onOpenedWithUrl(url, 'return'))
+    Linking.addEventListener('url', ({ url }) => this._onOpenedWithUrl(url, 'return'))
     debug('returnUrl', returnUrl)
     const service = 'google'
     const url = OAuthUrl.replace('{service}', service)
@@ -88,7 +107,7 @@ export default class App extends Component {
   
 }
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
     flex: 1,
     alignItems: 'center',
@@ -99,4 +118,4 @@ const styles = StyleSheet.create({
   button: {
     marginVertical: 10,
   },
-})
+}

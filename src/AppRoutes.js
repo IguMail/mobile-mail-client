@@ -73,7 +73,7 @@ class AppRoutes extends React.Component {
       <Route path="/splash" component={SplashRoute} />
       <Route path="/login" component={isDev ? LoginDevRoute : LoginRoute} />
       <Route path="/account/add" component={AddAccount} />
-      <Route path="/account/oauth" component={OAuthRoute} />
+      <Route path="/account/oauth/:service" component={OAuthRoute} />
       <Route path="/inbox" component={Inbox} />
       <Route path="/message/:id" component={Message} />
       <Switch>
