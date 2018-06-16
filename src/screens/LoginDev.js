@@ -22,6 +22,8 @@ const style = {
     color: "#9aa7af" 
   },
   formContainer: {
+    width: 250,
+    justifyContent: 'center'
   },
   form: {
   }

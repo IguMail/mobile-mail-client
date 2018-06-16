@@ -4,7 +4,11 @@ const development = {
     url: 'http://gandas-MacBook-Pro.local:3030'
   },
   mqtt: {
-    url: 'ws://localhost:8883'
+    url: 'ws://gandas-MacBook-Pro.local:8883'
+  },
+  oauth: {
+    url: 'http://172.20.10.10.nip.io:5000'
+    //url: 'http://192.168.100.102.nip.io:5000'
   }
 }
 
@@ -14,6 +18,9 @@ const production = {
   },
   mqtt: {
     url: 'ws://mqtt.igumail.com/'
+  },
+  oauth: {
+    url: 'http://api.igumail.com'
   }
 }
 

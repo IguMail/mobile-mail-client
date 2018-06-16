@@ -78,10 +78,14 @@ export default class GetAccount {
           return this.service.account(this.accountId)
             .fetch()
             .then(account => {
-              setTimeout(() => this.loaded = true, 1)
-              if (!account || !account.id) throw new Error('Account access failed')
               debug('Fetched remote account', account)
+              this.loaded = true
+              if (!account || !account.id) throw new Error('Account access failed')
               this.mainAccount = account
+            })
+            .catch(error => {
+              this.loaded = true
+              this.error = new Error(error)
             })
         }
         this.mainAccount = account
@@ -94,7 +98,7 @@ export default class GetAccount {
   }
 
   fetch() {
-    this.fetchAccountId()
+    return this.fetchAccountId()
       .then(accountId => {
         if (accountId) return this.fetchAccount()
         this.loaded = true

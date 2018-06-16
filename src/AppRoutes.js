@@ -10,9 +10,13 @@ import AddAccount from './screens/account/Add'
 import Inbox from './screens/Inbox'
 import DevConsole from './screens/DevConsole'
 import Message from './screens/Message'
+import OAuth from './screens/account/OAuth'
 
 const debug = require('debug')('chaterr:AppRoutes')
 const isDev = process.env.NODE_ENV === 'development'
+const fetchTimeout = 5000
+
+const ERR_MSG_TIMEOUT = 'Timeout when logging in. Check your network connection.'
 
 @inject('getAccount')
 @observer
@@ -23,10 +27,19 @@ class AppRoutes extends React.Component {
   }
 
   componentDidMount() {
+    const timer = setTimeout(() => this.accountFetchTimeout(), fetchTimeout)
     this.account.fetch()
+      .then(res => clearTimeout(timer))
+      .catch(err => clearTimeout(timer))
+
     autorun(() => {
       debug('autorun', this.account)
     })
+  }
+
+  accountFetchTimeout() {
+    this.account.error = new Error(ERR_MSG_TIMEOUT)
+    this.account.loaded = true
   }
 
   render() {
@@ -39,9 +52,10 @@ class AppRoutes extends React.Component {
     const DevConsoleRoute = withRouter(DevConsole)
     const LoginRoute = withRouter(Login)
     const LoginDevRoute = withRouter(LoginDev)
+    const OAuthRoute = withRouter(OAuth)
 
     if (!this.account.loaded) {
-      return <SplashRoute />
+      return <SplashRoute msg="Logging you in" />
     }
 
     if (location.pathname !== '/account/add' && !this.account.isLoggedIn()) {
@@ -59,6 +73,7 @@ class AppRoutes extends React.Component {
       <Route path="/splash" component={SplashRoute} />
       <Route path="/login" component={isDev ? LoginDevRoute : LoginRoute} />
       <Route path="/account/add" component={AddAccount} />
+      <Route path="/account/oauth" component={OAuthRoute} />
       <Route path="/inbox" component={Inbox} />
       <Route path="/message/:id" component={Message} />
       <Switch>

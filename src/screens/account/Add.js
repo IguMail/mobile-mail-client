@@ -50,7 +50,7 @@ const style = {
   }
 }
 
-const AuthServiceLink = (props) => (<TouchLink style={style.authServiceLink} to="/">
+const AuthServiceLink = (props) => (<TouchLink style={style.authServiceLink} to={props.to}>
     {props.children}
   </TouchLink>)
 
@@ -64,9 +64,9 @@ class AddAccount extends React.Component {
       justifyContent: 'flex-start'
     }}>
 
-      <AccountHeader title={['Add', 'Account']} />
+      <AccountHeader title={['Select the account that you wish to', 'link']} />
 
-      <AuthServiceLink>
+      <AuthServiceLink to="/account/oauth">
         <Image
           source={require('../../images/Google.png')}
           style={style.google}
@@ -102,7 +102,7 @@ class AddAccount extends React.Component {
         borderBottomWidth: 0,
         marginTop: 30
       }}>
-        <AccountHeader title={['Add', 'Another Account']} />
+        <AccountHeader title={['Add', 'Another Account']} titleStyle={{fontWeight: '600'}} />
       </Row>
 
       <Row style={{

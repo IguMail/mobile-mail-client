@@ -5,6 +5,7 @@ import { Section } from './'
 
 class AccountHeader extends React.PureComponent {
   render() {
+    const { props } = this
     const defaults = {
       style: { 
         titleStyle: {
@@ -21,13 +22,15 @@ class AccountHeader extends React.PureComponent {
     }
     const { style, title } = {
       ...defaults,
-      ...this.props
+      ...props
     }
 
     const lines = !Array.isArray(title) ? [ title ] : title
 
-    return (<Section style={style.containerStyle}>
-        {lines.map( (text, i) => (<Text key={i} style={style.titleStyle}>{text}</Text>))}
+    return (<Section style={[style.containerStyle, props.containerStyle]}>
+        {lines.map( (text, i) => (
+          <Text key={i} style={[style.titleStyle, props.titleStyle]}>{text}</Text>
+        ))}
       </Section>)
   }
 }

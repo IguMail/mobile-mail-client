@@ -35,7 +35,7 @@ const styles = {
   slogan: {
     ...fontDefault,
     textAlign: "center",
-    color: "#9aa7af",
+    color: "#3f8efc",
     fontSize: 20
   },
   welcome: {

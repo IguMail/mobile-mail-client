@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme": "chaterr",
     "sdkVersion": "25.0.0",
     "name": "Chaterr",
     "slug": "chaterr",

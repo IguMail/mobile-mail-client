@@ -118,7 +118,7 @@ class SideMenu extends React.Component {
           name={account.name || account.email} 
           status={account.status}
         />
-        <TouchLink style={style.menuItemPrimary} to="/account/create">
+        <TouchLink style={style.menuItemPrimary} to="/account/add">
           <Icon name="inbox" color="#fff" size={20} />
           <Text style={style.menuItemPrimaryText}>{CREATE_ACCOUNT}</Text>
         </TouchLink>
