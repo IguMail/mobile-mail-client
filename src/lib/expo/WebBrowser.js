@@ -1,4 +1,4 @@
-import { Linking } from './'
+import { Linking } from 'react-native'
 
 const WebBrowser = {
   openBrowserAsync(url) {

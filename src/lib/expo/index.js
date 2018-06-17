@@ -1,23 +1,19 @@
-import LazyModule from '../../lib/LazyModule'
+let Expo, Linking, WebBrowser, Constants
 
-let Linking
-let WebBrowser
-let Constants 
-
-console.log('global', global)
-
-if(global.window) {
-  (async () => {
-    Linking = await new LazyModule('./Linking').require()
-    WebBrowser = await new LazyModule('./WebBrowser').require()
-    Constants = await new LazyModule('./Constants').require()
-  })()
+// global.Expo is set in App.native.js
+if (global.Expo) {
+  Expo = global.Expo
+  Linking = Expo.Linking
+  WebBrowser = Expo.WebBrowser
+  Constants = Expo.Constants
 } else {
-  (async () => {
-    const Expo = await new LazyModule('expo').require()
-    let { Linking, WebBrowser, Constants } = Expo
-  })()
+  Linking = require('./Linking').default
+  WebBrowser = require('./WebBrowser').default
+  Constants = require('./Constants').default
+  Expo = { Linking, WebBrowser, Constants }
 }
 
-export { Linking, WebBrowser, Constants }
-//export default Expo
+export default Expo
+export {
+  Linking, WebBrowser, Constants
+}

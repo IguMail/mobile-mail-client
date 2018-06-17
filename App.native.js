@@ -1,6 +1,9 @@
+import Expo, { Font, Linking, WebBrowser, Constants } from 'expo'
+import { setExpo } from './src/lib/expo'
+global.Expo = { Font, Linking, WebBrowser, Constants }
 import React from 'react'
 import App from './src/App'
-import { Font } from 'expo'
+
 
 export default class AppNative extends React.Component {
 

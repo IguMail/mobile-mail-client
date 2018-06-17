@@ -7,8 +7,8 @@ const development = {
     url: 'ws://gandas-MacBook-Pro.local:8883'
   },
   oauth: {
-    url: 'http://172.20.10.10.nip.io:5000'
-    //url: 'http://192.168.100.102.nip.io:5000'
+    //url: 'http://172.20.10.10.nip.io:5000'
+    url: 'http://192.168.100.102.nip.io:5000'
   }
 }
 

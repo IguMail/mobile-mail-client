@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, View } from 'react-native'
 import { Text } from 'react-native-elements'
-import { Constants, Linking, WebBrowser } from 'expo'
+import { Constants, Linking, WebBrowser } from '../../lib/expo'
 import config from '../../config'
 
 const debug = require('debug')('chaterr:oauth')
