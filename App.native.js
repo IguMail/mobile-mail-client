@@ -1,6 +1,3 @@
-import Expo, { Font, Linking, WebBrowser, Constants } from 'expo'
-import { setExpo } from './src/lib/expo'
-global.Expo = { Font, Linking, WebBrowser, Constants }
 import React from 'react'
 import App from './src/App'
 import { NativeRouter, withRouter } from 'react-router-native'

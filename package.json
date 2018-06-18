@@ -13,6 +13,9 @@
     "ios": "react-native-scripts ios",
     "test": "jest"
   },
+  "browser": {
+    "expo": "./src/lib/expo"
+  },
   "dependencies": {
     "buffer": "^5.1.0",
     "color-hash": "^1.0.3",

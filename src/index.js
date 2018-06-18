@@ -2,10 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./web/index.css";
 import { BrowserRouter, withRouter } from 'react-router-dom'
-import App from "./App";
 import registerServiceWorker from "./web/registerServiceWorker";
 
 global.PLATFORM = 'web'
+
+const App = require("./App").default;
 
 // load expo 
 // TODO: Expo web compatible
