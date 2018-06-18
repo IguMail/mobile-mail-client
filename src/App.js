@@ -1,11 +1,23 @@
 import React from "react"
 import { Provider } from 'mobx-react'
-import { NativeRouter, withRouter } from 'react-router-native'
+import { BrowserRouter, withRouter as withRouterBrowser } from 'react-router-dom'
+import { NativeRouter, withRouter as withRouterNative } from 'react-router-native'
 import Splash from './screens/Splash'
 import AppRoutes from './AppRoutes'
 import stores from './stores'
 
 const debug = require('debug')('chaterr:App')
+
+
+const Router = props => {
+  if (global.window) {
+    return <BrowserRouter>{props.children}</BrowserRouter>
+  }
+  return <NativeRouter>{props.children}</NativeRouter>
+}
+
+const withRouter = com => 
+  (global.window ? withRouterBrowser(com) : withRouterNative(com))
 
 class App extends React.Component {
 
@@ -23,9 +35,9 @@ class App extends React.Component {
     const Routes = withRouter(AppRoutes)
 
     return (<Provider {...stores}>
-      <NativeRouter>
+      <Router>
         <Routes loaded={loaded} />
-      </NativeRouter>
+      </Router>
     </Provider>)
   }
 }

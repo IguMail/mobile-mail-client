@@ -1,10 +1,15 @@
-import { Linking } from 'react-native'
-
-const WebBrowser = {
+class WebBrowser {
   openBrowserAsync(url) {
-    return Promise.resolve(Linking.openURL(url))
+    let status = false
+    try {
+      status = global.window.location.href = url
+    } catch(e) {}
+    return Promise.resolve(status)
+  }
+  openAuthSessionAsync(url) {
+    return this.openBrowserAsync(url)
   }
 }
 
 
-export default WebBrowser
+export default new WebBrowser()

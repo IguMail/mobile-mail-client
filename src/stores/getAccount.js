@@ -40,6 +40,7 @@ export default class GetAccount {
 
   constructor() {
     this.localStorage = createLocalStorage()
+    global.getAccount = this // debugging
   }
 
   isLoggedIn() {
@@ -49,15 +50,15 @@ export default class GetAccount {
 
   setAccountId(accountId) {
     debug('Setting account id', accountId)
-    this.accountId = accountId
     this.localStorage.set('accountId', accountId)
+      .then(() => this.accountId = accountId)
   }
 
   fetchAccountId() {
     return this.localStorage.get('accountId')
       .then(accountId => {
         debug('Fetch accountId', accountId)
-        this.accountId = accountId
+        this.setAccountId(accountId)
         return accountId
       })
       .catch(error => {
@@ -68,7 +69,7 @@ export default class GetAccount {
 
   fetchAccount() {
     debug('Fetching account', this.accountId)
-    if (!this.accountId) throw new Error('fetchAccountId before calling fetchAccount')
+    if (!this.accountId) throw new Error('Account does not exist')
     return this.localStorage.get('account')
       .then(account => {
         debug('Fetched local account', this.accountId, account)

@@ -3,10 +3,15 @@ import { Linking } from 'react-native'
 // augment for browser
 const ExpoLinking = Object.assign(Linking, {
   parse(url) {
-    return url // TODO
+    const parsed = new global.URL(url)
+    const queryParams = {}
+    parsed.searchParams.forEach( (value, key) => queryParams[key] = value)
+    const path = url.pathname
+    // TODO check compat
+    return { path, queryParams }
   },
   parseInitialURLAsync(url) {
-    return url // TODO
+    return this.parse(url)
   },
   makeUrl(url, params) {
     const { location, URL, URLSearchParams } = global

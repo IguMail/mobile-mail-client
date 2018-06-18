@@ -1,6 +1,10 @@
 import Storage from 'react-native-storage'
 import { AsyncStorage } from 'react-native'
 
+/**
+ * Extends Storage to allow storing Objects
+ * Note: Cannot store circular references
+ */
 class MailLocalStorage extends Storage {
 
   _serialize(value) {
@@ -26,8 +30,9 @@ class MailLocalStorage extends Storage {
     })
   }
 
-
 }
+
+// TODO extend localStorage with namespaces
 
 const storages = new Map()
 
