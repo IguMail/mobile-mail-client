@@ -1,7 +1,14 @@
 import { Linking } from 'react-native'
 
+const debug = require('debug')('chaterr:Linking')
+
 // augment for browser
 const ExpoLinking = Object.assign(Linking, {
+  getInitialURL() {
+    const url = global.location.href
+    debug('Initial URL', url)
+    return Promise.resolve(global.location.href)
+  },
   parse(url) {
     const parsed = new global.URL(url)
     const queryParams = {}

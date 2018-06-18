@@ -69,17 +69,13 @@ class AppRoutes extends React.Component {
     }
 
     return (<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled="enabled">
-      <Route path="/" component={SplashRoute} exact />  
+      <Route path="/" component={DevConsoleRoute} exact />  
       <Route path="/splash" component={SplashRoute} />
       <Route path="/login" component={isDev ? LoginDevRoute : LoginRoute} />
       <Route path="/account/add" component={AddAccount} />
       <Route path="/account/oauth/:service" component={OAuthRoute} />
       <Route path="/inbox" component={Inbox} />
       <Route path="/message/:id" component={Message} />
-      <Switch>
-        <Route path="/dev" component={DevConsoleRoute} />
-        {location.pathname === '/' && <Redirect to='/dev' />}
-      </Switch>
     </KeyboardAvoidingView>)
   }
 }
