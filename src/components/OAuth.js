@@ -73,7 +73,7 @@ export default class OAuth extends React.Component {
 
   _onCancel = () => {
     if (this.props.onCancel) {
-      this.props.onCancel(new Error({ type: 'cancel' }))
+      this.props.onCancel(this.state.browserState)
     }
   }
 

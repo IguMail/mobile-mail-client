@@ -50,21 +50,29 @@ export default class GetAccount {
 
   setAccountId(accountId) {
     debug('Setting account id', accountId)
-    this.localStorage.set('accountId', accountId)
+    if (this.accountId === accountId) return Promise.resolve(accountId)
+    this.clearAccount()
+    return this.localStorage.set('accountId', accountId)
       .then(() => this.accountId = accountId)
+      .then(() => this.fetchAccount())
+      .then(() => this.accountId)
   }
 
   fetchAccountId() {
     return this.localStorage.get('accountId')
       .then(accountId => {
         debug('Fetch accountId', accountId)
-        this.setAccountId(accountId)
-        return accountId
+        return this.setAccountId(accountId)
       })
       .catch(error => {
         debug('Fetch accountId error', error)
         this.error = error
       })
+  }
+
+  clearAccount() {
+    this.mainAccount = {}
+    this.loaded = false
   }
 
   fetchAccount() {

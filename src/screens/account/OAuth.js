@@ -26,7 +26,7 @@ export default class AccountOAuth extends Component {
   onSuccess = params => {
     debug('onSuccess', params)
     this.Account.setAccountId(params.email)
-    this.props.history.push('/inbox')
+      .then(this.props.history.push('/'))
   }
 
   onFail = error => {
@@ -34,9 +34,9 @@ export default class AccountOAuth extends Component {
     this.props.history.push('/account/add')
   }
 
-  onCancel = error => {
-    debug('onCancel', error)
-    this.props.history.push('/account/add')
+  onCancel = status => {
+    debug('onCancel', status)
+    this.props.history.push('/')
   }
 
   render() {
