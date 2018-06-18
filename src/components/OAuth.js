@@ -23,6 +23,8 @@ export default class OAuth extends React.Component {
     error: null
   }
 
+  unmounting = false
+
   get service() {
     return this.props.service || 'google'
   }
@@ -42,7 +44,12 @@ export default class OAuth extends React.Component {
     })
   }
 
+  componentWillUnmount() {
+    this.unmounting = true
+  }
+
   parseUrl(url) {
+    url = url.replace(/#$/, '') // fix Expo.Linking.parse bug
     return Linking.parse(url)
   }
 
@@ -148,6 +155,8 @@ export default class OAuth extends React.Component {
     
     WebBrowser.openAuthSessionAsync(url)
       .then(browserState => {
+        debug('WebBrowser opened, browserState', browserState)
+        if (this.unmounting) return
         this.setState({
           browserState
         })
@@ -158,6 +167,7 @@ export default class OAuth extends React.Component {
         }
       })
       .catch(error => {
+        if (this.unmounting) return
         this.setState({
           error
         })

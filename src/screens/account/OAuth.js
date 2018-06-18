@@ -3,6 +3,7 @@ import { observer, inject } from 'mobx-react'
 import { View } from 'react-native'
 import config from '../../config'
 import OAuth from '../../components/OAuth'
+import Splash from '../../screens/Splash'
 
 const debug = require('../../lib/debug')('chaterr:oauth')
 
@@ -11,6 +12,10 @@ const OAuthUrl = config.oauth.url + '/auth/{service}'
 @inject('getAccount')
 @observer
 export default class AccountOAuth extends Component {
+
+  state = {
+    loading: false
+  }
 
   get service() {
     return this.props.match.params.service
@@ -22,8 +27,12 @@ export default class AccountOAuth extends Component {
 
   onSuccess = params => {
     debug('onSuccess', params)
+    this.setState({
+      loading: true
+    })
     this.Account.setAccountId(params.email)
-      .then(this.props.history.push('/'))
+      .then(() => this.props.history.push('/'))
+      
   }
 
   onFail = error => {
@@ -37,6 +46,11 @@ export default class AccountOAuth extends Component {
   }
 
   render() {
+
+    if (this.state.loading) {
+      return <Splash loaded={true} />
+    }
+
     return (
       <View style={styles.container}>
         <OAuth 
