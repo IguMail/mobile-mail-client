@@ -1,4 +1,4 @@
-const debug = require('debug')('chaterr:lazy')
+const debug = require('../debug')('chaterr:lazy')
 const path = require('path')
 
 class LazyModule {

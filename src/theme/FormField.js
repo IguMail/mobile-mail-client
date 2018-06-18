@@ -1,8 +1,8 @@
 import React from "react";
 import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
-import { Row } from '../theme'
+import { Row } from './'
 
-const debug = require('debug')('chaterr:FormField')
+const debug = require('../lib/debug')('chaterr:FormField')
 
 class FormField extends React.PureComponent {
 

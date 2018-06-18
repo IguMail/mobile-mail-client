@@ -6,7 +6,7 @@ import TouchLink from './TouchLink'
 import style from './styles/sideMenu'
 import Avatar from './Avatar'
 
-//const debug = require('debug')('chaterr:side-menu')
+//const debug = require('../lib/debug')('chaterr:side-menu')
 
 const CREATE_ACCOUNT = 'Create an account on Chaterr'
 

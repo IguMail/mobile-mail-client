@@ -2,7 +2,7 @@ import { observable } from 'mobx'
 import { MqttClientFactory, MailApiFactory } from '../service'
 import config from '../config'
 
-const debug = require('debug')('chaterr:stores:getThreads')
+const debug = require('../lib/debug')('chaterr:stores:getThreads')
 
 export default class GetThreads {
 

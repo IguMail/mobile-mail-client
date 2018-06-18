@@ -4,7 +4,7 @@ import styles from '../styles'
 import { Section } from '../'
 import footerStyle from '../styles/message/footer'
 
-const debug = require('debug')('chaterr:Message:Footer')
+const debug = require('../../lib/debug')('chaterr:Message:Footer')
 
 const defaults = {
   style: {

@@ -1,6 +1,6 @@
 import { Linking } from 'react-native'
 
-const debug = require('debug')('chaterr:Linking')
+const debug = require('../debug')('chaterr:Linking')
 
 // augment for browser
 const ExpoLinking = Object.assign(Linking, {

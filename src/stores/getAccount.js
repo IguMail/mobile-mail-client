@@ -3,7 +3,7 @@ import MailApi from '../service/MailApi'
 import config from '../config'
 import createLocalStorage from '../service/LocalStorage'
 
-const debug = require('debug')('chaterr:stores:getAccounts')
+const debug = require('../lib/debug')('chaterr:stores:getAccounts')
 
 export default class GetAccount {
 
@@ -71,8 +71,8 @@ export default class GetAccount {
   }
 
   clearAccount() {
-    this.mainAccount = {}
     this.loaded = false
+    this.mainAccount = {}
   }
 
   fetchAccount() {

@@ -7,14 +7,15 @@
     "web": "react-app-rewired start",
     "build:web": "react-app-rewired build",
     "eject:web": "react-app-rewired eject",
+    "dev": "react-native-scripts start --reset-cache",
     "start": "react-native-scripts start",
     "eject-native": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
     "test": "jest"
   },
-  "browser": {
-    "expo": "./src/lib/expo"
+  "react-native": {
+    "./src/lib/expo": "./node_modules/expo"
   },
   "dependencies": {
     "buffer": "^5.1.0",
@@ -26,10 +27,10 @@
     "mobx-react": "^5.1.2",
     "moment": "^2.22.1",
     "mqtt": "^2.18.0",
-    "react": "^16.2.0",
+    "react": "16.3.1",
     "react-app-rewire-mobx": "^1.0.8",
     "react-dom": "^16.2.0",
-    "react-native": "^0.52.2",
+    "react-native": "^0.55.0",
     "react-native-elements": "^0.19.1",
     "react-native-render-html": "^3.10.0",
     "react-native-side-menu": "^1.1.3",

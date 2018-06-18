@@ -8,7 +8,7 @@ import conversation from '../theme/styles/conversation'
 import Conversation from '../theme/Message/Conversation'
 import ErrorModal from '../theme/ErrorModal'
 
-const debug = require('debug')('chaterr:Message')
+const debug = require('../lib/debug')('chaterr:Message')
 
 const style = {
   ...conversation

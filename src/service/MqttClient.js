@@ -7,7 +7,7 @@ const EventEmitter = require('eventemitter2').EventEmitter2
 const mqtt = require('mqtt/lib/connect/index.js')
 const mqttTransport = require('../lib/mqtt/mqtt')
 const config = require('../config').default
-const debug = require('debug')('chaterr:mqttClient')
+const debug = require('../lib/debug')('chaterr:mqttClient')
 
 const MQTT_HOST = process.env.MQTT_HOST || config.mqtt.url
 

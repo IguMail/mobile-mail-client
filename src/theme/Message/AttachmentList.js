@@ -3,7 +3,7 @@ import { View } from "react-native"
 import AttachmentLink from '../../theme/Message/AttachmentLink'
 import AttachmentImageLink from '../../theme/Message/AttachmentImageLink'
 
-const debug = require('debug')('chaterr:Message:AttachmentList')
+const debug = require('../../lib/debug')('chaterr:Message:AttachmentList')
 
 const defaultStyle = {
   container: {

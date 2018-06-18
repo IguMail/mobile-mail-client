@@ -2,7 +2,7 @@ import { observable } from 'mobx'
 import { MailApiFactory } from '../service'
 import config from '../config'
 
-const debug = require('debug')('chaterr:stores:sendMail')
+const debug = require('../lib/debug')('chaterr:stores:sendMail')
 
 export default class SendMail {
 

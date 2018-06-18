@@ -6,7 +6,7 @@ import button from '../theme/styles/button'
 import { Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-const debug = require('debug')('chaterr:Register')
+const debug = require('../lib/debug')('chaterr:Register')
 
 const NUM_ERR_MSG = 'Phone number can contain + sign, numbers, dashes and spaces'
 const PIN_ERR_MSG = 'Pin can only contain numbers'

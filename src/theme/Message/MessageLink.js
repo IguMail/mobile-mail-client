@@ -9,7 +9,7 @@ import { TouchLink } from '../../theme'
 import AttachmentList from '../../theme/Message/AttachmentList'
 import moment from 'moment'
 
-const debug = require('debug')('chaterr:Message:Link')
+const debug = require('../../lib/debug')('chaterr:Message:Link')
 
 const style = {
   ...conversation

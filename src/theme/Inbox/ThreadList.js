@@ -7,7 +7,7 @@ import inbox from '../styles/inbox'
 import MessageLink from './MessageLink'
 import Swipeout from 'react-native-swipeout'
 
-const debug = require('debug')('chaterr:Inbox:ThreadList')
+const debug = require('../../lib/debug')('chaterr:Inbox:ThreadList')
 
 const style = {
   ...inbox

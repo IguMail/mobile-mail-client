@@ -1,9 +1,9 @@
 import React from 'react'
 import { View } from 'react-native'
 import { Text, Button } from 'react-native-elements'
-import { Linking, WebBrowser } from 'expo'
+import { Linking, WebBrowser } from '../lib/expo'
 
-const debug = require('debug')('chaterr:com:oauth')
+const debug = require('../lib/debug')('chaterr:com:oauth')
 
 debug('{ Linking, WebBrowser }', { Linking, WebBrowser })
 

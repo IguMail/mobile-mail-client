@@ -1,5 +1,5 @@
 const URL = require('url')
-const debug = require('debug')('chaterr:MailApi')
+const debug = require('../lib/debug')('chaterr:MailApi')
 
 /**
  * Chaterr REST API

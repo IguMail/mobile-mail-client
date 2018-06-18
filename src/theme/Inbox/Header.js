@@ -4,7 +4,7 @@ import { observer, inject } from 'mobx-react'
 import styles from '../styles'
 import { Section, TouchLink } from '../'
 
-//const debug = require('debug')('chaterr:Header')
+//const debug = require('../../lib/debug')('chaterr:Header')
 
 const defaultStyle = { 
   titleContainer: { 

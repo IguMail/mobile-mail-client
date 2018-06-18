@@ -3,7 +3,7 @@ import { View, Image } from "react-native";
 import styles from '../styles'
 import { Section } from '../'
 
-const debug = require('debug')('chaterr:InboxFooter')
+const debug = require('../../lib/debug')('chaterr:InboxFooter')
 
 const defaults = {
   style: {

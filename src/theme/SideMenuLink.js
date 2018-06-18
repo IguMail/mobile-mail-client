@@ -2,7 +2,7 @@ import React from 'react'
 import SideMenu from 'react-native-side-menu'
 import SideMenuComponent from './SideMenu'
 
-const debug = require('debug')('chaterr:side-menu')
+const debug = require('../lib/debug')('chaterr:side-menu')
 
 export default class SideMenuLink extends React.Component {
 

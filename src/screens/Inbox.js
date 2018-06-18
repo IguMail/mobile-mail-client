@@ -9,7 +9,7 @@ import SearchBox from '../theme/SearchBox'
 import ErrorModal from '../theme/ErrorModal'
 import SideMenuLink from '../theme/SideMenuLink'
 
-const debug = require('debug')('chaterr:Inbox')
+const debug = require('../lib/debug')('chaterr:Inbox')
 
 const style = {
   ...inbox,

@@ -4,7 +4,7 @@ import { Section, Row, FormField, Logo, TouchLink } from '../theme'
 import styles from '../theme/styles'
 import { Button } from 'react-native-elements'
 
-const debug = require('debug')('chaterr:Login')
+const debug = require('../lib/debug')('chaterr:Login')
 
 const NUM_ERR_MSG = 'Phone number can contain + sign, numbers, dashes and spaces'
 const PIN_ERR_MSG = 'Pin can only contain numbers'

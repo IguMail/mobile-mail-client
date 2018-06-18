@@ -12,7 +12,7 @@ import DevConsole from './screens/DevConsole'
 import Message from './screens/Message'
 import OAuth from './screens/account/OAuth'
 
-const debug = require('debug')('chaterr:AppRoutes')
+const debug = require('./lib/debug')('chaterr:AppRoutes')
 const isDev = process.env.NODE_ENV === 'development'
 const fetchTimeout = 5000
 
@@ -68,7 +68,7 @@ class AppRoutes extends React.Component {
         <LoginRoute onAccountId={accountId => onAccountId(accountId)} />
     }
 
-    return (<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled="enabled">
+    return (<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
       <Route path="/" component={DevConsoleRoute} exact />  
       <Route path="/splash" component={SplashRoute} />
       <Route path="/login" component={isDev ? LoginDevRoute : LoginRoute} />

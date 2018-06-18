@@ -6,7 +6,7 @@ import styles from '../theme/styles'
 import { Button } from 'react-native-elements'
 import ErrorModal from '../theme/ErrorModal'
 
-const debug = require('debug')('chaterr:Login')
+const debug = require('../lib/debug')('chaterr:Login')
 
 const style = {
   container: {

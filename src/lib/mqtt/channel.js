@@ -1,6 +1,6 @@
 var EventEmitter = require('eventemitter2').EventEmitter2
 const util = require('util');
-const debug = require('debug')('mail-sync:mqtt:channel');
+const debug = require('../debug')('mail-sync:mqtt:channel');
 
 /**
  *

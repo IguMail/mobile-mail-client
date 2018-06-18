@@ -1,5 +1,6 @@
 import React from 'react'
 import App from './src/App'
+import { Font } from 'expo'
 import { NativeRouter, withRouter } from 'react-router-native'
 
 export default class AppNative extends React.Component {

@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-native'
 import styles from '../theme/styles'
 import { Section, Row, AccountHeader, TouchLink } from '../theme'
 
-const debug = require('debug')('chaterr:DevConsole')
+const debug = require('../lib/debug')('chaterr:DevConsole')
 
 const style = {
   ScreenLink: {

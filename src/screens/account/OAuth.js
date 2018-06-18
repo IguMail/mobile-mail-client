@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import { View } from 'react-native'
-import { Constants } from 'expo'
 import config from '../../config'
 import OAuth from '../../components/OAuth'
 
-const debug = require('debug')('chaterr:oauth')
+const debug = require('../../lib/debug')('chaterr:oauth')
 
 const OAuthUrl = config.oauth.url + '/auth/{service}'
 
@@ -61,7 +60,7 @@ const styles = {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: Constants.statusBarHeight,
+    paddingTop: 30,
     backgroundColor: '#ecf0f1',
   },
   button: {
