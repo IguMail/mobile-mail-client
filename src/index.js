@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./web/index.css";
+import { BrowserRouter, withRouter } from 'react-router-dom'
 import App from "./App";
 import registerServiceWorker from "./web/registerServiceWorker";
 
@@ -9,7 +10,7 @@ global.PLATFORM = 'web'
 // load expo 
 // TODO: Expo web compatible
 
-ReactDOM.render(<App loaded={true} />, document.getElementById("root"));
+ReactDOM.render(<App loaded={true} Router={BrowserRouter} withRouter={withRouter} />, document.getElementById("root"));
 registerServiceWorker();
 
 const injectFonts = () => {

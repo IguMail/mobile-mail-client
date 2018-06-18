@@ -1,29 +1,16 @@
 import React from "react"
 import { Provider } from 'mobx-react'
-import { BrowserRouter, withRouter as withRouterBrowser } from 'react-router-dom'
-import { NativeRouter, withRouter as withRouterNative } from 'react-router-native'
 import Splash from './screens/Splash'
 import AppRoutes from './AppRoutes'
 import stores from './stores'
 
 const debug = require('debug')('chaterr:App')
 
-
-const Router = props => {
-  if (global.window) {
-    return <BrowserRouter>{props.children}</BrowserRouter>
-  }
-  return <NativeRouter>{props.children}</NativeRouter>
-}
-
-const withRouter = com => 
-  (global.window ? withRouterBrowser(com) : withRouterNative(com))
-
 class App extends React.Component {
 
   render() {
 
-    const { loaded } = this.props
+    const { loaded, Router, withRouter } = this.props
     debug('props', this.props)
 
     const SplashRoute = props => (<Splash loaded={loaded} />)

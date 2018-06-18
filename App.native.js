@@ -3,7 +3,7 @@ import { setExpo } from './src/lib/expo'
 global.Expo = { Font, Linking, WebBrowser, Constants }
 import React from 'react'
 import App from './src/App'
-
+import { NativeRouter, withRouter } from 'react-router-native'
 
 export default class AppNative extends React.Component {
 
@@ -21,6 +21,6 @@ export default class AppNative extends React.Component {
   }
 
   render() {
-    return (<App loaded={this.state.loaded} />)
+    return (<App loaded={this.state.loaded} Router={NativeRouter} withRouter={withRouter} />)
   }
 }
