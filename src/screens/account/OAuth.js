@@ -14,7 +14,10 @@ const OAuthUrl = config.oauth.url + '/auth/{service}'
 export default class AccountOAuth extends Component {
 
   state = {
-    loading: false
+    inProgress: true,
+    succeeded: false,
+    cancelled: false,
+    error: null
   }
 
   get service() {
@@ -25,29 +28,42 @@ export default class AccountOAuth extends Component {
     return this.props.getAccount
   }
 
+  isAuthComplete() {
+    return !this.state.inProgress
+  }
+
   onSuccess = params => {
     debug('onSuccess', params)
     this.setState({
-      loading: true
+      inProgress: false,
+      succeeded: true
     })
     this.Account.setAccountId(params.email)
       .then(() => this.props.history.push('/'))
-      
   }
 
-  onFail = error => {
-    debug('onFail', error)
+  onError = error => {
+    debug('onError', error)
+    this.setState({
+      inProgress: false,
+      error: error
+    })
     this.props.history.push('/account/add')
   }
 
   onCancel = status => {
     debug('onCancel', status)
+    this.setState({
+      inProgress: false,
+      cancelled: true
+    })
     this.props.history.push('/')
   }
 
   render() {
 
-    if (this.state.loading) {
+    // TODO: Show message
+    if (this.isAuthComplete()) {
       return <Splash loaded={true} />
     }
 

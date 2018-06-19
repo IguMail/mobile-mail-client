@@ -160,10 +160,8 @@ export default class OAuth extends React.Component {
         this.setState({
           browserState
         })
-
-        // TODO fix
-        if (browserState && browserState.type === 'cancel' && this.props.onFail) {
-          this.props.onFail(new Error(browserState))
+        if (browserState && browserState.type === 'cancel' && this.props.onCancel) {
+          this.props.onCancel(new Error(browserState))
         }
       })
       .catch(error => {
@@ -171,8 +169,8 @@ export default class OAuth extends React.Component {
         this.setState({
           error
         })
-        if (this.props.onFail) {
-          this.props.onFail(error)
+        if (this.props.onError) {
+          this.props.onError(error)
         }
       })
   }
