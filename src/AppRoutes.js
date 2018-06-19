@@ -4,13 +4,15 @@ import { observer, inject } from 'mobx-react'
 import { KeyboardAvoidingView } from 'react-native'
 import { Route, withRouter } from 'react-router-native'
 import Splash from './screens/Splash'
-import Login from './screens/Login'
-import LoginDev from './screens/LoginDev'
+import Login from './screens/account/Login'
+import LoginDev from './screens/account/LoginDev'
 import AddAccount from './screens/account/Add'
+import AddCustomAccount from './screens/account/AddCustom'
 import Inbox from './screens/Inbox'
 import DevConsole from './screens/DevConsole'
 import Message from './screens/Message'
 import OAuth from './screens/account/OAuth'
+import RegisterAccount from './screens/Register'
 
 const debug = require('./lib/debug')('chaterr:AppRoutes')
 const isDev = process.env.NODE_ENV === 'development'
@@ -73,7 +75,9 @@ class AppRoutes extends React.Component {
       <Route path="/splash" component={SplashRoute} />
       <Route path="/login" component={isDev ? LoginDevRoute : LoginRoute} />
       <Route path="/account/add" component={AddAccount} />
+      <Route path="/account/add-custom" component={AddCustomAccount} />
       <Route path="/account/oauth/:service" component={OAuthRoute} />
+      <Route path="/account/register" component={RegisterAccount} />
       <Route path="/inbox" component={Inbox} />
       <Route path="/message/:id" component={Message} />
     </KeyboardAvoidingView>)

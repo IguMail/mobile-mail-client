@@ -47,9 +47,12 @@ const DevConsole = props => {
       <TouchLink to="/account/add"><Text>Add Account</Text></TouchLink>
     </ScreenLink>
     <ScreenLink>
-      <TouchLink to="/account/oauth"><Text>Login</Text></TouchLink>
+      <TouchLink to="/account/oauth"><Text>OAuth</Text></TouchLink>
     </ScreenLink>
-    <RedirectOnce to="/inbox" />
+    <ScreenLink>
+      <TouchLink to="/account/register"><Text>Register</Text></TouchLink>
+    </ScreenLink>
+    <RedirectOnce to="/account/add-custom" />
   </Section>)
 }
 

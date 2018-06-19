@@ -12,6 +12,8 @@ const NUM_ERR_MSG = 'Phone number can contain + sign, numbers, dashes and spaces
 const PIN_ERR_MSG = 'Pin can only contain numbers'
 const FIELD_REQ_MSG = 'This field is required'
 
+const style = {}
+
 class Register extends React.Component {
 
   state = {

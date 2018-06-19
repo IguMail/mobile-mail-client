@@ -1,12 +1,12 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 import { observer, inject } from 'mobx-react'
-import { Section, Row, FormField, Logo, TouchLink } from '../theme'
-import styles from '../theme/styles'
+import { Section, Row, FormField, Logo, TouchLink } from '../../theme'
+import styles from '../../theme/styles'
 import { Button } from 'react-native-elements'
-import ErrorModal from '../theme/ErrorModal'
+import ErrorModal from '../../theme/ErrorModal'
 
-const debug = require('../lib/debug')('chaterr:Login')
+const debug = require('../../lib/debug')('chaterr:Login')
 
 const style = {
   container: {
@@ -67,14 +67,9 @@ class Login extends React.Component {
 
   onSubmit() {
     const accountId = this.state.form.fields['accountId'].value
-    this.getAccount.setAccountId(accountId)
-    this.getAccount.fetch()
-
-    global.getAccount = this.getAccount
     debug('sumitting form', accountId)
-
+    this.getAccount.setAccountId(accountId)
     this.props.onAccountId && this.props.onAccountId(accountId)
-
   }
 
   onChangeText = (name, value) => {

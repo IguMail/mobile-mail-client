@@ -102,7 +102,9 @@ class AddAccount extends React.Component {
         borderBottomWidth: 0,
         marginTop: 30
       }}>
-        <AccountHeader title={['Add', 'Another Account']} titleStyle={{fontWeight: '600'}} />
+        <TouchLink to="/account/add-custom">
+          <AccountHeader title={['Add', 'Another Account']} titleStyle={{fontWeight: '600'}} />
+        </TouchLink>
       </Row>
 
       <Row style={{
