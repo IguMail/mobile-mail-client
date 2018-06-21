@@ -26,7 +26,9 @@ const style = {
   },
   iconContainer: {
     position: 'absolute',
-    left: 20
+    left: 20,
+    padding: 10,
+    zIndex: 1
   }
 }
 

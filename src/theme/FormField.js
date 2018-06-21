@@ -4,50 +4,46 @@ import { Row } from './'
 
 const debug = require('../lib/debug')('chaterr:FormField')
 
-class FormField extends React.PureComponent {
-
-  state = {
-    error: null,
-    value: undefined
-  }
+class FormField extends React.Component {
 
   componentDidMount() {
     this.formInput.defaultValue = this.props.defaultValue
   }
 
-  setValidationError(error) {
-    this.setState({
-      error
-    })
-  }
-
   render() {
 
-    const { label, onChangeText, validate, formInputRef } = this.props
+    const { 
+      label,
+      onChangeText,
+      validate,
+      formInputRef,
+      defaultValue,
+      value,
+      error
+    } = this.props
 
-    const onChange = (value) => {
+    const onChange = value => {
       debug("input changed", value)
-      
       if (validate) {
-        this.setValidationError(validate(value))
+        validate(value)
       }
       onChangeText && onChangeText(value)
     }
 
-    const errorMsg = name => {
-      return this.state.error && this.state.error.message
-    }
-
     const inputRef = ref => {
       this.formInput = ref
-      debug('ref', ref)
       formInputRef && formInputRef(ref)
     }
 
     return (<Row>
       <FormLabel>{label}</FormLabel>
-      <FormInput ref={ref => inputRef(ref)} onChangeText={onChange} defaultValue={this.props.defaultValue} />
-      <FormValidationMessage>{errorMsg()}</FormValidationMessage>
+      <FormInput 
+        ref={ref => inputRef(ref)} 
+        onChangeText={onChange} 
+        defaultValue={defaultValue} 
+        value={value} 
+      />
+      {error && <FormValidationMessage>{error.message}</FormValidationMessage>}
     </Row>)
   }
 }

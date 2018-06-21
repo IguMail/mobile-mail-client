@@ -4,6 +4,9 @@ import { Section, Row, AccountHeader, TouchLink } from '../../theme'
 import styles from '../../theme/styles'
 
 const style = {
+  headerTitle: {
+    fontWeight: '600'
+  },
   google: {
     width: 120,
     height: 40
@@ -103,7 +106,7 @@ class AddAccount extends React.Component {
         marginTop: 30
       }}>
         <TouchLink to="/account/add-custom">
-          <AccountHeader title={['Add', 'Another Account']} titleStyle={{fontWeight: '600'}} />
+          <AccountHeader title={['Add', 'Another Account']} titleStyle={style.headerTitle} />
         </TouchLink>
       </Row>
 

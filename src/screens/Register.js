@@ -1,10 +1,8 @@
 import React from "react"
-import { StyleSheet, View, Text } from "react-native"
+import { View, Text } from "react-native"
 import { Section, Row, FormField, Logo } from '../theme'
 import styles from '../theme/styles'
-import button from '../theme/styles/button'
 import { Button } from 'react-native-elements'
-import Icon from 'react-native-vector-icons/FontAwesome'
 
 const debug = require('../lib/debug')('chaterr:Register')
 
@@ -59,6 +57,7 @@ class Register extends React.Component {
           this.fields[key].setValidationError(err)
           return err
         }
+        return null
       })
       .filter(err => err)
     return errors
@@ -86,9 +85,6 @@ class Register extends React.Component {
   }
 
   RegisterForm() {
-
-    const errorMsg = name => this.state.form.fields[name].error
-
     return (<Section>
         <Row>
           <FormField 
