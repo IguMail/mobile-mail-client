@@ -70,7 +70,7 @@ class AppRoutes extends React.Component {
         <LoginRoute onAccountId={accountId => onAccountId(accountId)} />
     }
 
-    return (<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+    return (<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled="true">
       <Route path="/" component={DevConsoleRoute} exact />  
       <Route path="/splash" component={SplashRoute} />
       <Route path="/login" component={isDev ? LoginDevRoute : LoginRoute} />

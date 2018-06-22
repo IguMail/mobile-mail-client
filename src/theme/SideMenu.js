@@ -1,7 +1,7 @@
 import React from 'react'
 import { observer, inject } from 'mobx-react'
 import { View, Text, Image } from 'react-native'
-import { Icon } from 'react-native-elements'
+import Icon from './Icon'
 import TouchLink from './TouchLink'
 import style from './styles/sideMenu'
 import Avatar from './Avatar'

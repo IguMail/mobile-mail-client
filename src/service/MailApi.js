@@ -36,8 +36,8 @@ class MailApi {
     this.options.headers['X-Auth-Token'] = token
   }
 
-  account(email) {
-    return this.get('/account/:account/accounts/' + email)
+  account() {
+    return this.get('/account/:account/profile')
   }
 
   accounts() {
