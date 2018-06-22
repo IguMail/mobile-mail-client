@@ -1,9 +1,9 @@
 import React from 'react'
 import { View, Image } from 'react-native'
-import { Route, withRouter } from 'react-router-native'
+import { Route, withRouter, Switch } from 'react-router-native'
 import { Section, Row, AccountHeader, TouchLink } from '../../theme'
-import AddAccountOAuth from './AddOAuth'
-import AddAccountCustom from './AddCustom'
+import CreateUserOAuth from './CreateOAuth'
+import CreateUserCustom from './CreateCustom'
 import style from '../../theme/styles/account/add'
 
 const AuthServiceLink = (props) => (<TouchLink style={style.authServiceLink} to={props.to}>
@@ -11,11 +11,11 @@ const AuthServiceLink = (props) => (<TouchLink style={style.authServiceLink} to=
   </TouchLink>)
 
 const AuthServices = props => (
-  <Section style={style.container}>
+  <Section>
 
       <AccountHeader title={['Select the account that you wish to', 'link']} />
 
-      <AuthServiceLink to="/account/oauth/google">
+      <AuthServiceLink to="/user/create/oauth">
         <Image
           source={require('../../images/Google.png')}
           style={style.google}
@@ -51,43 +51,29 @@ const AuthServices = props => (
         borderBottomWidth: 0,
         marginTop: 30
       }}>
-        <TouchLink to="/account/add-custom">
+        <TouchLink to="/user/create/custom">
           <AccountHeader title={['Add', 'Another Account']} titleStyle={style.headerTitle} />
         </TouchLink>
-      </Row>
-
-      <Row style={{
-        ...style.authServiceLink,
-        borderBottomWidth: 0,
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <View style={style.dot}></View>
-        <View style={style.dot}></View>
-        <View style={style.dot}></View>
-        <View style={{
-          ...style.dot,
-          backgroundColor: '#f7f7f7'
-        }}></View>
       </Row>
 
     </Section>
 )
 
-class AddAccount extends React.Component {
+export default class CreateUser extends React.Component {
 
   render() {
 
+    const CreateUserCustomRoute = withRouter(CreateUserCustom)
+    const CreateUserOAuthRoute = withRouter(CreateUserOAuth)
+
     return (
-      <View>
-        <Route path="/account/add" component={AuthServices} exact />
-        <Route path="/account/add/custom" component={AddAccountCustom} />
-        <Route path="/account/add/oauth" component={AddAccountOAuth} />
+      <View style={style.container}>
+        <Switch>
+          <Route path="/user/create/custom" component={CreateUserCustomRoute} />
+          <Route path="/user/create/oauth" component={CreateUserOAuthRoute} />
+          <Route path="/" component={AuthServices} />
+        </Switch>
       </View>
     )
   }
 }
-
-export default AddAccount;

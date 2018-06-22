@@ -7,12 +7,11 @@ import Splash from './screens/Splash'
 import Login from './screens/account/Login'
 import LoginDev from './screens/account/LoginDev'
 import AddAccount from './screens/account/Add'
-import AddCustomAccount from './screens/account/AddCustom'
 import Inbox from './screens/Inbox'
 import DevConsole from './screens/DevConsole'
 import Message from './screens/Message'
-import OAuth from './screens/account/OAuth'
 import RegisterAccount from './screens/Register'
+import Intro from './screens/Intro'
 
 const debug = require('./lib/debug')('chaterr:AppRoutes')
 const isDev = process.env.NODE_ENV === 'development'
@@ -54,13 +53,17 @@ class AppRoutes extends React.Component {
     const DevConsoleRoute = withRouter(DevConsole)
     const LoginRoute = withRouter(Login)
     const LoginDevRoute = withRouter(LoginDev)
-    const OAuthRoute = withRouter(OAuth)
+    const IntroRoute = withRouter(Intro)
 
     if (!this.account.loaded) {
       return <SplashRoute msg="Logging you in" />
     }
 
-    if (location.pathname !== '/account/add' && !this.account.isLoggedIn()) {
+    if (!this.account.hasAccount()) {
+      return <IntroRoute />
+    }
+
+    if (!this.account.isLoggedIn()) {
       const onAccountId = accountId => {
         debug('Received Account Id', accountId)
         this.account.setAccountId(accountId)
@@ -70,13 +73,11 @@ class AppRoutes extends React.Component {
         <LoginRoute onAccountId={accountId => onAccountId(accountId)} />
     }
 
-    return (<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled="true">
+    return (<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled={true}>
       <Route path="/" component={DevConsoleRoute} exact />  
       <Route path="/splash" component={SplashRoute} />
       <Route path="/login" component={isDev ? LoginDevRoute : LoginRoute} />
       <Route path="/account/add" component={AddAccount} />
-      <Route path="/account/add-custom" component={AddCustomAccount} />
-      <Route path="/account/oauth/:service" component={OAuthRoute} />
       <Route path="/account/register" component={RegisterAccount} />
       <Route path="/inbox" component={Inbox} />
       <Route path="/message/:id" component={Message} />

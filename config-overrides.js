@@ -16,9 +16,12 @@ module.exports = function override(config, env) {
   const router = resolveApp("node_modules/react-router-native");
   const expo = resolveApp("node_modules/expo");
   const storage = resolveApp("node_modules/react-native-storage");
+  const swiper = resolveApp("node_modules/react-native-swiper-animated");
+  const material = resolveApp("node_modules/react-native-material-ui");
+  
 
   // transpile libraries
-  config = rewireBabelLoader.include(config, elements, vectorIcons, router, expo, storage);
+  config = rewireBabelLoader.include(config, elements, vectorIcons, router, expo, storage, swiper, material);
 
   // mobx decorators
   config = rewireMobX(config, env)

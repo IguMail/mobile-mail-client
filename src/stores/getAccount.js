@@ -43,6 +43,11 @@ export default class GetAccount {
     global.getAccount = this // debugging
   }
 
+  hasAccount() {
+    if (!this.loaded) throw new Error('Account not loaded yet')
+    return !!this.accountId
+  }
+
   isLoggedIn() {
     return this.accountId && this.loaded 
       && (this.mainAccount && this.mainAccount.id)
@@ -56,6 +61,31 @@ export default class GetAccount {
       .then(() => this.accountId = accountId)
       .then(() => this.fetchAccount())
       .then(() => this.accountId)
+  }
+
+  setUserProfile(entry) {
+    debug('Setting user profile', entry)
+    return this.localStorage.set('account', entry)
+      .then(() => entry)
+  }
+
+  createUserProfile(entry) {
+    debug('Creating user profile', entry)
+    return this.service.createUserProfile(entry)
+      .fetch()
+      .then( ({entry}) => {
+        debug('Created account entry', entry)
+        if (!entry || !entry.id) {
+          throw new Error('Failed to create account entry', entry)
+        }
+        return entry
+      })
+      .catch(error => {
+        this.error = error
+      })
+      .finally(result => {
+        return result
+      })
   }
 
   fetchAccountId() {
@@ -81,16 +111,17 @@ export default class GetAccount {
     return this.localStorage.get('account')
       .then(account => {
         debug('Fetched local account', this.accountId, account)
-        if (!account) {
-          debug('No local account, fetching from remote', this.accountId)
+        if (!account || !account.id) {
+          debug('No local account id, fetching from remote', this.accountId)
           return this.service.account(this.accountId)
             .fetch()
         }
         return account
       })
       .then(account => {
-        if (!account || !account.id) throw new Error('Failed to retrieve account')
+        if (!account || !account.account) throw new Error('Failed to retrieve account')
         this.mainAccount = account
+        return this.localStorage.set('account', account)
       })
       .catch(error => {
         debug('Fetch account error', error)
@@ -110,9 +141,9 @@ export default class GetAccount {
       .finally(() => this.loaded = true)
   }
 
-  createAccount(entry) {
+  addMailAccount(entry) {
     debug('Creating account', entry)
-    return this.service.createAccount(entry)
+    return this.service.addMailAccount(entry)
       .fetch()
       .then( ({entry}) => {
         debug('Created account entry', entry)

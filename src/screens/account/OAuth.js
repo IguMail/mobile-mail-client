@@ -1,16 +1,10 @@
 import React, { Component } from 'react'
-import { observer, inject } from 'mobx-react'
 import { View } from 'react-native'
-import config from '../../config'
 import OAuth from '../../components/OAuth'
 import Splash from '../../screens/Splash'
 
 const debug = require('../../lib/debug')('chaterr:oauth')
 
-const OAuthUrl = config.oauth.url + '/auth/{service}'
-
-@inject('getAccount')
-@observer
 export default class AccountOAuth extends Component {
 
   state = {
@@ -18,14 +12,6 @@ export default class AccountOAuth extends Component {
     succeeded: false,
     cancelled: false,
     error: null
-  }
-
-  get service() {
-    return this.props.match.params.service
-  }
-
-  get Account() {
-    return this.props.getAccount
   }
 
   isAuthComplete() {
@@ -38,8 +24,7 @@ export default class AccountOAuth extends Component {
       inProgress: false,
       succeeded: true
     })
-    this.Account.setAccountId(params.email)
-      .then(() => this.props.history.push('/'))
+    this.props.onSuccess(params)
   }
 
   onError = error => {
@@ -48,7 +33,7 @@ export default class AccountOAuth extends Component {
       inProgress: false,
       error: error
     })
-    this.props.history.push('/account/add')
+    this.props.onError(error)
   }
 
   onCancel = status => {
@@ -57,12 +42,11 @@ export default class AccountOAuth extends Component {
       inProgress: false,
       cancelled: true
     })
-    this.props.history.push('/')
+    this.props.onCancel(status)
   }
 
   render() {
 
-    // TODO: Show message
     if (this.isAuthComplete()) {
       return <Splash loaded={true} />
     }
@@ -73,8 +57,8 @@ export default class AccountOAuth extends Component {
           showDebug
           showAuthState
           autoOpen
-          OAuthUrl={OAuthUrl} 
-          service={this.service} 
+          OAuthUrl={this.props.OAuthUrl} 
+          service={this.props.service} 
           onSuccess={this.onSuccess} 
           onFail={this.onFail}
           onCancel={this.onCancel}

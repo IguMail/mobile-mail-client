@@ -36,16 +36,24 @@ class MailApi {
     this.options.headers['X-Auth-Token'] = token
   }
 
+  // user account profile
   account() {
     return this.get('/account/:account/profile')
   }
 
+  // linked mail accounts
   accounts() {
     return this.get('/account/:account/accounts')
   }
 
-  createAccount(account) {
-    return this.postJson('/account/:account/create', account)
+  // create custom user account
+  createUserProfile(user) {
+    return this.postJson('/account/:account/create', user)
+  }
+
+  // add a custom mail account
+  addMailAccount(account) {
+    return this.postJson('/account/:account/add', account)
   }
 
   messages() {
