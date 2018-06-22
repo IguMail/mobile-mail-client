@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native'
-import { Icon } from 'react-native-elements'
 import styles from './styles'
-import { Section, TouchLink } from './'
+import { Section, TouchLink, Icon } from './'
 
 const style = { 
   titleContainerStyle: {

@@ -1,10 +1,8 @@
 import React from 'react'
 import { observer, inject } from 'mobx-react'
 import { View, Text, Image } from 'react-native'
-import Icon from './Icon'
-import TouchLink from './TouchLink'
+import { Icon, TouchLink, Avatar } from './'
 import style from './styles/sideMenu'
-import Avatar from './Avatar'
 
 const debug = require('../lib/debug')('chaterr:side-menu')
 

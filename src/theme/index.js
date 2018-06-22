@@ -10,6 +10,9 @@ import InboxFooter from './Inbox/Footer'
 import TouchLink from './TouchLink'
 import MessageHeader from './Message/Header'
 import MessageFooter from './Message/Footer'
+import Icon from './Icon'
+import Avatar from './Avatar'
+import Button from './Button'
 
 export {
   Section,
@@ -23,5 +26,8 @@ export {
   InboxFooter,
   TouchLink,
   MessageHeader,
-  MessageFooter
+  MessageFooter,
+  Icon,
+  Avatar,
+  Button
 }

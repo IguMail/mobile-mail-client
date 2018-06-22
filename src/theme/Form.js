@@ -1,6 +1,5 @@
 import React from 'react'
-import { Section, FormField } from './'
-import { Button } from 'react-native-elements'
+import { Section, FormField, Button } from './'
 import styles from './styles'
 import FormGroup from './FormGroup'
 import FormRow from './FormRow'
@@ -10,10 +9,13 @@ const debug = require('../lib/debug')('chaterr:form')
 const FIELD_REQ_MSG = 'This field is required'
 
 const style = {
-  btnAddAccount: {
+  btnSubmit: {
     ...styles.btnPrimary,
     width: 250,
     height: 50
+  },
+  btnContainer: {
+    alignItems: 'center'
   }
 }
 
@@ -148,7 +150,8 @@ export default class Form extends React.Component {
             value={field.value}
           />
       } else if (field.type === 'group') {
-        return <FormGroup 
+        return <FormGroup
+          key={name} 
           name={name} 
           group={field} 
           onPress={onCheckboxPress} 
@@ -163,12 +166,10 @@ export default class Form extends React.Component {
         <FormRow>
           {Fields}
         </FormRow>
-        <FormRow style={{alignItems: 'center'}}>
+        <FormRow style={style.btnContainer}>
           <Button
             title={this.props.submitBtnTitle}
-            titleStyle={{ fontWeight: "700" }}
-            buttonStyle={style.btnAddAccount}
-            containerStyle={{ marginTop: 20 }}
+            buttonStyle={style.btnSubmit}
             onPress={() => this.onSubmit()}
           />
         </FormRow>

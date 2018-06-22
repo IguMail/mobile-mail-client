@@ -17,7 +17,6 @@ class FormField extends React.Component {
       onChangeText,
       validate,
       formInputRef,
-      defaultValue,
       value,
       error
     } = this.props
@@ -40,7 +39,6 @@ class FormField extends React.Component {
       <FormInput 
         ref={ref => inputRef(ref)} 
         onChangeText={onChange} 
-        defaultValue={defaultValue} 
         value={value} 
       />
       {error && <FormValidationMessage>{error.message}</FormValidationMessage>}
