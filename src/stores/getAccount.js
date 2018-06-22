@@ -82,39 +82,50 @@ export default class GetAccount {
       .then(account => {
         debug('Fetched local account', this.accountId, account)
         if (!account) {
-          debug('No local account, fetching from remote...', this.accountId)
-          global.service = this.service
+          debug('No local account, fetching from remote', this.accountId)
           return this.service.account(this.accountId)
             .fetch()
-            .then(account => {
-              debug('Fetched remote account', account)
-              this.loaded = true
-              if (!account || !account.id) throw new Error('Account access failed')
-              this.mainAccount = account
-            })
-            .catch(error => {
-              this.loaded = true
-              this.error = new Error(error)
-            })
         }
+        return account
+      })
+      .then(account => {
+        if (!account || !account.id) throw new Error('Failed to retrieve account')
         this.mainAccount = account
-        this.loaded = true
       })
       .catch(error => {
         debug('Fetch account error', error)
         this.error = error
       })
+      .finally(() => this.loaded = true)
   }
 
   fetch() {
     return this.fetchAccountId()
       .then(accountId => {
         if (accountId) return this.fetchAccount()
-        this.loaded = true
       })
       .catch(error => {
         this.error = error
-        this.loaded = true
+      })
+      .finally(() => this.loaded = true)
+  }
+
+  createAccount(entry) {
+    debug('Creating account', entry)
+    return this.service.createAccount(entry)
+      .fetch()
+      .then( ({entry}) => {
+        debug('Created account entry', entry)
+        if (!entry || !entry.id) {
+          throw new Error('Failed to create account entry', entry)
+        }
+        return entry
+      })
+      .catch(error => {
+        this.error = error
+      })
+      .finally(result => {
+        return result
       })
   }
 

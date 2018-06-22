@@ -44,6 +44,10 @@ class MailApi {
     return this.get('/account/:account/accounts')
   }
 
+  createAccount(account) {
+    return this.postJson('/account/:account/create', account)
+  }
+
   messages() {
     return this.get('/account/:account/messages')
   }

@@ -7,6 +7,7 @@ import { Section, TouchLink } from './'
 const style = { 
   titleContainerStyle: {
     ...styles.center,
+    flex: 0
   },
   titleStyle: {
     ...styles.fontDefault,

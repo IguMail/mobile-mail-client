@@ -1,5 +1,5 @@
 import React from "react"
-import { Text } from "react-native"
+import { View, Text } from "react-native"
 import { Redirect } from 'react-router-native'
 import styles from '../theme/styles'
 import { Section, Row, AccountHeader, TouchLink } from '../theme'
@@ -7,8 +7,16 @@ import { Section, Row, AccountHeader, TouchLink } from '../theme'
 const debug = require('../lib/debug')('chaterr:DevConsole')
 
 const style = {
+  container: {
+    marginTop: 30
+  },
   ScreenLink: {
     padding: 20
+  },
+  links: {
+    ...styles.section,
+    ...styles.center,
+    justifyContent: 'flex-start',
   }
 }
 
@@ -27,32 +35,32 @@ const DevConsole = props => {
 
   debug('props', props)
 
-  return (<Section style={{
-    ...style.section,
-    ...styles.center,
-    justifyContent: 'flex-start',
-    marginTop: 30
-  }}>
-    <AccountHeader title={'Dev Console'} />
-    <ScreenLink>
-      <TouchLink to="/splash"><Text>Splash</Text></TouchLink>
-    </ScreenLink>
-    <ScreenLink>
-      <TouchLink to="/login"><Text>Login</Text></TouchLink>
-    </ScreenLink>
-    <ScreenLink>
-      <TouchLink to="/inbox"><Text>Inbox</Text></TouchLink>
-    </ScreenLink>
-    <ScreenLink>
-      <TouchLink to="/account/add"><Text>Add Account</Text></TouchLink>
-    </ScreenLink>
-    <ScreenLink>
-      <TouchLink to="/account/oauth"><Text>OAuth</Text></TouchLink>
-    </ScreenLink>
-    <ScreenLink>
-      <TouchLink to="/account/register"><Text>Register</Text></TouchLink>
-    </ScreenLink>
-    <RedirectOnce to="/account/add-custom" />
+  return (<Section style={style.container}>
+    <AccountHeader title={'Dev Console'} backButton={{ to: '/' }} />
+    <View style={style.links}>
+      <ScreenLink>
+        <TouchLink to="/splash"><Text>Splash</Text></TouchLink>
+      </ScreenLink>
+      <ScreenLink>
+        <TouchLink to="/login"><Text>Login</Text></TouchLink>
+      </ScreenLink>
+      <ScreenLink>
+        <TouchLink to="/inbox"><Text>Inbox</Text></TouchLink>
+      </ScreenLink>
+      <ScreenLink>
+        <TouchLink to="/account/add"><Text>Add Account</Text></TouchLink>
+      </ScreenLink>
+      <ScreenLink>
+        <TouchLink to="/account/oauth"><Text>OAuth</Text></TouchLink>
+      </ScreenLink>
+      <ScreenLink>
+        <TouchLink to="/account/register"><Text>Register</Text></TouchLink>
+      </ScreenLink>
+      <ScreenLink>
+        <TouchLink to="/account/add-custom"><Text>Add Custom Account</Text></TouchLink>
+      </ScreenLink>
+    </View>
+    <RedirectOnce to="/" />
   </Section>)
 }
 

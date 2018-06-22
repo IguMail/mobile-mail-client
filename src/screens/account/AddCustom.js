@@ -10,6 +10,9 @@ const debug = require('../../lib/debug')('chaterr:account:custom')
 const FIELD_REQ_MSG = 'This field is required'
 const ACCOUNT_ADD_BTN_TITLE = 'ADD'
 
+const accountSuccessRoute = '/'
+const accountSuccessMsgTime = 2000
+
 const style = {
   container: {
     marginTop: 45
@@ -65,9 +68,16 @@ const form = {
   }
 }
 
+let timerRoute = null
+
 @inject('getAccount')
 @observer
 class Login extends React.Component {
+
+  state = {
+    error: null,
+    success: null
+  }
 
   get getAccount() {
     return this.props.getAccount
@@ -100,10 +110,12 @@ class Login extends React.Component {
 
   onSubmit(form) {
     debug('submitted form', form)
+
   }
 
-  onChangeText = (name, value) => {
-    debug('text changed', name, value)
+  navigateToSuccessRoute() {
+    debug('Navigating to ', accountSuccessRoute)
+    this.props.history.push(accountSuccessRoute)
   }
 
   render() {
@@ -113,8 +125,45 @@ class Login extends React.Component {
       return <ErrorModal isVisible={true} errorMsg={this.getAccount.error.message} close={close} />
     }
 
-    const onSubmit = state => {
-      debug('Form submitted', state)
+    if (this.state.error) {
+      const close = () => this.setState({ error: null })
+      return <ErrorModal isVisible={true} errorMsg={this.state.error.message} close={close} />
+    }
+
+    if (this.state.success) {
+      const close = () => {
+        clearTimeout(timerRoute)
+        this.setState({ success: null })
+        this.navigateToSuccessRoute()
+      }
+      return <ErrorModal isVisible={true} errorMsg={this.state.success.message} close={close} />
+    }
+
+    const onSubmit = form => {
+      debug('Form submitted', form)
+      const account = {}
+      Object.entries(form.fields)
+        .forEach(([name, entry]) => {
+          account[name] = entry.value
+        })
+      debug('Creating account', account)
+      this.getAccount.createAccount(account)
+        .then(account => {
+          debug('Account created', account)
+          this.setState({
+            success: {
+              message: 'Account created successfully!'
+            }
+          })
+          timerRoute = setTimeout(
+            () => this.navigateToSuccessRoute(), 
+            accountSuccessMsgTime
+          )
+        })
+        .catch(error => {
+          debug('Failed to create account', error)
+          this.setState({ error })
+        })
     }
 
     return (<Section style={style.container}>

@@ -6,7 +6,7 @@ import TouchLink from './TouchLink'
 import style from './styles/sideMenu'
 import Avatar from './Avatar'
 
-//const debug = require('../lib/debug')('chaterr:side-menu')
+const debug = require('../lib/debug')('chaterr:side-menu')
 
 const CREATE_ACCOUNT = 'Create an account on Chaterr'
 
@@ -95,7 +95,7 @@ class SideMenu extends React.Component {
       {
         title: account.name || account.email,
         iconName: 'account-circle',
-        to: '/inbox', // '/inbox/' + account.id,
+        to: '/inbox',
         selected: true
       }
     ]
@@ -106,6 +106,8 @@ class SideMenu extends React.Component {
   render() {
 
     const { account, sideMenu } = this.props
+
+    debug('sidemenu', this.props)
 
     const onPress = () => {
       sideMenu.isOpen = false

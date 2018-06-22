@@ -103,7 +103,7 @@ export default class Form extends React.Component {
     if (errors.length) {
       return debug('Errors exist', errors)
     } else {
-      this.props.onSubmit(this.state)
+      this.props.onSubmit(this.state.form)
     }
   }
 
@@ -135,7 +135,6 @@ export default class Form extends React.Component {
 
     const Fields = Object.entries(fields).map( ([name, field]) => {
       const validFieldTypes = [null, undefined, 'text', 'password']
-      debug('render field', name, field, validFieldTypes)
       if (validFieldTypes.includes(field.type)) {
         return <FormField 
             key={name}
