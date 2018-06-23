@@ -14,9 +14,7 @@ const style = {
     padding: 20
   },
   links: {
-    ...styles.section,
-    ...styles.center,
-    justifyContent: 'flex-start',
+    alignItems: 'center'
   }
 }
 
@@ -42,6 +40,9 @@ const DevConsole = props => {
         <TouchLink to="/splash"><Text>Splash</Text></TouchLink>
       </ScreenLink>
       <ScreenLink>
+        <TouchLink to="/intro"><Text>Intro</Text></TouchLink>
+      </ScreenLink>
+      <ScreenLink>
         <TouchLink to="/login"><Text>Login</Text></TouchLink>
       </ScreenLink>
       <ScreenLink>
@@ -55,9 +56,6 @@ const DevConsole = props => {
       </ScreenLink>
       <ScreenLink>
         <TouchLink to="/account/register"><Text>Register</Text></TouchLink>
-      </ScreenLink>
-      <ScreenLink>
-        <TouchLink to="/account/add-custom"><Text>Add Custom Account</Text></TouchLink>
       </ScreenLink>
     </View>
     <RedirectOnce to="/" />

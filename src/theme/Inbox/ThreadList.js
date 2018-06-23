@@ -27,7 +27,7 @@ const ThreadList = props => {
       .filter(thread => thread.messages.length && thread.messages[0].id)
 
   if (threadsNotEmpty.length === 0) {
-    return <View style={styles.center}>
+    return <View style={style.MessageListEmpty}>
       <Text style={styles.fontDefault}>{MSG_INBOX_EMPTY}</Text>
     </View>
   }

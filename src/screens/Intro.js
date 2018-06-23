@@ -6,61 +6,13 @@ import {
 import { Route, withRouter, Switch } from 'react-router-native'
 import Swiper from '../components/react-native-swiper-animated';
 import Splash from '../screens/Splash'
-import styles from '../theme/styles'
+import style from '../theme/styles/intro'
 import { Button } from '../theme'
 import CreateUser from '../screens/user/Create'
 
 const debug = require('debug')('chaterr:intro')
 
 const BTN_TITLE = 'GET STARTED'
-
-const style = {
-  wrapper: {
-    backgroundColor: '#e1f6ff',
-  },
-  slide1: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#e91e63',
-  },
-  slide2: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#673ab7',
-  },
-  slide3: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#3f51b5',
-  },
-  slide4: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#95d7a2',
-  },
-  text: {
-    color: '#fff',
-    fontSize: 30,
-    fontWeight: 'bold',
-  },
-  dot: {
-    height: 10,
-    width: 10
-  },
-  activeDot: {
-    width: 26
-  },
-  btnStyle: {
-    ...styles.btnPrimary,
-    width: 250,
-    height: 50,
-    marginTop: 20
-  },
-};
 
 const GetStarted = props => (
   <View>
@@ -103,7 +55,7 @@ export default class Intro extends React.Component {
 
   onDone() {
     debug('Done')
-    this.props.history.push('/user/create')
+    this.props.history.push('/intro/user/create')
   }
 
   render() {
@@ -113,7 +65,7 @@ export default class Intro extends React.Component {
 
     return (
       <Switch>
-        <Route path="/user/create" component={CreateUserRoute} />
+        <Route path="/intro/user/create" component={CreateUserRoute} />
         <Route path="/" component={SlidesRoute} />
       </Switch>
     )

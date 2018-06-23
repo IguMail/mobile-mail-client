@@ -15,7 +15,7 @@ const AuthServices = props => (
 
       <AccountHeader title={['Select the account that you wish to', 'link']} />
 
-      <AuthServiceLink to="/user/create/oauth">
+      <AuthServiceLink to="/intro/user/create/oauth">
         <Image
           source={require('../../images/Google.png')}
           style={style.google}
@@ -51,7 +51,7 @@ const AuthServices = props => (
         borderBottomWidth: 0,
         marginTop: 30
       }}>
-        <TouchLink to="/user/create/custom">
+        <TouchLink to="/intro/user/create/custom">
           <AccountHeader title={['Add', 'Another Account']} titleStyle={style.headerTitle} />
         </TouchLink>
       </Row>
@@ -69,8 +69,8 @@ export default class CreateUser extends React.Component {
     return (
       <View style={style.container}>
         <Switch>
-          <Route path="/user/create/custom" component={CreateUserCustomRoute} />
-          <Route path="/user/create/oauth" component={CreateUserOAuthRoute} />
+          <Route path="/intro/user/create/custom" component={CreateUserCustomRoute} />
+          <Route path="/intro/user/create/oauth" component={CreateUserOAuthRoute} />
           <Route path="/" component={AuthServices} />
         </Switch>
       </View>

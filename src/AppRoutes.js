@@ -2,7 +2,7 @@ import React from 'react'
 import { autorun } from 'mobx'
 import { observer, inject } from 'mobx-react'
 import { KeyboardAvoidingView } from 'react-native'
-import { Route, withRouter } from 'react-router-native'
+import { Route, withRouter, Switch, Redirect } from 'react-router-native'
 import Splash from './screens/Splash'
 import Login from './screens/account/Login'
 import LoginDev from './screens/account/LoginDev'
@@ -64,23 +64,20 @@ class AppRoutes extends React.Component {
     }
 
     if (!this.account.isLoggedIn()) {
-      const onAccountId = accountId => {
-        debug('Received Account Id', accountId)
-        this.account.setAccountId(accountId)
-      }
-      return isDev ? 
-        <LoginDevRoute onAccountId={accountId => onAccountId(accountId)} /> : 
-        <LoginRoute onAccountId={accountId => onAccountId(accountId)} />
+      return isDev ? <LoginDevRoute /> : <LoginRoute />
     }
 
-    return (<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled={true}>
-      <Route path="/" component={DevConsoleRoute} exact />  
-      <Route path="/splash" component={SplashRoute} />
-      <Route path="/login" component={isDev ? LoginDevRoute : LoginRoute} />
-      <Route path="/account/add" component={AddAccount} />
-      <Route path="/account/register" component={RegisterAccount} />
-      <Route path="/inbox" component={Inbox} />
-      <Route path="/message/:id" component={Message} />
+    return (<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled="true">
+      <Switch>
+        <Route path="/splash" component={SplashRoute} />
+        <Route path="/login" component={isDev ? LoginDevRoute : LoginRoute} />
+        <Route path="/account/add" component={AddAccount} />
+        <Route path="/account/register" component={RegisterAccount} />
+        <Route path="/inbox" component={Inbox} />
+        <Route path="/message/:id" component={Message} />
+        <Route path="/intro" component={IntroRoute} />
+        <Route path="/" component={DevConsoleRoute} />
+      </Switch>
     </KeyboardAvoidingView>)
   }
 }

@@ -3,7 +3,12 @@ import styles from './base'
 const inbox = {
   screen: {
     marginTop: 0,
-    backgroundColor: '#fcfcfc'
+    backgroundColor: '#fcfcfc',
+    flex: 1
+  },
+  full: {
+    height: '100%',
+    flex: 1
   },
   priorityDot: {
     flexDirection: 'row',
@@ -11,7 +16,12 @@ const inbox = {
   },
   MessageList: {
     marginBottom: 60,
-    marginTop: 0
+    marginTop: 0,
+    flex: 1
+  },
+  MessageListEmpty: {
+    ...styles.center,
+    flex: 1
   },
   MessageLink: {
     paddingTop: 20,

@@ -111,8 +111,8 @@ export default class GetAccount {
     return this.localStorage.get('account')
       .then(account => {
         debug('Fetched local account', this.accountId, account)
-        if (!account || !account.id) {
-          debug('No local account id, fetching from remote', this.accountId)
+        if (!account || account.account !== this.accountId) {
+          debug('Stale local account, fetching from remote', this.accountId)
           return this.service.account(this.accountId)
             .fetch()
         }

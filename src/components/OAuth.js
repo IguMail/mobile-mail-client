@@ -5,8 +5,6 @@ import { Linking, WebBrowser } from '../lib/expo'
 
 const debug = require('../lib/debug')('chaterr:com:oauth')
 
-debug('{ Linking, WebBrowser }', { Linking, WebBrowser })
-
 export default class OAuth extends React.Component {
 
   state = {
@@ -155,13 +153,17 @@ export default class OAuth extends React.Component {
     
     WebBrowser.openAuthSessionAsync(url)
       .then(browserState => {
+        const { url, type } = browserState || {}
         debug('WebBrowser opened, browserState', browserState)
         if (this.unmounting) return
         this.setState({
           browserState
         })
-        if (browserState && browserState.type === 'cancel' && this.props.onCancel) {
+        if (type === 'cancel' && this.props.onCancel) {
           this.props.onCancel(new Error(browserState))
+        }
+        if (type === 'success') {
+          this._onOpenedWithUrl(url, type)
         }
       })
       .catch(error => {

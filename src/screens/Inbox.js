@@ -12,10 +12,7 @@ import SideMenuLink from '../theme/SideMenuLink'
 const debug = require('../lib/debug')('chaterr:Inbox')
 
 const style = {
-  ...inbox,
-  full: {
-    height: '100%'
-  }
+  ...inbox
 }
 
 @inject('getAccount', 'getThreads', 'sideMenu')
