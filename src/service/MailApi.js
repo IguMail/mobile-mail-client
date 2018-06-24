@@ -48,7 +48,7 @@ class MailApi {
 
   // create custom user account
   createUserProfile(user) {
-    return this.postJson('/account/:account/create', user)
+    return this.postJson('/account/:account/profile/create', user)
   }
 
   // add a custom mail account
