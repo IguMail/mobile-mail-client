@@ -33,12 +33,12 @@ class Message extends React.Component {
     return this.getAccount.accountId
   }
 
-  get mainAccount() {
-    return this.getAccount.mainAccount
+  get profile() {
+    return this.getAccount.profile
   }
 
   get account() {
-    const { user } = this.getAccount.mainAccount
+    const { user } = this.profile
     if (!user) return {}
     return {
       email: user.email,
@@ -53,12 +53,12 @@ class Message extends React.Component {
   }
 
   get getThread() {
-    debug('get Thread', this.mainAccount, this.id)
-    return this.props.getThread(this.mainAccount, this.id)
+    debug('get Thread', this.profile, this.id)
+    return this.props.getThread(this.profile, this.id)
   }
 
   get sendMail() {
-    return this.props.sendMail(this.mainAccount, this.account.email)
+    return this.props.sendMail(this.profile, this.account.email)
   }
 
   getReplyTo(messages = []) {

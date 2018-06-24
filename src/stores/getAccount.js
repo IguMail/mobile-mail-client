@@ -8,7 +8,7 @@ const debug = require('../lib/debug')('chaterr:stores:getAccounts')
 export default class GetAccount {
 
   @observable accountId = null
-  @observable mainAccount = {}
+  @observable profile = {}
   @observable accounts = []
   @observable error = null
   @observable loaded = false
@@ -20,17 +20,17 @@ export default class GetAccount {
   }
 
   get name() {
-    const { name } = this.mainAccount.user
+    const { name } = this.profile.user
     return name.givenName + (name.familyName && ' ' + name.familyName)
   }
 
   get email() {
-    return this.mainAccount.user.email
+    return this.profile.user.email
   }
 
   get photo() {
     try {
-      return this.mainAccount.user.photos[0].value
+      return this.profile.user.photos[0].value
     } catch(e) {}
   }
 
@@ -43,6 +43,14 @@ export default class GetAccount {
     global.getAccount = this // debugging
   }
 
+  reset() {
+    this.loaded = false
+    this.profile = {}
+    this.accounts = []
+    this.error = null
+    this.loggedIn = false
+  }
+
   hasAccount() {
     if (!this.loaded) throw new Error('Account not loaded yet')
     return !!this.accountId
@@ -50,23 +58,31 @@ export default class GetAccount {
 
   isLoggedIn() {
     return this.accountId && this.loaded 
-      && (this.mainAccount && this.mainAccount.id)
+      && (this.profile && this.profile.id)
   }
 
   setAccountId(accountId) {
     debug('Setting account id', accountId)
     if (this.accountId === accountId) return Promise.resolve(accountId)
-    this.clearAccount()
+    this.reset()
     return this.localStorage.set('accountId', accountId)
       .then(() => this.accountId = accountId)
-      .then(() => this.fetchAccount())
+      .then(() => this.fetchUserProfile())
       .then(() => this.accountId)
+  }
+
+  getUserProfile() {
+    debug('Getting user local profile')
+    return this.localStorage.get('profile')
   }
 
   setUserProfile(entry) {
     debug('Setting user profile', entry)
-    return this.localStorage.set('account', entry)
-      .then(() => entry)
+    return this.localStorage.set('profile', entry)
+      .then(() => {
+        this.profile = entry
+        return entry
+      })
   }
 
   createUserProfile(entry) {
@@ -100,40 +116,47 @@ export default class GetAccount {
       })
   }
 
-  clearAccount() {
-    this.loaded = false
-    this.mainAccount = {}
-  }
-
-  fetchAccount() {
-    debug('Fetching account', this.accountId)
-    if (!this.accountId) throw new Error('Account does not exist')
-    return this.localStorage.get('account')
-      .then(account => {
-        debug('Fetched local account', this.accountId, account)
-        if (!account || account.account !== this.accountId) {
-          debug('Stale local account, fetching from remote', this.accountId)
-          return this.service.account(this.accountId)
+  fetchUserProfile() {
+    debug('Fetching profile', this.accountId)
+    if (!this.accountId) {
+      throw new Error('AccountId must be set before fetching profile')
+    }
+    return this.getUserProfile()
+      .then(profile => {
+        debug('Fetched local profile', this.accountId, profile)
+        if (!profile || profile.account !== this.accountId) {
+          debug('Stale local profile, fetching from remote', this.accountId)
+          return this.service.profile(this.accountId)
             .fetch()
         }
-        return account
+        return profile
       })
-      .then(account => {
-        if (!account || !account.account) throw new Error('Failed to retrieve account')
-        this.mainAccount = account
-        return this.localStorage.set('account', account)
+      .then(profile => {
+        if (!profile || !profile.account) {
+          throw new Error('Failed to retrieve profile')
+        }
+        return this.setUserProfile(profile)
       })
       .catch(error => {
-        debug('Fetch account error', error)
+        debug('Fetch profile error', error)
         this.error = error
       })
       .finally(() => this.loaded = true)
   }
 
+  fetchMailAccounts() {
+    return this.service.accounts()
+      .fetch()
+      .then(accounts => {
+        if (!accounts) throw new Error('Failed to fetch accounts')
+        this.accounts = accounts
+      })
+  }
+
   fetch() {
     return this.fetchAccountId()
       .then(accountId => {
-        if (accountId) return this.fetchAccount()
+        if (accountId) return this.fetchUserProfile()
       })
       .catch(error => {
         this.error = error
@@ -142,13 +165,13 @@ export default class GetAccount {
   }
 
   addMailAccount(entry) {
-    debug('Creating account', entry)
+    debug('Creating mail account', entry)
     return this.service.addMailAccount(entry)
       .fetch()
       .then( ({entry}) => {
-        debug('Created account entry', entry)
+        debug('Created mail account entry', entry)
         if (!entry || !entry.id) {
-          throw new Error('Failed to create account entry', entry)
+          throw new Error('Failed to create mail account entry', entry)
         }
         return entry
       })

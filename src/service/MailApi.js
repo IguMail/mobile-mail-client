@@ -37,7 +37,7 @@ class MailApi {
   }
 
   // user account profile
-  account() {
+  profile() {
     return this.get('/account/:account/profile')
   }
 
@@ -48,12 +48,12 @@ class MailApi {
 
   // create custom user account
   createUserProfile(user) {
-    return this.postJson('/account/:account/profile/create', user)
+    return this.postJson('/account/:account/create/profile', user)
   }
 
   // add a custom mail account
   addMailAccount(account) {
-    return this.postJson('/account/:account/add', account)
+    return this.postJson('/account/:account/create/mailbox', account)
   }
 
   messages() {
