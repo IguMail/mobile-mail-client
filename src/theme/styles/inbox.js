@@ -3,11 +3,9 @@ import styles from './base'
 const inbox = {
   screen: {
     marginTop: 0,
-    backgroundColor: '#fcfcfc',
-    flex: 1
+    backgroundColor: '#fcfcfc'
   },
   full: {
-    height: '100%',
     flex: 1
   },
   priorityDot: {

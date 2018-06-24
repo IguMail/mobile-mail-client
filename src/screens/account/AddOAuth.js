@@ -18,8 +18,7 @@ export default class AddAccountOAuth extends React.Component {
       inProgress: false,
       succeeded: true
     })
-    this.Account.setAccountId(params.email)
-      .then(() => this.props.history.push('/'))
+    this.props.history.push('/')
   }
 
   onError = error => {

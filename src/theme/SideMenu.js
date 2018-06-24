@@ -87,16 +87,32 @@ const MenuItem = props => (
 @observer
 class SideMenu extends React.Component {
 
+  componentWillMount() {
+    this.props.account.fetchMailAccounts()
+  }
+
+  getListWithUniqueKey(list, key) {
+    const values = list.map(item => item[key])
+    return [...new Set(values)].map( 
+      (item, i, self) => list[values.indexOf(item)]
+    )
+  }
+
   get menuItems() {
-    const { account } = this.props
-    const accounts = [
-      {
-        title: account.name || account.email,
+    const { account, sideMenu } = this.props
+    const selected = sideMenu.selected
+    const addAccounts = account.accounts.map( ({ user }) => {
+      return {
+        title: user.email,
+        email: user.email,
         iconName: 'account-circle',
         to: '/inbox',
-        selected: true
+        selected: selected && selected.email === user.email
       }
-    ]
+    })
+    const accounts = this.getListWithUniqueKey(addAccounts, 'title')
+
+    debug('account.accounts', account.accounts, 'addAccounts', addAccounts, 'sideMenu', sideMenu)
     return [allMailMenuItem, ...accounts, ...staticMenuItems]
   }
 
@@ -107,7 +123,8 @@ class SideMenu extends React.Component {
 
     debug('sidemenu', this.props)
 
-    const onPress = () => {
+    const onPress = item => {
+      sideMenu.selected = item
       sideMenu.isOpen = false
     }
 
@@ -128,7 +145,7 @@ class SideMenu extends React.Component {
             <TouchLink 
               to={l.to} 
               key={i}
-              onPress={() => onPress()}>
+              onPress={() => onPress(l)}>
               <MenuItem
                 iconName={l.iconName}
                 iconType={l.iconType}

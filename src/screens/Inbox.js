@@ -77,8 +77,8 @@ class Inbox extends React.Component {
       <SideMenuLink 
         account={this.props.getAccount}
         isOpen={this.props.sideMenu.isOpen} 
-        onChange={isOpen => sideMenuStateChange(isOpen)} 
-        style={style.full}>
+        onChange={isOpen => sideMenuStateChange(isOpen)}
+      >
         <Section style={style.screen}>
           <ScrollView style={style.full}>
             <InboxHeader title={'All Priority'} />

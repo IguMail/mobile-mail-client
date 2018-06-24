@@ -146,8 +146,8 @@ class Login extends React.Component {
         .forEach(([name, entry]) => {
           account[name] = entry.value
         })
-      debug('Creating account', account)
-      this.getAccount.createAccount(account)
+      debug('Creating mail account', account)
+      this.getAccount.addMailAccount(account)
         .then(account => {
           debug('Account created', account)
           this.setState({

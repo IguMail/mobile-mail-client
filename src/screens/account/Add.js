@@ -15,7 +15,7 @@ const AuthServices = props => (
 
       <AccountHeader title={['Select the account that you wish to', 'link']} />
 
-      <AuthServiceLink to="/account/oauth/google">
+      <AuthServiceLink to="/account/add/oauth/google">
         <Image
           source={require('../../images/Google.png')}
           style={style.google}
@@ -51,7 +51,7 @@ const AuthServices = props => (
         borderBottomWidth: 0,
         marginTop: 30
       }}>
-        <TouchLink to="/account/add-custom">
+        <TouchLink to="/account/add/custom">
           <AccountHeader title={['Add', 'Another Account']} titleStyle={style.headerTitle} />
         </TouchLink>
       </Row>
