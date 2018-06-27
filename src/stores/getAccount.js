@@ -32,7 +32,7 @@ export default class GetAccount {
   }
 
   get photo() {
-    return this.profile.user.photo
+    return this.profile.photo
   }
 
   get status() {

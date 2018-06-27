@@ -62,7 +62,7 @@ export default class OAuth extends React.Component {
       WebBrowser.dismissBrowser()
     }
 
-    if (params.queryParams && params.queryParams.userId) {
+    if (params.queryParams && params.queryParams.user) {
       if (this.props.onSuccess) {
         this.props.onSuccess(params.queryParams)
       }

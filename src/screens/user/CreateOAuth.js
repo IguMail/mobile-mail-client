@@ -37,9 +37,10 @@ export default class CreateUserOAuth extends React.Component {
     this.getAccount.fetch()
   }
 
-  getUserFromOAuth(params) {
+  getUserProfileFromOAuth(params) {
     debug('params', params)
-    return params
+    const user = JSON.parse(params.user)
+    return user
   }
 
   onSuccess = params => {
@@ -51,15 +52,11 @@ export default class CreateUserOAuth extends React.Component {
         message: 'user created successfully!'
       }
     })
-    const user = this.getUserFromOAuth(params)
-    const profile = { 
-        user,
-        account: user.email
-      }
+    const profile = this.getUserProfileFromOAuth(params)
     this.getAccount
       .setUserProfile(profile)
       .then(profile => {
-        return this.getAccount.setAccountId(user.email)
+        return this.getAccount.setAccountId(profile.user.email)
       })
       .then(() => this.getAccount.created = profile)
       .then(() => {
