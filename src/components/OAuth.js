@@ -31,10 +31,6 @@ export default class OAuth extends React.Component {
     return this.props.OAuthUrl
   }
 
-  get Account() {
-    return this.props.getAccount
-  }
-
   componentDidMount() {
     debug('Linking', Linking)
     Linking.getInitialURL().then(url => {
@@ -89,7 +85,8 @@ export default class OAuth extends React.Component {
 
     const userId = params && params.userId
 
-    const oAuthDone = opener.type === 'return' || (params  && params.userId) || browserState.type === 'cancel'
+    const oAuthDone = opener.type === 'return' 
+      || (params  && params.userId) || browserState.type === 'cancel'
     const btnTitle = oAuthDone ? 'Re-Login with Google' : 'Login with Google'
 
     debug('State', this.state)
@@ -120,11 +117,9 @@ export default class OAuth extends React.Component {
 
     return (
       <View style={[styles.container, containerStyle]}>
-        
         {showDebug && <Debug />}
         {showAuthState && <AuthState />}
         {this.props.children}
-        
       </View>
     )
   }
@@ -143,14 +138,16 @@ export default class OAuth extends React.Component {
       returnUrl
     })
     Linking.addEventListener('url', ({ url }) => this._onOpenedWithUrl(url, 'return'))
-    debug('returnUrl', returnUrl)
     const url = this.OAuthUrl.replace('{service}', this.service)
-    return this._openUrl(url + '?returnUrl=' + encodeURIComponent(returnUrl))
+    const oAuthUrl = url 
+      + '?returnUrl=' + encodeURIComponent(returnUrl) 
+      + (this.props.accountId ? '&accountId=' +  encodeURIComponent(this.props.accountId) : '')
+    debug('opening oauth URL', oAuthUrl)
+    return this._openUrl(oAuthUrl)
   }
 
   _openUrl(url) {
     debug('Opening URL', url)
-    
     WebBrowser.openAuthSessionAsync(url)
       .then(browserState => {
         const { url, type } = browserState || {}

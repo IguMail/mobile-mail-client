@@ -40,10 +40,12 @@ export default class AddAccountOAuth extends React.Component {
   }
   
   render() {
-
+    const { accountId } = this.props.getAccount
+    debug('OAuth for account Id', accountId)
     return (
       <View>
         <OAuth 
+          accountId={accountId}
           showDebug
           showAuthState
           autoOpen

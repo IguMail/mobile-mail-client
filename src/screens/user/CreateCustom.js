@@ -11,8 +11,9 @@ const debug = require('../../lib/debug')('chaterr:account:custom')
 const FIELD_REQ_MSG = 'This field is required'
 const ACCOUNT_ADD_BTN_TITLE = 'ADD'
 
-const accountSuccessRoute = '/'
+const accountSuccessRoute = '/inbox'
 const accountSuccessMsgTime = 2000
+let timerRoute = null
 
 const style = {
   container: {
@@ -23,8 +24,6 @@ const style = {
     padding: 30
   }
 }
-
-let timerRoute = null
 
 @inject('getAccount')
 @observer
@@ -67,31 +66,33 @@ export default class CreateUserCustom extends React.Component {
   navigateToSuccessRoute() {
     debug('Navigating to ', accountSuccessRoute)
     this.props.history.push(accountSuccessRoute)
+    this.getAccount.fetch()
   }
 
-  onSubmit(form) {
-    debug('Form submitted', form)
+  getUserFromForm(form) {
     const user = {}
     Object.entries(form.fields)
       .forEach(([name, entry]) => {
         user[name] = entry.value
       })
+    return user
+  }
+
+  onSubmit(form) {
+    debug('Form submitted', form)
+    const user = this.getUserFromForm(form)
     debug('Creating user', user)
     const profile = {
       account: user.email,
       user
     }
     this.getAccount.setUserProfile(profile)
-      .then(() => this.getAccount.setAccountId(user.email))
-      .then(() => this.getAccount.createUserProfile(user))
+      .then(profile => this.getAccount.setAccountId(user.email))
       .then(profile => {
-        if (!profile || !profile.id) {
-          throw new Error('Could not create user profile')
-        }
-        return profile
+        this.getAccount.created = profile
       })
       .then(profile => {
-        debug('user profile created', profile)
+        debug('user profile created locally', profile)
         this.setState({
           success: {
             message: 'user created successfully!'

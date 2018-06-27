@@ -10,8 +10,10 @@ import AddAccount from './screens/account/Add'
 import Inbox from './screens/Inbox'
 import DevConsole from './screens/DevConsole'
 import Message from './screens/Message'
-import RegisterAccount from './screens/Register'
 import Intro from './screens/Intro'
+import CreateUser from './screens/user/Create'
+import RegisterAccount from './screens/user/Register'
+import utils from './lib/utils'
 
 const debug = require('./lib/debug')('chaterr:AppRoutes')
 const isDev = process.env.NODE_ENV === 'development'
@@ -28,14 +30,20 @@ class AppRoutes extends React.Component {
   }
 
   componentDidMount() {
-    const timer = setTimeout(() => this.accountFetchTimeout(), fetchTimeout)
-    this.account.fetch()
-      .then(res => clearTimeout(timer))
-      .catch(err => clearTimeout(timer))
-
+    this.fetchAccount()
     autorun(() => {
-      debug('autorun', this.account)
+      debug('autorun', utils.clone(this.account))
     })
+  }
+
+  fetchAccount() {
+    const timer = setTimeout(() => this.accountFetchTimeout(), fetchTimeout)
+    return this.account
+      .fetch()
+      .catch(err => {
+        debug('Error fetching profile', err) // TODO
+      })
+      .finally(res => clearTimeout(timer))
   }
 
   accountFetchTimeout() {
@@ -47,7 +55,7 @@ class AppRoutes extends React.Component {
     const { loaded, location } = this.props
 
     debug('router props', this.props)
-    debug('Account', this.account)
+    debug('Account', utils.clone(this.account))
 
     const SplashRoute = props => (<Splash loaded={loaded} />)
     const DevConsoleRoute = withRouter(DevConsole)
@@ -55,7 +63,7 @@ class AppRoutes extends React.Component {
     const LoginDevRoute = withRouter(LoginDev)
     const IntroRoute = withRouter(Intro)
 
-    if (!this.account.loaded) {
+    if (!loaded || !this.account.loaded || this.account.fetching) {
       return <SplashRoute msg="Logging you in" />
     }
 
@@ -64,7 +72,7 @@ class AppRoutes extends React.Component {
     }
 
     if (!this.account.isLoggedIn()) {
-      return isDev ? <LoginDevRoute /> : <LoginRoute />
+      //return isDev ? <LoginDevRoute /> : <LoginRoute />
     }
 
     return (<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled="true">
@@ -72,7 +80,7 @@ class AppRoutes extends React.Component {
         <Route path="/splash" component={SplashRoute} />
         <Route path="/login" component={isDev ? LoginDevRoute : LoginRoute} />
         <Route path="/account/add" component={AddAccount} />
-        <Route path="/account/register" component={RegisterAccount} />
+        <Route path="/user/create" component={RegisterAccount} />
         <Route path="/inbox" component={Inbox} />
         <Route path="/message/:id" component={Message} />
         <Route path="/intro" component={IntroRoute} />

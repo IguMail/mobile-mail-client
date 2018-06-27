@@ -3,31 +3,71 @@ import { observer, inject } from 'mobx-react'
 import { View } from 'react-native'
 import OAuth from '../account/OAuth'
 import config from '../../config'
+import ErrorModal from '../../theme/ErrorModal'
 
 const debug = require('../../lib/debug')('chaterr:add:oauth')
 
 const OAuthUrl = config.oauth.url + '/auth/{service}'
+const accountSuccessRoute = '/inbox'
+const accountFailRoute = '/user/create'
+const notificationTime = 3000
+let timerRoute = null
 
+// Note: We do not have an accountId at this point
+// We observe getAccount only to set the accountId  
 @inject('getAccount')
 @observer
 export default class CreateUserOAuth extends React.Component {
+
+  state = {
+    error: null
+  }
 
   get service() {
     return this.props.match.params.service
   }
 
-  get Account() {
+  get getAccount() {
     return this.props.getAccount
+  }
+
+  navigateToSuccessRoute() {
+    debug('Navigating to ', accountSuccessRoute)
+    this.props.history.push(accountSuccessRoute)
+    this.getAccount.fetch()
+  }
+
+  getUserFromOAuth(params) {
+    debug('params', params)
+    return params
   }
 
   onSuccess = params => {
     debug('onSuccess', params)
     this.setState({
       inProgress: false,
-      succeeded: true
+      succeeded: true,
+      success: {
+        message: 'user created successfully!'
+      }
     })
-    this.Account.setAccountId(params.email)
-      .then(() => this.props.history.push('/'))
+    const user = this.getUserFromOAuth(params)
+    const profile = { 
+        user,
+        account: user.email
+      }
+    this.getAccount
+      .setUserProfile(profile)
+      .then(profile => {
+        return this.getAccount.setAccountId(user.email)
+      })
+      .then(() => this.getAccount.created = profile)
+      .then(() => {
+        timerRoute = setTimeout(
+          () => this.navigateToSuccessRoute(), 
+          notificationTime
+        )
+      })
   }
 
   onError = error => {
@@ -36,7 +76,10 @@ export default class CreateUserOAuth extends React.Component {
       inProgress: false,
       error: error
     })
-    this.props.history.push('/user/create')
+    setTimeout(
+      () => this.props.history.push(accountFailRoute), 
+      notificationTime
+    )
   }
 
   onCancel = status => {
@@ -45,14 +88,36 @@ export default class CreateUserOAuth extends React.Component {
       inProgress: false,
       cancelled: true
     })
-    this.props.history.push('/')
+    setTimeout(
+      () => this.props.history.push(accountFailRoute), 
+      notificationTime
+    )
   }
   
   render() {
 
+    if (this.getAccount.error) {
+      const close = () => this.getAccount.dismissError()
+      return <ErrorModal isVisible={true} errorMsg={this.getAccount.error.message} close={close} />
+    }
+
+    if (this.state.error) {
+      const close = () => this.setState({ error: null })
+      return <ErrorModal isVisible={true} errorMsg={this.state.error.message} close={close} />
+    }
+
+    if (this.state.success) {
+      const close = () => {
+        clearTimeout(timerRoute)
+        this.setState({ success: null })
+        this.navigateToSuccessRoute()
+      }
+      return <ErrorModal isVisible={true} errorMsg={this.state.success.message} close={close} />
+    }
+
     return (
       <View>
-        <OAuth 
+        <OAuth
           showDebug
           showAuthState
           autoOpen

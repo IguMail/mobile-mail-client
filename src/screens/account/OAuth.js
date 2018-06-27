@@ -54,6 +54,7 @@ export default class AccountOAuth extends Component {
     return (
       <View style={styles.container}>
         <OAuth 
+          accountId={this.props.accountId}
           showDebug
           showAuthState
           autoOpen

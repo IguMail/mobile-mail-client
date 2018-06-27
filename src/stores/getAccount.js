@@ -12,7 +12,11 @@ export default class GetAccount {
   @observable accounts = []
   @observable error = null
   @observable loaded = false
+  @observable loadedProfile = false
   @observable loggedIn = false
+  @observable fetching = false
+  @observable created = null
+  @observable added = null
 
   get service() {
     if (!this.accountId) throw new Error('Account Id is not set')
@@ -20,8 +24,7 @@ export default class GetAccount {
   }
 
   get name() {
-    const { name } = this.profile.user
-    return name.givenName + (name.familyName && ' ' + name.familyName)
+    return this.profile.user.fullName
   }
 
   get email() {
@@ -29,9 +32,7 @@ export default class GetAccount {
   }
 
   get photo() {
-    try {
-      return this.profile.user.photos[0].value
-    } catch(e) {}
+    return this.profile.user.photo
   }
 
   get status() {
@@ -56,9 +57,19 @@ export default class GetAccount {
     return !!this.accountId
   }
 
+  hasProfile() {
+    if (!this.loaded) throw new Error('Account not loaded yet')
+    return this.profile && this.profile.account
+  }
+
+  hasRemoteAccount() {
+    if (!this.loaded) throw new Error('Account not loaded yet')
+    return this.profile && this.profile.source === 'remote'
+  }
+
   isLoggedIn() {
     return this.accountId && this.loaded 
-      && (this.profile && this.profile.id)
+      && (this.profile && this.profile.account)
   }
 
   setAccountId(accountId) {
@@ -66,9 +77,14 @@ export default class GetAccount {
     if (this.accountId === accountId) return Promise.resolve(accountId)
     this.reset()
     return this.localStorage.set('accountId', accountId)
-      .then(() => this.accountId = accountId)
-      .then(() => this.fetchUserProfile())
-      .then(() => this.accountId)
+      .then(() => {
+        this.accountId = accountId
+        return accountId
+      })
+      .catch(error => {
+        this.error = error
+        throw error
+      })
   }
 
   getUserProfile() {
@@ -76,8 +92,24 @@ export default class GetAccount {
     return this.localStorage.get('profile')
   }
 
+  /**
+    * @param entry = {
+      account: accountId
+      user: {
+        fullName,
+        email,
+        photo,
+      }
+    }
+   */
   setUserProfile(entry) {
     debug('Setting user profile', entry)
+
+    if (entry.user.provider === 'google') {
+      entry = this.normalizeGoogleProfile(entry)
+    }
+    // TODO: other providers
+
     return this.localStorage.set('profile', entry)
       .then(() => {
         this.profile = entry
@@ -85,6 +117,13 @@ export default class GetAccount {
       })
   }
 
+  /**
+    * @param entry = {
+        name,
+        phone, 
+        pin,
+      }
+   */
   createUserProfile(entry) {
     debug('Creating user profile', entry)
     return this.service.createUserProfile(entry)
@@ -98,6 +137,37 @@ export default class GetAccount {
       })
       .catch(error => {
         this.error = error
+        throw error
+      })
+      .finally(result => {
+        return result
+      })
+  }
+
+  /**
+    * 
+    * @param entry = {
+        name,
+        email, 
+        password, 
+        imap { host, port, protocol }, 
+        imap { host, port, protocol }
+      }
+    */
+  addMailAccount(entry) {
+    debug('Creating mail account', entry)
+    return this.service.addMailAccount(entry)
+      .fetch()
+      .then( ({entry}) => {
+        debug('Created mail account entry', entry)
+        if (!entry || !entry.id) {
+          throw new Error('Failed to create mail account entry', entry)
+        }
+        return entry
+      })
+      .catch(error => {
+        this.error = error
+        throw error
       })
       .finally(result => {
         return result
@@ -113,6 +183,7 @@ export default class GetAccount {
       .catch(error => {
         debug('Fetch accountId error', error)
         this.error = error
+        throw error
       })
   }
 
@@ -121,14 +192,23 @@ export default class GetAccount {
     if (!this.accountId) {
       throw new Error('AccountId must be set before fetching profile')
     }
-    return this.getUserProfile()
+    this.loadedProfile = false
+    return this.service.profile()
+      .fetch()
       .then(profile => {
-        debug('Fetched local profile', this.accountId, profile)
-        if (!profile || profile.account !== this.accountId) {
-          debug('Stale local profile, fetching from remote', this.accountId)
-          return this.service.profile(this.accountId)
-            .fetch()
+        if (!profile || !profile.user) {
+          debug('No remote profile, fetching from local', profile)
+          return this.getUserProfile()
+            .then(profile => {
+              if (!profile) {
+                throw new Error('Could not retrieve profile')
+              }
+              profile.source = 'local'
+              debug('Fetched local profile', this.accountId, profile)
+              return profile
+            })
         }
+        profile.source = 'remote'
         return profile
       })
       .then(profile => {
@@ -141,7 +221,19 @@ export default class GetAccount {
         debug('Fetch profile error', error)
         this.error = error
       })
-      .finally(() => this.loaded = true)
+      .finally(() => this.loadedProfile = true)
+  }
+
+  normalizeGoogleProfile(profile) {
+    const { name } = profile.user
+    const fullName = name.givenName + (name.familyName && ' ' + name.familyName)
+    const photo = profile.user.photos[0].value
+    const normalized = {
+      ...profile,
+      fullName,
+      photo
+    }
+    return normalized
   }
 
   fetchMailAccounts() {
@@ -151,36 +243,34 @@ export default class GetAccount {
         if (!accounts) throw new Error('Failed to fetch accounts')
         this.accounts = accounts
       })
+      .catch(error => {
+        debug('fetchMailAccounts error', error)
+        this.error = error
+        throw error
+      })
   }
 
   fetch() {
+    if (this.fetching) return
+    this.reset()
     return this.fetchAccountId()
       .then(accountId => {
-        if (accountId) return this.fetchUserProfile()
-      })
-      .catch(error => {
-        this.error = error
-      })
-      .finally(() => this.loaded = true)
-  }
-
-  addMailAccount(entry) {
-    debug('Creating mail account', entry)
-    return this.service.addMailAccount(entry)
-      .fetch()
-      .then( ({entry}) => {
-        debug('Created mail account entry', entry)
-        if (!entry || !entry.id) {
-          throw new Error('Failed to create mail account entry', entry)
+        if (accountId) {
+          return this.fetchUserProfile()
+        } else {
+          debug('no account')
         }
-        return entry
       })
       .catch(error => {
         this.error = error
+        throw error
       })
-      .finally(result => {
-        return result
+      .finally(() => {
+        this.loaded = true
+        this.loadedProfile = true
+        this.fetching = false
       })
+      
   }
 
   dismissError() {

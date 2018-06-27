@@ -20,8 +20,8 @@ function factory(creator, ...args) {
 
 export default {
   getAccount: new GetAccount(),
-  getThreads(accountId) {
-    return factory(GetThreads, accountId)
+  getThreads(accountId, auth) {
+    return factory(GetThreads, accountId, auth)
   },
   getThread(accountId, id) {
     return factory(GetThread, accountId, id)

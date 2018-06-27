@@ -17,7 +17,7 @@ const MQTT_HOST = process.env.MQTT_HOST || config.mqtt.url
  */
 export default class MqttClient extends EventEmitter {
 
-  Account = null
+  auth = null
   mqtt = mqtt
   client = null
   transport = null
@@ -31,11 +31,15 @@ export default class MqttClient extends EventEmitter {
     syncInterval: 15000 // 15 secs
   }
 
-  constructor(Account, options = {}) {
+  /**
+   * @param {auth} { username, password }
+   * @param {options} { url, syncInterval }
+   */
+  constructor(auth, options = {}) {
     super()
-    if (!Account) throw new Error('Account parameter required')
-    debug('new MqttClient', Account, options)
-    this.Account = Account
+    if (!auth) throw new Error('auth parameter required')
+    debug('new MqttClient', auth, options)
+    this.auth = auth
     this.options = {
       ...this.options,
       ...options
@@ -48,12 +52,12 @@ export default class MqttClient extends EventEmitter {
 
   connect() {
 
-    const { Account } = this
+    const { auth } = this
 
     const mqttOptions = {
-      clientId: Account.id,
-      username: Account.id,
-      password: Account.user.xOAuth2Token
+      clientId: auth.username,
+      username: auth.username,
+      password: auth.password
     }
 
     if (this.connected) {
@@ -83,8 +87,8 @@ export default class MqttClient extends EventEmitter {
 
   subscribe() {
 
-    const { transport, Account } = this
-    const channelId = 'client/' + Account.id
+    const { transport, auth } = this
+    const channelId = 'client/' + auth.username
     const channel = transport.channel(channelId)
 
     this.channel = channel
@@ -122,8 +126,8 @@ export default class MqttClient extends EventEmitter {
 
   sync() {
     debug('Sending sync request')
-    const { channel, Account } = this
-    channel.publish('imap/sync', { userId: Account.id })
+    const { channel, auth } = this
+    channel.publish('imap/sync', { userId: auth.username })
     this.lastSyncTime = (new Date().getTime())
   }
 }

@@ -23,6 +23,7 @@ class MailApi {
       ...this.options,
       ...options
     }
+    global.MailApi = this
   }
 
   /**
@@ -159,7 +160,7 @@ class Endpoint {
         debug('fetch complete', res)
         return this.then ? this.then(res) : res
       })
-      .catch(err => debug('Request failed'))
+      .catch(err => debug('Request failed', err))
   }
 
 }

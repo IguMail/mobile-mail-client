@@ -7,6 +7,7 @@ import style from './styles/sideMenu'
 const debug = require('../lib/debug')('chaterr:side-menu')
 
 const CREATE_ACCOUNT = 'Create an account on Chaterr'
+const ADD_MAIL_ACCOUNT = 'Link another Mail Account'
 
 const allMailMenuItem = {
   title: 'All Email',
@@ -87,8 +88,13 @@ const MenuItem = props => (
 @observer
 class SideMenu extends React.Component {
 
-  componentWillMount() {
+  componentDidMount() {
+    if (this.props.sideMenu.error) return
     this.props.account.fetchMailAccounts()
+      .catch(error => {
+        debug('Error fetching accounts', error)
+        this.props.sideMenu.error = error
+      })
   }
 
   getListWithUniqueKey(list, key) {
@@ -116,6 +122,23 @@ class SideMenu extends React.Component {
     return [allMailMenuItem, ...accounts, ...staticMenuItems]
   }
 
+  renderCreateAccount() {
+    return (
+      <TouchLink style={style.menuItemPrimary} to="/user/create">
+        <Icon name="inbox" color="#fff" size={20} />
+        <Text style={style.menuItemPrimaryText}>{CREATE_ACCOUNT}</Text>
+      </TouchLink>
+    )
+  }
+
+  renderAddMailAccount() {
+    return (
+      <TouchLink style={style.menuItemPrimary} to="/account/add">
+        <Icon name="inbox" color="#fff" size={20} />
+        <Text style={style.menuItemPrimaryText}>{ADD_MAIL_ACCOUNT}</Text>
+      </TouchLink>
+    )
+  }
 
   render() {
 
@@ -135,10 +158,11 @@ class SideMenu extends React.Component {
           name={account.name || account.email} 
           status={account.status}
         />
-        <TouchLink style={style.menuItemPrimary} to="/account/add">
-          <Icon name="inbox" color="#fff" size={20} />
-          <Text style={style.menuItemPrimaryText}>{CREATE_ACCOUNT}</Text>
-        </TouchLink>
+        {
+          !account.hasRemoteAccount() ?
+          this.renderCreateAccount() :
+          this.renderAddMailAccount()
+        }
         <View style={style.menuList}>
         {
           this.menuItems.map((l, i) => (

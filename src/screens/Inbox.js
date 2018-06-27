@@ -38,7 +38,13 @@ class Inbox extends React.Component {
   }
 
   get getThreads() {
-    return this.props.getThreads(this.profile, this.id)
+    const { user } = this.profile
+    const username = user.userId || user.id // TODO: normalize
+    const password = user.xOAuth2Token || user.password || user.pin || user.accessToken // TODO: normalize
+    return this.props.getThreads(this.accountId, {
+      username,
+      password 
+    })
   }
 
   componentDidMount() {
@@ -50,9 +56,20 @@ class Inbox extends React.Component {
     return this.getThreads.fetch()
   }
 
+  renderError(error, close, timeout = 5000) {
+    debug('Account Error', error)
+    setTimeout(() => close(), timeout)
+    return <ErrorModal 
+      error={error} 
+      errorMsg={error.message} 
+      close={() => close()} 
+    />
+  }
+
   render() {
 
     const { loaded, error, threads, updatedAt } = this.getThreads
+    const { getAccount } = this.props
 
     debug('props', this.props)
 
@@ -60,11 +77,14 @@ class Inbox extends React.Component {
       return <Splash loaded={true} />
     }
 
+    if (getAccount.error) {
+      debug('Account Error', getAccount.error)
+      return this.renderError(getAccount.error, () => getAccount.dismissError())
+    }
+
     if (error) {
-      debug('Error', error)
-      const closeModal = () => this.getThreads.dismissError()
-      setTimeout(() => closeModal(), 5000)
-      return <ErrorModal error={error} errorMsg={error.message} close={() => closeModal()} />
+      debug('Threads Error', error)
+      return this.renderError(error, () => this.getThreads.dismissError())
     }
 
     debug('threads', this.getThreads, threads, error)

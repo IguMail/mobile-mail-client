@@ -6,7 +6,8 @@ const debug = require('../lib/debug')('chaterr:stores:getThreads')
 
 export default class GetThreads {
 
-  Account = null
+  accountId = null
+  auth = null
   @observable threads = [{
     subject: '',
     messages: []
@@ -15,18 +16,16 @@ export default class GetThreads {
   @observable loaded
   @observable updatedAt
 
-  get accountId() {
-    return this.Account.account
-  }
-
   /**
-  * @param {Account} User Account
+  * @param {auth} { username, password } Password can be password hash or xOAuthToken
   **/
-  constructor(Account) {
-    if (!Account.id) {
-      throw new Error('Account id required')
+  constructor(accountId, auth) {
+    debug('accountId, auth', accountId, auth)
+    if (!accountId || !auth) {
+      throw new Error('accountId and auth arguments required')
     }
-    this.Account = Account
+    this.accountId = accountId
+    this.auth = auth
     global.getThreads = this // debugging
   }
 
@@ -37,7 +36,7 @@ export default class GetThreads {
 
   get mqttClient() {
     if (!this.accountId) throw new Error('User not logged in')
-    return MqttClientFactory(this.Account, config.mqtt)
+    return MqttClientFactory(this.auth, config.mqtt)
   }
 
   fetch() {

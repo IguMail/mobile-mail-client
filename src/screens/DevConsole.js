@@ -55,7 +55,7 @@ const DevConsole = props => {
         <TouchLink to="/account/oauth"><Text>OAuth</Text></TouchLink>
       </ScreenLink>
       <ScreenLink>
-        <TouchLink to="/account/register"><Text>Register</Text></TouchLink>
+        <TouchLink to="/user/create"><Text>Register on Chaterr</Text></TouchLink>
       </ScreenLink>
     </View>
     <RedirectOnce to="/" />
