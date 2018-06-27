@@ -5,6 +5,7 @@ import { Section, Row, Logo } from '../../theme'
 import styles from '../../theme/styles'
 import { Button } from 'react-native-elements'
 import Form from '../../theme/Form'
+import ErrorModal from '../../theme/ErrorModal'
 
 const debug = require('../../lib/debug')('chaterr:Register')
 
@@ -13,7 +14,7 @@ const NUM_ERR_MSG = 'Phone number can contain + sign, numbers, dashes and spaces
 const PIN_ERR_MSG = 'Pin can only contain numbers'
 const FIELD_REQ_MSG = 'This field is required'
 
-const accountSuccessRoute = '/'
+const accountSuccessRoute = '/inbox'
 const accountSuccessMsgTime = 2000
 let timerRoute = null
 
@@ -58,7 +59,8 @@ class Register extends React.Component {
           validate: this.validateConfirmPin
         }
       }
-    }
+    },
+    success: false
   }
 
   fields = {}
@@ -132,7 +134,7 @@ class Register extends React.Component {
     debug('form submitted no errors', form)
     const user = this.getUserFromForm(form)
     debug('Creating user', user)
-    const profile = { ...getAccount.profile, ...user }
+    const profile = { ...getAccount.profile.user, ...user }
     getAccount.createUserProfile(profile)
       .then(profile => {
         debug('user profile created remotely', profile)
@@ -176,6 +178,15 @@ class Register extends React.Component {
   }
 
   render() {
+
+    if (this.state.success) {
+      const close = () => {
+        clearTimeout(timerRoute)
+        this.setState({ success: null })
+        this.navigateToSuccessRoute()
+      }
+      return <ErrorModal isVisible={true} errorMsg={this.state.success.message} close={close} />
+    }
 
     return (<Section style={styles.center}>
       <Row style={styles.center}>
