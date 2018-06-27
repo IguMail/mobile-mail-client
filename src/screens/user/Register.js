@@ -113,6 +113,7 @@ class Register extends React.Component {
   navigateToSuccessRoute() {
     debug('Navigating to ', accountSuccessRoute)
     this.props.history.push(accountSuccessRoute)
+    this.props.getAccount.fetch()
   }
 
   getUserFromForm(form) {

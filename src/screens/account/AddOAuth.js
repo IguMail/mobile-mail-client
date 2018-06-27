@@ -18,7 +18,7 @@ export default class AddAccountOAuth extends React.Component {
       inProgress: false,
       succeeded: true
     })
-    this.props.history.push('/')
+    this.props.history.push('/inbox')
   }
 
   onError = error => {

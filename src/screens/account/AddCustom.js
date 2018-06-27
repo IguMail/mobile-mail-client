@@ -10,7 +10,7 @@ const debug = require('../../lib/debug')('chaterr:account:custom')
 const FIELD_REQ_MSG = 'This field is required'
 const ACCOUNT_ADD_BTN_TITLE = 'ADD'
 
-const accountSuccessRoute = '/'
+const accountSuccessRoute = '/inbox'
 const accountSuccessMsgTime = 2000
 
 const style = {
