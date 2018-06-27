@@ -23,8 +23,8 @@ export default {
   getThreads(accountId, auth) {
     return factory(GetThreads, accountId, auth)
   },
-  getThread(accountId, id) {
-    return factory(GetThread, accountId, id)
+  getThread(accountId, auth, id) {
+    return factory(GetThread, accountId, auth, id)
   },
   sendMail(accountId, email) {
     return factory(SendMail, accountId, email)

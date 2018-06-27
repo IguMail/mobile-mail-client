@@ -6,15 +6,13 @@ const debug = require('../lib/debug')('chaterr:stores:sendMail')
 
 export default class SendMail {
 
+  accountId = null
+
   @observable mail
   @observable error
   @observable sent
   @observable updatedAt
   @observable response
-
-  get accountId() {
-    return this.Account.account
-  }
 
   get email() {
     // TODO: choose email account
@@ -24,11 +22,11 @@ export default class SendMail {
   /**
   * @param {Account} User Account
   **/
-  constructor(Account) {
-    if (!Account.id) {
+  constructor(accountId) {
+    if (!accountId) {
       throw new Error('Account id required')
     }
-    this.Account = Account
+    this.accountId = accountId
     global.sendMail = this // debugging
   }
 

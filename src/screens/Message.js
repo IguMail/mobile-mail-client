@@ -25,7 +25,7 @@ class Message extends React.Component {
 
   scrollView = null
 
-  get id() {
+  get threadId() {
     return this.props.match.params.id
   }
 
@@ -42,7 +42,7 @@ class Message extends React.Component {
     if (!user) return {}
     return {
       email: user.email,
-      displayName: Object.values(user.name).join(' ')
+      displayName: user.fullName
     }
   }
 
@@ -53,8 +53,14 @@ class Message extends React.Component {
   }
 
   get getThread() {
-    debug('get Thread', this.profile, this.id)
-    return this.props.getThread(this.profile, this.id)
+    debug('get Thread', this.profile, this.threadId)
+    const { user } = this.profile
+    const username = user.userId || user.id // TODO: normalize
+    const password = user.xOAuth2Token || user.password || user.pin || user.accessToken // TODO: normalize
+    return this.props.getThread(this.accountId, {
+      username,
+      password 
+    }, this.threadId)
   }
 
   get sendMail() {

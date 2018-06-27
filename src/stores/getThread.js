@@ -6,8 +6,10 @@ const debug = require('../lib/debug')('chaterr:stores:getThread')
 
 export default class GetThread {
   
-  id = null
-  Account = null
+  accountId = null
+  auth = null
+  threadId = null
+
   @observable subject = ''
   @observable mailbox = {}
   @observable messages = [{
@@ -25,23 +27,24 @@ export default class GetThread {
   mqttConnected = false
   mqttInboxConnected = false
 
-  get accountId() {
-    return this.Account.account
-  }
-
   /**
   * @param {accountId} User Account Id
+  * @param {auth} { username, password }
   * @param {id} Thread message id
   **/
-  constructor(Account, id) {
-    if (!Account.id) {
-      throw new Error('Account id required')
+  constructor(accountId, auth, threadId) {
+    if (!accountId) {
+      throw new Error('accountId argument required')
     }
-    if (!id) {
-      throw new Error('Thread message id required')
+    if (!auth) {
+      throw new Error('auth argument required')
     }
-    this.Account = Account
-    this.id = id
+    if (!threadId) {
+      throw new Error('Thread message threadId argument required')
+    }
+    this.accountId = accountId
+    this.auth = auth
+    this.threadId = threadId
     global.getThread = this // debugging
   }
 
@@ -52,13 +55,13 @@ export default class GetThread {
 
   get mqttClient() {
     if (!this.accountId) throw new Error('User not logged in')
-    return MqttClientFactory(this.Account, config.mqtt)
+    return MqttClientFactory(this.auth, config.mqtt)
   }
 
   fetch() {
-    debug('Fetching thread', this.id)
+    debug('Fetching thread', this.threadId)
     return this.service
-      .thread(this.id)
+      .thread(this.threadId)
       .fetch()
       .then(thread => {
         if (thread.error) {
