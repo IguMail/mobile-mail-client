@@ -6,7 +6,7 @@ const inbox = {
     backgroundColor: '#fcfcfc'
   },
   full: {
-    flex: 1
+    width: '100%'
   },
   priorityDot: {
     flexDirection: 'row',
@@ -15,11 +15,11 @@ const inbox = {
   MessageList: {
     marginBottom: 60,
     marginTop: 0,
-    flex: 1
+    width: '100%'
   },
   MessageListEmpty: {
     ...styles.center,
-    flex: 1
+    width: '100%'
   },
   MessageLink: {
     paddingTop: 20,
@@ -34,7 +34,7 @@ const inbox = {
   },
   messageTextContainer: {
     marginLeft: 13,
-    flex: 1
+    width: '100%'
   },
   messageTextHeader: {
     flexDirection: 'row'
@@ -61,7 +61,6 @@ const inbox = {
   },
   search: {
     flexDirection: 'row',
-    flex: 1,
     marginLeft: 30,
     paddingRight: 30,
     marginBottom: 0,
