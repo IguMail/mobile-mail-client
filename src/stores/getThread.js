@@ -24,8 +24,12 @@ export default class GetThread {
   @observable error = null
   @observable loaded = false
 
-  mqttConnected = false
-  mqttInboxConnected = false
+  @observable mqttConnected = false
+
+  syncing = false
+  fetchTimer = null
+  fetchWaitInterval = 2000
+  lastFetchTime = 0
 
   /**
   * @param {accountId} User Account Id
@@ -85,30 +89,51 @@ export default class GetThread {
 
   sync() {
     const client = this.mqttClient
-    client.on('imap/connected', () => {
-      this.mqttConnected = true
-    })
-    client.on('imap/mailbox', mailbox => {
-      this.mqttInboxConnected = true
-      this.mailbox = mailbox
-    })
-    client.on('imap/error', error => {
-      debug('imap/error', error)
-      this.error = new Error(error)
-    })
-    client.on('imap/error/auth', error => {
-      debug('imap/error/auth', error)
-      this.authError = new Error(error)
-    })
-    client.on('mail/action', entry => {
-      this.fetch()
-    })
-    client.on('mail/saved', entry => {
-      this.fetch()
-    })
 
+    if (!this.syncing) {
+      client.on('imap/connected', () => {
+        this.mqttConnected = client.connected
+      })
+      client.on('imap/mailbox', mailbox => {
+        this.mailbox = mailbox
+      })
+      client.on('imap/error', error => {
+        debug('imap/error', error)
+        this.error = new Error(error)
+        this.mqttConnected = client.connected
+      })
+      client.on('imap/error/auth', error => {
+        debug('imap/error/auth', error)
+        this.authError = new Error(error)
+        this.mqttConnected = client.connected
+      })
+      client.on('mail/action', entry => {
+        this.fetchThrottled(this.fetchWaitInterval)
+      })
+      client.on('mail/saved', entry => {
+        this.fetchThrottled(this.fetchWaitInterval)
+      })
+    }
+    this.syncing = true
+
+    if (client.connected || client.reconnecting) {
+      debug('Already connected mqtt client')
+      return false
+    }
     debug('sync connecting mqtt client', client)
     return client.connect()
+  }
+
+  fetchThrottled(fetchWaitInterval = 1000) {
+    const now = (new Date().getTime())
+    const interval = now - this.lastFetchTime
+    const wait = Math.max(fetchWaitInterval - interval, 0)
+
+    clearTimeout(this.fetchTimer)
+    this.fetchTimer = setTimeout(() => {
+      this.lastFetchTime = (new Date().getTime())
+      this.fetch()
+    }, wait)
   }
 
   lastMessage() {

@@ -8,6 +8,7 @@ export default class GetThreads {
 
   accountId = null
   auth = null
+
   @observable threads = [{
     subject: '',
     messages: []
@@ -15,6 +16,13 @@ export default class GetThreads {
   @observable error
   @observable loaded
   @observable updatedAt
+  
+  @observable mqttConnected = false
+
+  syncing = false
+  fetchTimer = null
+  fetchWaitInterval = 2000
+  lastFetchTime = 0
 
   /**
   * @param {auth} { username, password } Password can be password hash or xOAuthToken
@@ -64,8 +72,50 @@ export default class GetThreads {
   sync() {
     const client = this.mqttClient
 
+    if (!this.syncing) {
+      client.on('imap/connected', () => {
+        this.mqttConnected = client.connected
+      })
+      client.on('imap/mailbox', mailbox => {
+        this.mailbox = mailbox
+      })
+      client.on('imap/error', error => {
+        debug('imap/error', error)
+        this.error = new Error(error)
+        this.mqttConnected = client.connected
+      })
+      client.on('imap/error/auth', error => {
+        debug('imap/error/auth', error)
+        this.authError = new Error(error)
+        this.mqttConnected = client.connected
+      })
+      client.on('mail/action', entry => {
+        this.fetchThrottled(this.fetchWaitInterval)
+      })
+      client.on('mail/saved', entry => {
+        this.fetchThrottled(this.fetchWaitInterval)
+      })
+    }
+    this.syncing = true
+
     debug('sync connecting mqtt client', client)
+    if (client.connected || client.reconnecting) {
+      debug('Already syncing mqtt client')
+      return
+    }
     return client.connect()
+  }
+
+  fetchThrottled(fetchWaitInterval = 1000) {
+    const now = (new Date().getTime())
+    const interval = now - this.lastFetchTime
+    const wait = Math.max(fetchWaitInterval - interval, 0)
+
+    clearTimeout(this.fetchTimer)
+    this.fetchTimer = setTimeout(() => {
+      this.lastFetchTime = (new Date().getTime())
+      this.fetch()
+    }, wait)
   }
 
   dismissError() {

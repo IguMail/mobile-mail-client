@@ -47,7 +47,11 @@ export default class MqttClient extends EventEmitter {
   }
 
   get connected() {
-    return this.client && this.client.connected && !this.client.reconnecting
+    return this.client && this.client.connected && !this.reconnecting
+  }
+
+  get reconnecting() {
+    return this.client && this.client.reconnecting
   }
 
   connect() {

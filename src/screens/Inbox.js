@@ -39,7 +39,7 @@ class Inbox extends React.Component {
 
   get getThreads() {
     const { user } = this.profile
-    const username = user.userId || user.id // TODO: normalize
+    const username = this.profile.id || this.accountId // TODO: normalize
     const password = user.xOAuth2Token || user.password || user.pin || user.accessToken // TODO: normalize
     return this.props.getThreads(this.accountId, {
       username,
@@ -50,6 +50,7 @@ class Inbox extends React.Component {
   componentDidMount() {
     debug('Fetching threads...')
     this.fetchThreads()
+    setTimeout(() => this.getThreads.sync(), 1)
   }
 
   fetchThreads() {
