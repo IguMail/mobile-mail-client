@@ -150,9 +150,11 @@ class SideMenu extends React.Component {
       sideMenu.selected = item
       sideMenu.isOpen = false
     }
+    
+    const displayStyle = !sideMenu.isOpen && { display: 'none' }
 
     return (
-      <View style={style.MenuComponent}>
+      <View style={[style.MenuComponent, displayStyle ]}>
         <Header 
           source={{uri: account.photo}} 
           name={account.name || account.email} 

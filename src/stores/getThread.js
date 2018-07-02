@@ -12,14 +12,7 @@ export default class GetThread {
 
   @observable subject = ''
   @observable mailbox = {}
-  @observable messages = [{
-    id: null,
-    messageId: null,
-    subject: null,
-    local: null,
-    success: null,
-    error: null
-  }]
+  @observable messages = []
   @observable authError = null
   @observable error = null
   @observable loaded = false

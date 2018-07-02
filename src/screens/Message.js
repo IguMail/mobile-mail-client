@@ -64,7 +64,7 @@ class Message extends React.Component {
   }
 
   get sendMail() {
-    return this.props.sendMail(this.profile, this.account.email)
+    return this.props.sendMail(this.accountId, this.account.email)
   }
 
   getReplyTo(messages = []) {
@@ -129,7 +129,7 @@ class Message extends React.Component {
       error: null
     }
 
-    this.sendMail.send(message)
+    this.sendMail.send(email, message)
     .then(info => {
       debug('sendMail info', info)
       if (info.error) {
@@ -153,7 +153,7 @@ class Message extends React.Component {
     // TODO: listen for event rather than setTimeout
     setTimeout(() => {
       this.scrollView && this.scrollView.scrollToEnd({animated: true})
-    })
+    }, 50)
 
     // preload message
     this.getThread.addMessage(message)

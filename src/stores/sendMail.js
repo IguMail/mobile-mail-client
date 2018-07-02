@@ -14,11 +14,6 @@ export default class SendMail {
   @observable updatedAt
   @observable response
 
-  get email() {
-    // TODO: choose email account
-    return this.Account.account
-  }
-
   /**
   * @param {Account} User Account
   **/
@@ -35,8 +30,9 @@ export default class SendMail {
     return MailApiFactory(this.accountId, config.api)
   }
 
-  send(mail) {
-    return this.service.sendMail(this.email, mail)
+  send(email, mail) {
+    debug('Sending mail', email, mail)
+    return this.service.sendMail(email, mail)
       .fetch()
       .then(info => {
         if (info.error) {
