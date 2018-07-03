@@ -7,6 +7,7 @@ import styles from '../theme/styles'
 import conversation from '../theme/styles/conversation'
 import Conversation from '../theme/Message/Conversation'
 import ErrorModal from '../theme/ErrorModal'
+import utils from '../lib/utils'
 
 const debug = require('../lib/debug')('chaterr:Message')
 
@@ -37,15 +38,6 @@ class Message extends React.Component {
     return this.getAccount.profile
   }
 
-  get account() {
-    const { user } = this.profile
-    if (!user) return {}
-    return {
-      email: user.email,
-      displayName: user.fullName
-    }
-  }
-
   get getAccount() {
     const getAccount = this.props.getAccount
     debug('getAccount', getAccount)
@@ -64,7 +56,7 @@ class Message extends React.Component {
   }
 
   get sendMail() {
-    return this.props.sendMail(this.accountId, this.account.email)
+    return this.props.sendMail(this.accountId, this.getAccount.email)
   }
 
   getReplyTo(messages = []) {
@@ -86,7 +78,7 @@ class Message extends React.Component {
   onSubmitEditing(text) {
     debug('onSubmitMessage', text)
     // TODO: send the email
-    const { displayName, email } = this.account
+    const { name, email } = this.getAccount
     let { subject, messages } = this.getThread
     const messageId = this.generateMessageId()
 
@@ -121,7 +113,7 @@ class Message extends React.Component {
       inReplyTo: this.getReplyTo(messages),
       date: new Date(),
       from: [{
-        name: displayName,
+        name,
         address: email
       }],
       local: true,
@@ -168,7 +160,7 @@ class Message extends React.Component {
 
     global.getThread = getThread
 
-    debug('getThread', getThread)
+    debug('getThread', utils.clone(getThread))
 
     if (authError) {
       const closeModal = () => {
