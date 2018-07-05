@@ -18,23 +18,45 @@ class MailLocalStorage extends Storage {
     return null
   }
 
-  get(key: string, callback) {
+  /**
+   * Get a value from storage
+   * @param {string} key 
+   * @param {function} callback 
+   * @return {Promise}
+   */
+  get(key, callback) {
     return this.getItem(key, (error, value) => {
       callback(error, this._unserialize(value))
     }).then(value => this._unserialize(value))
   }
 
-  set(key: string, value: object, callback) {
+  /**
+   * Set a value to storage
+   * @param {string} key 
+   * @param {object} value 
+   * @param {function} callback 
+   * @return {Promise}
+   */
+  set(key, value, callback) {
     return this.setItem(key, this._serialize(value), error => {
       callback(error)
     })
   }
 
+  /**
+   * Delete all values in storage
+   */
+  clear() {
+    if (global.PLATFORM === 'web') {
+      return window.localStorage.clear()
+    } else {
+      return AsyncStorage.clear()
+    }
+  }
+
 }
 
 // TODO extend localStorage with namespaces
-
-const storages = new Map()
 
 function createStorage(opts) {
   const defaultOpts = {
@@ -57,6 +79,8 @@ function createStorage(opts) {
   }
   return new MailLocalStorage({...defaultOpts, ...opts})
 }
+
+const storages = new Map()
 
 export default function getStorage(opts = {}) {
   if (!storages.get(opts)) {

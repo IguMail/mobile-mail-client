@@ -1,7 +1,6 @@
 import React from 'react'
-import { View, Image, TextInput, TouchableHighlight } from 'react-native'
+import { View, Image, TextInput, TouchableHighlight, Keyboard } from 'react-native'
 import styles from '../styles'
-import { Section } from '../'
 import footerStyle from '../styles/message/footer'
 
 const debug = require('../../lib/debug')('chaterr:Message:Footer')
@@ -12,14 +11,29 @@ const defaults = {
   }
 }
 
-class InboxFooter extends React.PureComponent {
-
-  componentDidMount() {
-    debug('mounted InboxFooter', this.props)
-  }
+class InboxFooter extends React.Component {
 
   state = {
     textInputValue: ''
+  }
+
+  componentDidMount() {
+    debug('mounted InboxFooter', this.props)
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow)
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide)
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove()
+    this.keyboardDidHideListener.remove()
+  }
+
+  _keyboardDidShow () {
+    debug('Keyboard Shown');
+  }
+
+  _keyboardDidHide () {
+    debug('Keyboard Hidden');
   }
 
   onSubmitEditing(event) {
@@ -27,6 +41,7 @@ class InboxFooter extends React.PureComponent {
     const text = this.state.textInputValue
     this.props.onSubmitEditing(text)
     this.setState({textInputValue: ''})
+    Keyboard.dismiss()
   }
 
   render() {
@@ -41,7 +56,7 @@ class InboxFooter extends React.PureComponent {
     }
     const textInputDefaultText = 'Reply...'
 
-    return (<Section style={style.containerStyle}>
+    return (
       <View style={style.footer}>
         <View style={style.row}>
           <Image source={require('../../images/icon_ios_reply_filled.png')} style={style.icon.reply} />
@@ -51,7 +66,6 @@ class InboxFooter extends React.PureComponent {
             placeholder={textInputDefaultText}
             onSubmitEditing={event => this.onSubmitEditing(event)}
             onChangeText={(textInputValue) => this.setState({textInputValue})}
-            blurOnSubmit={false}
           />
           <Image source={require('../../images/maximize.png')} style={style.icon.maximize} />
         </View>
@@ -68,7 +82,7 @@ class InboxFooter extends React.PureComponent {
           </TouchableHighlight>
         </View>
       </View>
-    </Section>)
+    )
   }
 }
 

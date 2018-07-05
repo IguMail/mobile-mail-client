@@ -1,7 +1,6 @@
 import React from "react"
 import { View, Text } from "react-native"
 import { Redirect } from 'react-router-native'
-import styles from '../theme/styles'
 import { Section, Row, AccountHeader, TouchLink } from '../theme'
 
 const debug = require('../lib/debug')('chaterr:DevConsole')
@@ -37,7 +36,7 @@ const DevConsole = props => {
     <AccountHeader title={'Dev Console'} backButton={{ to: '/' }} />
     <View style={style.links}>
       <ScreenLink>
-        <TouchLink to="/splash"><Text>Splash</Text></TouchLink>
+        <TouchLink to="/reset"><Text>Reset Account</Text></TouchLink>
       </ScreenLink>
       <ScreenLink>
         <TouchLink to="/intro"><Text>Intro</Text></TouchLink>
@@ -58,7 +57,7 @@ const DevConsole = props => {
         <TouchLink to="/user/create"><Text>Register on Chaterr</Text></TouchLink>
       </ScreenLink>
     </View>
-    <RedirectOnce to="/" />
+    <RedirectOnce to="/inbox" />
   </Section>)
 }
 

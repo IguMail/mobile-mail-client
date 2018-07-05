@@ -3,7 +3,6 @@ import { View, Text } from 'react-native'
 import { observer, inject } from 'mobx-react'
 import { Section, Row, Logo } from '../../theme'
 import styles from '../../theme/styles'
-import { Button } from 'react-native-elements'
 import Form from '../../theme/Form'
 import ErrorModal from '../../theme/ErrorModal'
 
@@ -17,8 +16,6 @@ const FIELD_REQ_MSG = 'This field is required'
 const accountSuccessRoute = '/inbox'
 const accountSuccessMsgTime = 2000
 let timerRoute = null
-
-const style = {}
 
 @inject('getAccount')
 @observer

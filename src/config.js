@@ -23,7 +23,7 @@ const production = {
     url: 'ws://mqtt.igumail.com/'
   },
   oauth: {
-    url: 'http://api.igumail.com'
+    url: 'http://auth.igumail.com'
   }
 }
 

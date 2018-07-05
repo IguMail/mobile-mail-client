@@ -2,23 +2,22 @@ import React from 'react'
 import { autorun } from 'mobx'
 import { observer, inject } from 'mobx-react'
 import { View, ScrollView, ActivityIndicator } from 'react-native'
-import { Section, MessageHeader, MessageFooter } from '../theme'
-import styles from '../theme/styles'
-import conversation from '../theme/styles/conversation'
+import { MessageHeader, MessageFooter } from '../theme'
+import style from '../theme/styles/conversation'
 import Conversation from '../theme/Message/Conversation'
 import ErrorModal from '../theme/ErrorModal'
 import utils from '../lib/utils'
+import { KeyboardAvoidingView } from 'react-native'
+
 
 const debug = require('../lib/debug')('chaterr:Message')
-
-const style = {
-  ...conversation
-}
 
 const CHECK_NETWORK = 'Please check your network connection.'
 const ERR_HTTP_FAIL = 'Could not retrieve thread at this time. ' + CHECK_NETWORK
 const ERR_SEND_FAIL = 'Failed to send your email. ' + CHECK_NETWORK
 const ERR_AUTH_FAIL = 'Failed to log you into your Chaterr account. Please log in again.'
+
+const handleAuthError = false
 
 @inject('getAccount', 'getThread', 'sendMail')
 @observer
@@ -162,7 +161,7 @@ class Message extends React.Component {
 
     debug('getThread', utils.clone(getThread))
 
-    if (authError) {
+    if (handleAuthError && authError) {
       const closeModal = () => {
         this.props.history.push('/login')
         getThread.dismissError()
@@ -189,25 +188,16 @@ class Message extends React.Component {
       return <ErrorModal errorMsg={ERR_SEND_FAIL} close={() => closeModal()} />
     }
 
-    return (<Section style={{
-      ...style.screen,
-      ...styles.center,
-      justifyContent: 'flex-start',
-      flex: 1
-    }}>
+    return (<KeyboardAvoidingView style={style.container} behavior="padding" enabled>
       <ScrollView 
-        style={{
-          width: '100%',
-          height: '100%',
-          backgroundColor: "#f7f8f9"
-        }}
+        style={style.scrollView}
         ref={ref => this.scrollView = ref}
       >
         <MessageHeader title={subject} />
         <Conversation messages={messages} />
       </ScrollView>
       <MessageFooter onSubmitEditing={text => this.onSubmitEditing(text)} />
-    </Section>)
+    </KeyboardAvoidingView>)
   }
 }
 

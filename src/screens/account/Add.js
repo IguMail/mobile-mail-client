@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Image } from 'react-native'
-import { Route, withRouter } from 'react-router-native'
+import { Route } from 'react-router-native'
 import { Section, Row, AccountHeader, TouchLink } from '../../theme'
 import AddAccountOAuth from './AddOAuth'
 import AddAccountCustom from './AddCustom'

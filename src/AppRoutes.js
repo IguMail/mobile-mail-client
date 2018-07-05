@@ -1,8 +1,7 @@
 import React from 'react'
 import { autorun } from 'mobx'
 import { observer, inject } from 'mobx-react'
-import { KeyboardAvoidingView } from 'react-native'
-import { Route, withRouter, Switch, Redirect } from 'react-router-native'
+import { Route, withRouter, Switch } from 'react-router-native'
 import Splash from './screens/Splash'
 import Login from './screens/account/Login'
 import LoginDev from './screens/account/LoginDev'
@@ -11,7 +10,7 @@ import Inbox from './screens/Inbox'
 import DevConsole from './screens/DevConsole'
 import Message from './screens/Message'
 import Intro from './screens/Intro'
-import CreateUser from './screens/user/Create'
+import ResetAccount from './screens/ResetAccount'
 import RegisterAccount from './screens/user/Register'
 import utils from './lib/utils'
 
@@ -52,16 +51,17 @@ class AppRoutes extends React.Component {
   }
 
   render() {
-    const { loaded, location } = this.props
+    const { loaded } = this.props
 
     debug('router props', this.props)
     debug('Account', utils.clone(this.account))
 
-    const SplashRoute = props => (<Splash loaded={loaded} />)
+    const SplashRoute = () => (<Splash loaded={loaded} />)
     const DevConsoleRoute = withRouter(DevConsole)
     const LoginRoute = withRouter(Login)
     const LoginDevRoute = withRouter(LoginDev)
     const IntroRoute = withRouter(Intro)
+    const ResetAccountRoute = withRouter(ResetAccount)
 
     if (!loaded || !this.account.loaded || this.account.fetching) {
       return <SplashRoute msg="Logging you in" />
@@ -75,9 +75,10 @@ class AppRoutes extends React.Component {
       //return isDev ? <LoginDevRoute /> : <LoginRoute />
     }
 
-    return (<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled="true">
+    return (
       <Switch>
         <Route path="/splash" component={SplashRoute} />
+        <Route path="/reset" component={ResetAccountRoute} />
         <Route path="/login" component={isDev ? LoginDevRoute : LoginRoute} />
         <Route path="/account/add" component={AddAccount} />
         <Route path="/user/create" component={RegisterAccount} />
@@ -86,7 +87,7 @@ class AppRoutes extends React.Component {
         <Route path="/intro" component={IntroRoute} />
         <Route path="/" component={DevConsoleRoute} />
       </Switch>
-    </KeyboardAvoidingView>)
+    )
   }
 }
 
