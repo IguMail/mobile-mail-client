@@ -131,7 +131,7 @@ export default class MqttClient extends EventEmitter {
   sync() {
     debug('Sending sync request')
     const { channel, auth } = this
-    channel.publish('imap/sync', { userId: auth.username })
+    channel.publish('imap/sync', auth)
     this.lastSyncTime = (new Date().getTime())
   }
 }

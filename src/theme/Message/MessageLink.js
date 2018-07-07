@@ -37,8 +37,6 @@ const MessageLink = props => {
   const { iconStyle, iconText, message } = props
   const { id, from, time, snippet, attachments, local, success, error } = message
 
-  debug('render', props)
-
   const date = new Date(time)
   const now = new Date()
   const timeDiffInMs = now.getTime() - date.getTime()

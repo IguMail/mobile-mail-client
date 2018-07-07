@@ -45,7 +45,6 @@ const inbox = {
     paddingBottom: 20,
     borderBottomWidth: 1,
     borderBottomColor: messageBorderBottomColor,
-    height: '100%',
     alignItems: 'flex-start',
     paddingRight: 20,
     paddingLeft: 20,

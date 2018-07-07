@@ -30,10 +30,16 @@ class InboxFooter extends React.Component {
 
   _keyboardDidShow () {
     debug('Keyboard Shown');
+    if (this.props && this.props.keyboardDidShow) {
+      this.props.keyboardDidShow()
+    }
   }
 
   _keyboardDidHide () {
     debug('Keyboard Hidden');
+    if (this.props && this.props.keyboardDidHide) {
+      this.props.keyboardDidHide()
+    }
   }
 
   onSubmitEditing(event) {
@@ -41,7 +47,6 @@ class InboxFooter extends React.Component {
     const text = this.state.textInputValue
     this.props.onSubmitEditing(text)
     this.setState({textInputValue: ''})
-    Keyboard.dismiss()
   }
 
   render() {
@@ -66,6 +71,7 @@ class InboxFooter extends React.Component {
             placeholder={textInputDefaultText}
             onSubmitEditing={event => this.onSubmitEditing(event)}
             onChangeText={(textInputValue) => this.setState({textInputValue})}
+            blurOnSubmit
           />
           <Image source={require('../../images/maximize.png')} style={style.icon.maximize} />
         </View>

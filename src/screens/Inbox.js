@@ -27,20 +27,10 @@ class Inbox extends React.Component {
     return this.props.getAccount.profile
   }
 
-  get account() {
-    const { user } = this.profile
-    debug('User account', user)
-    if (!user) return {}
-    return {
-      email: user.email,
-      displayName: Object.values(user.name).join(' ')
-    }
-  }
-
   get getThreads() {
     const { user } = this.profile
-    const username = this.profile.id || this.accountId // TODO: normalize
-    const password = user.xOAuth2Token || user.password || user.pin || user.accessToken // TODO: normalize
+    const username = this.accountId // TODO: normalize
+    const password = user.xOAuth2Token // TODO: normalize
     return this.props.getThreads(this.accountId, {
       username,
       password 

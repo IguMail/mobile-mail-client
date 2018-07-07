@@ -7,7 +7,7 @@ const styles = {
   footer: {
     padding: 10,
     width: '100%',
-    position: 'fixed',
+    position: 'absolute',
     bottom: 0,
     left: 0,
     backgroundColor: '#fff'

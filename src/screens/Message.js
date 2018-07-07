@@ -46,8 +46,8 @@ class Message extends React.Component {
   get getThread() {
     debug('get Thread', this.profile, this.threadId)
     const { user } = this.profile
-    const username = this.profile.id || this.accountId // TODO: normalize
-    const password = user.xOAuth2Token || user.password || user.pin || user.accessToken // TODO: normalize
+    const username = this.accountId // TODO: normalize
+    const password = user.xOAuth2Token // TODO: normalize
     return this.props.getThread(this.accountId, {
       username,
       password 
@@ -189,14 +189,16 @@ class Message extends React.Component {
     }
 
     return (<KeyboardAvoidingView style={style.container} behavior="padding" enabled>
-      <ScrollView 
-        style={style.scrollView}
-        ref={ref => this.scrollView = ref}
-      >
-        <MessageHeader title={subject} />
-        <Conversation messages={messages} />
-      </ScrollView>
-      <MessageFooter onSubmitEditing={text => this.onSubmitEditing(text)} />
+      <View style={style.scrollView}>
+        <ScrollView 
+          style={style.scrollView}
+          ref={ref => this.scrollView = ref}
+        >
+          <MessageHeader title={subject} />
+          <Conversation messages={messages} />
+        </ScrollView>
+        <MessageFooter onSubmitEditing={text => this.onSubmitEditing(text)} />
+      </View>
     </KeyboardAvoidingView>)
   }
 }

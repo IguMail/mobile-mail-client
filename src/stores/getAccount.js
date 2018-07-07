@@ -24,7 +24,7 @@ export default class GetAccount {
   }
 
   get name() {
-    return this.profile.name
+    return this.profile.fullName
   }
 
   get email() {
@@ -225,15 +225,17 @@ export default class GetAccount {
   }
 
   normalizeGoogleProfile(profile) {
+    debug('Normalize google profile', profile)
     const { name, email } = profile.user
     const fullName = name.givenName + (name.familyName && ' ' + name.familyName)
     const photo = profile.user.photos[0].value
     const normalized = {
       ...profile,
-      name: fullName,
+      fullName,
       photo,
       email
     }
+    debug('Normalized google profile', normalized)
     return normalized
   }
 
