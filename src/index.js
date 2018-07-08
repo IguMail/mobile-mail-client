@@ -6,13 +6,20 @@ import registerServiceWorker from "./web/registerServiceWorker";
 
 global.PLATFORM = 'web'
 
+const useServiceWorker = false
+
 const App = require("./App").default;
 
 // load expo 
 // TODO: Expo web compatible
 
-ReactDOM.render(<App loaded={true} Router={BrowserRouter} withRouter={withRouter} />, document.getElementById("root"));
-registerServiceWorker();
+ReactDOM.render(
+  <App loaded={true} Router={BrowserRouter} withRouter={withRouter} />, 
+  document.getElementById("root")
+);
+if (useServiceWorker) {
+  registerServiceWorker()
+}
 
 const injectFonts = () => {
   const style = document.createElement("style");

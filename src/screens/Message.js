@@ -47,7 +47,7 @@ class Message extends React.Component {
     debug('get Thread', this.profile, this.threadId)
     const { user } = this.profile
     const username = this.accountId // TODO: normalize
-    const password = user.xOAuth2Token // TODO: normalize
+    const password = user && user.xOAuth2Token // TODO: normalize
     return this.props.getThread(this.accountId, {
       username,
       password 

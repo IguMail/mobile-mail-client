@@ -30,7 +30,7 @@ class Inbox extends React.Component {
   get getThreads() {
     const { user } = this.profile
     const username = this.accountId // TODO: normalize
-    const password = user.xOAuth2Token // TODO: normalize
+    const password = user && user.xOAuth2Token // TODO: normalize
     return this.props.getThreads(this.accountId, {
       username,
       password 
