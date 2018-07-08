@@ -14,7 +14,7 @@ import ResetAccount from './screens/ResetAccount'
 import RegisterAccount from './screens/user/Register'
 import utils from './lib/utils'
 
-const debug = require('./lib/debug')('chaterr:AppRoutes')
+const debug = require('./lib/debug')('igumail:AppRoutes')
 const isDev = process.env.NODE_ENV === 'development'
 const fetchTimeout = 5000
 

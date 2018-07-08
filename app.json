@@ -1,9 +1,9 @@
 {
   "expo": {
-    "scheme": "chaterr",
+    "scheme": "igumail",
     "sdkVersion": "27.0.0",
-    "name": "Chaterr",
-    "slug": "chaterr",
+    "name": "Igumail",
+    "slug": "igumail",
     "version": "0.1.0"
   }
 }

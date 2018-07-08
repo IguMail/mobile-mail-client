@@ -4,7 +4,7 @@ import styles from './styles'
 import FormGroup from './FormGroup'
 import FormRow from './FormRow'
 
-const debug = require('../lib/debug')('chaterr:form')
+const debug = require('../lib/debug')('igumail:form')
 
 const FIELD_REQ_MSG = 'This field is required'
 

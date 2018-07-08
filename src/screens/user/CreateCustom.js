@@ -6,7 +6,7 @@ import ErrorModal from '../../theme/ErrorModal'
 import Form from '../../theme/Form'
 import form from './form'
 
-const debug = require('../../lib/debug')('chaterr:account:custom')
+const debug = require('../../lib/debug')('igumail:account:custom')
 
 const FIELD_REQ_MSG = 'This field is required'
 const ACCOUNT_ADD_BTN_TITLE = 'ADD'

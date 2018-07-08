@@ -5,7 +5,7 @@ import OAuth from '../account/OAuth'
 import config from '../../config'
 import ErrorModal from '../../theme/ErrorModal'
 
-const debug = require('../../lib/debug')('chaterr:add:oauth')
+const debug = require('../../lib/debug')('igumail:add:oauth')
 
 const OAuthUrl = config.oauth.url + '/auth/{service}'
 const accountSuccessRoute = '/inbox'

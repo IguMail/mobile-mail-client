@@ -2,7 +2,7 @@ import React from "react";
 import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
 import { Row } from './'
 
-const debug = require('../lib/debug')('chaterr:FormField')
+const debug = require('../lib/debug')('igumail:FormField')
 
 class FormField extends React.Component {
 

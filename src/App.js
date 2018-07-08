@@ -4,7 +4,7 @@ import Splash from './screens/Splash'
 import AppRoutes from './AppRoutes'
 import stores from './stores'
 
-const debug = require('./lib/debug')('chaterr:App')
+const debug = require('./lib/debug')('igumail:App')
 
 class App extends React.Component {
 

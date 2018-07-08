@@ -3,7 +3,7 @@ import { View, Text } from "react-native"
 import { Redirect } from 'react-router-native'
 import { Section, Row, AccountHeader, TouchLink } from '../theme'
 
-const debug = require('../lib/debug')('chaterr:DevConsole')
+const debug = require('../lib/debug')('igumail:DevConsole')
 
 const style = {
   container: {
@@ -54,7 +54,7 @@ const DevConsole = props => {
         <TouchLink to="/account/oauth"><Text>OAuth</Text></TouchLink>
       </ScreenLink>
       <ScreenLink>
-        <TouchLink to="/user/create"><Text>Register on Chaterr</Text></TouchLink>
+        <TouchLink to="/user/create"><Text>Register on Igumail</Text></TouchLink>
       </ScreenLink>
     </View>
     <RedirectOnce to="/" />

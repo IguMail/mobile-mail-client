@@ -6,7 +6,7 @@ import styles from '../../theme/styles'
 import Form from '../../theme/Form'
 import ErrorModal from '../../theme/ErrorModal'
 
-const debug = require('../../lib/debug')('chaterr:Register')
+const debug = require('../../lib/debug')('igumail:Register')
 
 const ACCOUNT_CREATE_BTN_TITLE = 'Sign Up'
 const NUM_ERR_MSG = 'Phone number can contain + sign, numbers, dashes and spaces'

@@ -6,7 +6,7 @@ import inbox from '../styles/inbox'
 import MessageLink from './MessageLink'
 import Swipeout from 'react-native-swipeout'
 
-const debug = require('../../debug')('chaterr:Inbox:MessageList')
+const debug = require('../../debug')('igumail:Inbox:MessageList')
 
 const style = {
   ...inbox

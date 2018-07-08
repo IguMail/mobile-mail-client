@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import OAuth from '../../components/OAuth'
 import Splash from '../../screens/Splash'
 
-const debug = require('../../lib/debug')('chaterr:oauth')
+const debug = require('../../lib/debug')('igumail:oauth')
 
 export default class AccountOAuth extends Component {
 

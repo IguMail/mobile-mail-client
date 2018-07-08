@@ -1,8 +1,8 @@
 const URL = require('url')
-const debug = require('../lib/debug')('chaterr:MailApi')
+const debug = require('../lib/debug')('igumail:MailApi')
 
 /**
- * Chaterr REST API
+ * Igumail REST API
  */
 class MailApi {
 
@@ -11,7 +11,7 @@ class MailApi {
   options = {
     url: 'https://api.igumail.com',
     headers: {
-      'user-agent': 'Chaterr 1.0',
+      'user-agent': 'Igumail 1.0',
     }
   }
 

@@ -4,7 +4,7 @@ import { View } from 'react-native'
 import conversation from '../styles/conversation'
 import MessageLink from '../Message/MessageLink'
 
-const debug = require('../../lib/debug')('chaterr:Conversation')
+const debug = require('../../lib/debug')('igumail:Conversation')
 
 const style = {
   ...conversation

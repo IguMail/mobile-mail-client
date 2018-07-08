@@ -1,4 +1,4 @@
-# Chaterr
+# Igumail
 
 Mobile mail client for android, iOS. 
 

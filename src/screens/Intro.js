@@ -10,7 +10,7 @@ import style from '../theme/styles/intro'
 import { Button } from '../theme'
 import CreateUser from '../screens/user/Create'
 
-const debug = require('debug')('chaterr:intro')
+const debug = require('debug')('igumail:intro')
 
 const BTN_TITLE = 'GET STARTED'
 

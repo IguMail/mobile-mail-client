@@ -3,7 +3,7 @@ import { View, Image, TextInput, TouchableHighlight, Keyboard } from 'react-nati
 import styles from '../styles'
 import footerStyle from '../styles/message/footer'
 
-const debug = require('../../lib/debug')('chaterr:Message:Footer')
+const debug = require('../../lib/debug')('igumail:Message:Footer')
 
 const defaults = {
   style: {

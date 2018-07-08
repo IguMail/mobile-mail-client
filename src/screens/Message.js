@@ -10,12 +10,12 @@ import utils from '../lib/utils'
 import { KeyboardAvoidingView } from 'react-native'
 
 
-const debug = require('../lib/debug')('chaterr:Message')
+const debug = require('../lib/debug')('igumail:Message')
 
 const CHECK_NETWORK = 'Please check your network connection.'
 const ERR_HTTP_FAIL = 'Could not retrieve thread at this time. ' + CHECK_NETWORK
 const ERR_SEND_FAIL = 'Failed to send your email. ' + CHECK_NETWORK
-const ERR_AUTH_FAIL = 'Failed to log you into your Chaterr account. Please log in again.'
+const ERR_AUTH_FAIL = 'Failed to log you into your Igumail account. Please log in again.'
 
 const handleAuthError = false
 

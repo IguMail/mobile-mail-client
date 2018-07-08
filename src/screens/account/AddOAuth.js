@@ -4,7 +4,7 @@ import { View } from 'react-native'
 import OAuth from './OAuth'
 import config from '../../config'
 
-const debug = require('../../lib/debug')('chaterr:add:oauth')
+const debug = require('../../lib/debug')('igumail:add:oauth')
 
 const OAuthUrl = config.oauth.url + '/auth/{service}'
 

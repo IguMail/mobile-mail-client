@@ -4,9 +4,9 @@ import { View, Text, Image } from 'react-native'
 import { Icon, TouchLink, Avatar } from './'
 import style from './styles/sideMenu'
 
-const debug = require('../lib/debug')('chaterr:side-menu')
+const debug = require('../lib/debug')('igumail:side-menu')
 
-const CREATE_ACCOUNT = 'Create an account on Chaterr'
+const CREATE_ACCOUNT = 'Create an account on Igumail'
 const ADD_MAIL_ACCOUNT = 'Link another Mail Account'
 
 const allMailMenuItem = {
